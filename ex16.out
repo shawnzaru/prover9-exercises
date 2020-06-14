@@ -1,0 +1,174 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 6420 was started by qwang on grid01,
+Wed Jun 26 22:33:07 2019
+The command was "prover9 -f ex16.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file ex16.in
+
+
+formulas(sos).
+(all x (goodgrade(x) -> brilliant(x) | study(x))).
+(all x (csmajor(x) -> (exists y roommate(y,x)))).
+(all x ((exists y (roommate(y,x) & likeparty(y))) -> sixthstreet(x))).
+(all x (sixthstreet(x) -> -study(x))).
+end_of_list.
+
+formulas(goals).
+(all x (csmajor(x) -> (all y (roommate(y,x) -> likeparty(y))))) -> (all x (csmajor(x) & goodgrade(x) -> brilliant(x))).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (goodgrade(x) -> brilliant(x) | study(x))) # label(non_clause).  [assumption].
+2 (all x (csmajor(x) -> (exists y roommate(y,x)))) # label(non_clause).  [assumption].
+3 (all x ((exists y (roommate(y,x) & likeparty(y))) -> sixthstreet(x))) # label(non_clause).  [assumption].
+4 (all x (sixthstreet(x) -> -study(x))) # label(non_clause).  [assumption].
+5 (all x (csmajor(x) -> (all y (roommate(y,x) -> likeparty(y))))) -> (all x (csmajor(x) & goodgrade(x) -> brilliant(x))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-goodgrade(x) | brilliant(x) | study(x).  [clausify(1)].
+-csmajor(x) | roommate(f1(x),x).  [clausify(2)].
+-roommate(x,y) | -likeparty(x) | sixthstreet(y).  [clausify(3)].
+-sixthstreet(x) | -study(x).  [clausify(4)].
+-csmajor(x) | -roommate(y,x) | likeparty(y).  [deny(5)].
+csmajor(c1).  [deny(5)].
+goodgrade(c1).  [deny(5)].
+-brilliant(c1).  [deny(5)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating goodgrade/1
+6 goodgrade(c1).  [deny(5)].
+7 -goodgrade(x) | brilliant(x) | study(x).  [clausify(1)].
+Derived: brilliant(c1) | study(c1).  [resolve(6,a,7,a)].
+
+Eliminating csmajor/1
+8 csmajor(c1).  [deny(5)].
+9 -csmajor(x) | roommate(f1(x),x).  [clausify(2)].
+10 -csmajor(x) | -roommate(y,x) | likeparty(y).  [deny(5)].
+Derived: roommate(f1(c1),c1).  [resolve(8,a,9,a)].
+Derived: -roommate(x,c1) | likeparty(x).  [resolve(8,a,10,a)].
+
+Eliminating roommate/2
+11 roommate(f1(c1),c1).  [resolve(8,a,9,a)].
+12 -roommate(x,y) | -likeparty(x) | sixthstreet(y).  [clausify(3)].
+Derived: -likeparty(f1(c1)) | sixthstreet(c1).  [resolve(11,a,12,a)].
+13 -roommate(x,c1) | likeparty(x).  [resolve(8,a,10,a)].
+Derived: likeparty(f1(c1)).  [resolve(13,a,11,a)].
+
+Eliminating sixthstreet/1
+14 -likeparty(f1(c1)) | sixthstreet(c1).  [resolve(11,a,12,a)].
+15 -sixthstreet(x) | -study(x).  [clausify(4)].
+Derived: -likeparty(f1(c1)) | -study(c1).  [resolve(14,b,15,a)].
+
+Eliminating brilliant/1
+16 brilliant(c1) | study(c1).  [resolve(6,a,7,a)].
+17 -brilliant(c1).  [deny(5)].
+Derived: study(c1).  [resolve(16,a,17,a)].
+
+Eliminating likeparty/1
+18 -likeparty(f1(c1)) | -study(c1).  [resolve(14,b,15,a)].
+19 likeparty(f1(c1)).  [resolve(13,a,11,a)].
+Derived: -study(c1).  [resolve(18,a,19,a)].
+
+Eliminating study/1
+20 -study(c1).  [resolve(18,a,19,a)].
+21 study(c1).  [resolve(16,a,17,a)].
+Derived: $F.  [resolve(20,a,21,a)].
+
+============================== end predicate elimination =============
+
+Auto_denials:  (no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ ]).
+Function symbol precedence:  function_order([ ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(neg_binary_resolution).  % (HNE depth_diff=0)
+  % clear(ordered_res).  % (HNE depth_diff=0)
+  % set(ur_resolution).  % (HNE depth_diff=0)
+    % set(ur_resolution) -> set(pos_ur_resolution).
+    % set(ur_resolution) -> set(neg_ur_resolution).
+
+Auto_process settings:  (no changes).
+
+
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 22.
+% Level of proof is 6.
+% Maximum clause weight is 0.000.
+% Given clauses 0.
+
+1 (all x (goodgrade(x) -> brilliant(x) | study(x))) # label(non_clause).  [assumption].
+2 (all x (csmajor(x) -> (exists y roommate(y,x)))) # label(non_clause).  [assumption].
+3 (all x ((exists y (roommate(y,x) & likeparty(y))) -> sixthstreet(x))) # label(non_clause).  [assumption].
+4 (all x (sixthstreet(x) -> -study(x))) # label(non_clause).  [assumption].
+5 (all x (csmajor(x) -> (all y (roommate(y,x) -> likeparty(y))))) -> (all x (csmajor(x) & goodgrade(x) -> brilliant(x))) # label(non_clause) # label(goal).  [goal].
+6 goodgrade(c1).  [deny(5)].
+7 -goodgrade(x) | brilliant(x) | study(x).  [clausify(1)].
+8 csmajor(c1).  [deny(5)].
+9 -csmajor(x) | roommate(f1(x),x).  [clausify(2)].
+10 -csmajor(x) | -roommate(y,x) | likeparty(y).  [deny(5)].
+11 roommate(f1(c1),c1).  [resolve(8,a,9,a)].
+12 -roommate(x,y) | -likeparty(x) | sixthstreet(y).  [clausify(3)].
+13 -roommate(x,c1) | likeparty(x).  [resolve(8,a,10,a)].
+14 -likeparty(f1(c1)) | sixthstreet(c1).  [resolve(11,a,12,a)].
+15 -sixthstreet(x) | -study(x).  [clausify(4)].
+16 brilliant(c1) | study(c1).  [resolve(6,a,7,a)].
+17 -brilliant(c1).  [deny(5)].
+18 -likeparty(f1(c1)) | -study(c1).  [resolve(14,b,15,a)].
+19 likeparty(f1(c1)).  [resolve(13,a,11,a)].
+20 -study(c1).  [resolve(18,a,19,a)].
+21 study(c1).  [resolve(16,a,17,a)].
+22 $F.  [resolve(20,a,21,a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=0. Generated=1. Kept=0. proofs=1.
+Usable=0. Sos=0. Demods=0. Limbo=0, Disabled=17. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=0. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=0. Nonunit_bsub_feature_tests=0.
+Megabytes=0.04.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 6420 exit (max_proofs) Wed Jun 26 22:33:07 2019

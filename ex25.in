@@ -1,0 +1,53 @@
+formulas(sos).
+
+  % wolves, foxes, birds, caterpillars, and snails are animals,
+  (all x (wolf(x) -> animal(x))).
+  (all x (fox(x) -> animal(x))).
+  (all x (bird(x) -> animal(x))).
+  (all x (catepillar(x) -> animal(x))).
+  (all x (snail(x) -> animal(x))).
+
+  % and there are some of each of them.
+  (exists x (wolf(x))).
+  (exists x (fox(x))).
+  (exists x (bird(x))).
+  (exists x (catepillar(x))).
+  (exists x (snail(x))).
+
+  % also there are some grains, and grains are plants.
+  (exists x (grain(x))).
+  (all x (grain(x) -> plant(x))).
+
+  % every animal either likes to eat all plants or all animals much smaller than itself that like to eat some plants.
+  (all x ((all y (plant(y) -> eat(x,y))) | (all z ((animal(z) & smaller(z,x) & (exists u (plant(u) & eat(z,u)))) -> eat(x,z))))).
+
+  % catepillars and snails are much smaller than birds,
+  (all x (catepillar(x) -> (all y (bird(y) -> smaller(x,y))))).
+  (all x (snail(x) -> (all y (bird(y) -> smaller(x,y))))).
+
+  % which are much smaller than foxes,
+  (all x (bird(x) -> (all y (fox(y) -> smaller(x,y))))).
+
+  % which in turn are much smaller than wolves.
+  (all x (fox(x) -> (all y (wolf(y) -> smaller(x,y))))).
+
+  % wolves do not like to eat foxes or grains,
+  (all x (wolf(x) -> (all y (fox(y) -> -eat(x,y))))).
+  (all x (wolf(x) -> (all y (grain(y) -> -eat(x,y))))).
+
+  % while birds like to eat catepillars but not snails.
+  (all x (bird(x) -> (all y (catepillar(y) -> eat(x,y))))).
+  (all x (bird(x) -> (all y (snail(y) -> -eat(x,y))))).
+
+  % catepillars and snails like to eat some plants.
+  (all x (catepillar(x) -> (exists y (plant(y) & eat(x,y))))).
+  (all x (snail(x) -> (exists y (plant(y) & eat(x,y))))).
+
+end_of_list.
+
+formulas(goals).
+
+  % therefore there is an animal that likes to eat a grain-eating animal.
+  (exists x (animal(x) & (exists y (eat(x,y) & (exists z (grain(z) & eat(y,z))))))).
+
+end_of_list.

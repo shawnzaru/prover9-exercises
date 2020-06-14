@@ -1,0 +1,25 @@
+formulas(sos).
+
+  % 1. anyone who loves any lottery is a gambler.
+  (all x (lovelottery(x) -> gambler(x))).
+
+  % 2. everyone who favors the lottery proposition loves some lottery.
+  (all x (favorprop(x) -> lovelottery(x))).
+
+  % 3. everyone favors the lottery proposition or opposes the lottery proposition.
+  (all x (favorprop(x) & opposeprop(x))).
+
+  % 4. if every baptist votes and opposes the lottery proposition, then the lottery proposition does not win.
+  (all x ((baptist(x) & vote(x) & opposeprop(x)) -> -propwin)).
+
+  % 5. every baptist who is faithful is not a gambler.
+  (all x ((baptist(x) & faithful(x)) -> -gambler(x))).
+
+end_of_list.
+
+formulas(goals).
+
+  % 6. if every baptist votes and the lottery proposition wins, then some baptist is not faithful.
+  ((all x (baptist(x) & vote(x))) & propwin) -> (exists x (baptist(x) & -faithful(x))).
+
+end_of_list.

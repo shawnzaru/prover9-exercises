@@ -1,0 +1,22 @@
+formulas(sos).
+
+  % 1. every boy or girl is a child.
+  (all x ((boy(x) | girl(x)) -> child(x))).
+
+  % 2. every child gets a doll or a train or a lump of coal.
+  (all x (child(x) -> (getdoll(x) | gettrain(x) | getcoal(x)))).
+
+  % 3. no boy gets any doll.
+  -(exists x (boy(x) & getdoll(x))).
+
+  % 4. no child who is good gets any lump of coal.
+  -(exists x (child(x) & good(x) & getcoal(x))).
+
+end_of_list.
+
+formulas(goals).
+
+  % 5. if no child gets a train, then no boy is good.
+  -(exists x (child(x) & gettrain(x))) -> -(exists y (boy(y) & good(y))).
+
+end_of_list.

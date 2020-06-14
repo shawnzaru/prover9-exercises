@@ -1,0 +1,225 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 6425 was started by qwang on grid01,
+Wed Jun 26 22:33:07 2019
+The command was "prover9 -f ex21.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file ex21.in
+
+
+formulas(sos).
+(all x (mall(x) -> (exists y (santa(y) & at(y,x))))).
+(all x (child(x) -> (all y (visit(x,y) -> (all z (santa(z) -> talk(x,z) & at(z,y))))))).
+(all x (child(x) & citychild(x) -> (exists y (mall(y) & visit(x,y))))).
+(all x (child(x) & (good(x) | (exists y (santa(y) & talk(x,y)))) -> gettoy(x))).
+end_of_list.
+
+formulas(goals).
+(all x (child(x) & -citychild(x) -> good(x))) -> (all y (child(y) -> gettoy(y))).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (mall(x) -> (exists y (santa(y) & at(y,x))))) # label(non_clause).  [assumption].
+2 (all x (child(x) -> (all y (visit(x,y) -> (all z (santa(z) -> talk(x,z) & at(z,y))))))) # label(non_clause).  [assumption].
+3 (all x (child(x) & citychild(x) -> (exists y (mall(y) & visit(x,y))))) # label(non_clause).  [assumption].
+4 (all x (child(x) & (good(x) | (exists y (santa(y) & talk(x,y)))) -> gettoy(x))) # label(non_clause).  [assumption].
+5 (all x (child(x) & -citychild(x) -> good(x))) -> (all y (child(y) -> gettoy(y))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-mall(x) | santa(f1(x)).  [clausify(1)].
+-mall(x) | at(f1(x),x).  [clausify(1)].
+-child(x) | -visit(x,y) | -santa(z) | talk(x,z).  [clausify(2)].
+-child(x) | -visit(x,y) | -santa(z) | at(z,y).  [clausify(2)].
+-child(x) | -citychild(x) | mall(f2(x)).  [clausify(3)].
+-child(x) | -citychild(x) | visit(x,f2(x)).  [clausify(3)].
+-child(x) | -good(x) | gettoy(x).  [clausify(4)].
+-child(x) | -santa(y) | -talk(x,y) | gettoy(x).  [clausify(4)].
+-child(x) | citychild(x) | good(x).  [deny(5)].
+child(c1).  [deny(5)].
+-gettoy(c1).  [deny(5)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating mall/1
+6 -child(x) | -citychild(x) | mall(f2(x)).  [clausify(3)].
+7 -mall(x) | santa(f1(x)).  [clausify(1)].
+8 -mall(x) | at(f1(x),x).  [clausify(1)].
+Derived: -child(x) | -citychild(x) | santa(f1(f2(x))).  [resolve(6,c,7,a)].
+Derived: -child(x) | -citychild(x) | at(f1(f2(x)),f2(x)).  [resolve(6,c,8,a)].
+
+Eliminating child/1
+9 child(c1).  [deny(5)].
+10 -child(x) | -visit(x,y) | -santa(z) | talk(x,z).  [clausify(2)].
+11 -child(x) | -visit(x,y) | -santa(z) | at(z,y).  [clausify(2)].
+12 -child(x) | -citychild(x) | visit(x,f2(x)).  [clausify(3)].
+13 -child(x) | -good(x) | gettoy(x).  [clausify(4)].
+14 -child(x) | -santa(y) | -talk(x,y) | gettoy(x).  [clausify(4)].
+15 -child(x) | citychild(x) | good(x).  [deny(5)].
+Derived: -visit(c1,x) | -santa(y) | talk(c1,y).  [resolve(9,a,10,a)].
+Derived: -visit(c1,x) | -santa(y) | at(y,x).  [resolve(9,a,11,a)].
+Derived: -citychild(c1) | visit(c1,f2(c1)).  [resolve(9,a,12,a)].
+Derived: -good(c1) | gettoy(c1).  [resolve(9,a,13,a)].
+Derived: -santa(x) | -talk(c1,x) | gettoy(c1).  [resolve(9,a,14,a)].
+Derived: citychild(c1) | good(c1).  [resolve(9,a,15,a)].
+16 -child(x) | -citychild(x) | santa(f1(f2(x))).  [resolve(6,c,7,a)].
+Derived: -citychild(c1) | santa(f1(f2(c1))).  [resolve(16,a,9,a)].
+17 -child(x) | -citychild(x) | at(f1(f2(x)),f2(x)).  [resolve(6,c,8,a)].
+Derived: -citychild(c1) | at(f1(f2(c1)),f2(c1)).  [resolve(17,a,9,a)].
+
+Eliminating gettoy/1
+18 -good(c1) | gettoy(c1).  [resolve(9,a,13,a)].
+19 -gettoy(c1).  [deny(5)].
+Derived: -good(c1).  [resolve(18,b,19,a)].
+20 -santa(x) | -talk(c1,x) | gettoy(c1).  [resolve(9,a,14,a)].
+Derived: -santa(x) | -talk(c1,x).  [resolve(20,c,19,a)].
+
+Eliminating visit/2
+21 -citychild(c1) | visit(c1,f2(c1)).  [resolve(9,a,12,a)].
+22 -visit(c1,x) | -santa(y) | talk(c1,y).  [resolve(9,a,10,a)].
+23 -visit(c1,x) | -santa(y) | at(y,x).  [resolve(9,a,11,a)].
+Derived: -citychild(c1) | -santa(x) | talk(c1,x).  [resolve(21,b,22,a)].
+Derived: -citychild(c1) | -santa(x) | at(x,f2(c1)).  [resolve(21,b,23,a)].
+
+Eliminating citychild/1
+24 -citychild(c1) | santa(f1(f2(c1))).  [resolve(16,a,9,a)].
+25 citychild(c1) | good(c1).  [resolve(9,a,15,a)].
+Derived: santa(f1(f2(c1))) | good(c1).  [resolve(24,a,25,a)].
+26 -citychild(c1) | at(f1(f2(c1)),f2(c1)).  [resolve(17,a,9,a)].
+Derived: at(f1(f2(c1)),f2(c1)) | good(c1).  [resolve(26,a,25,a)].
+27 -citychild(c1) | -santa(x) | talk(c1,x).  [resolve(21,b,22,a)].
+Derived: -santa(x) | talk(c1,x) | good(c1).  [resolve(27,a,25,a)].
+28 -citychild(c1) | -santa(x) | at(x,f2(c1)).  [resolve(21,b,23,a)].
+Derived: -santa(x) | at(x,f2(c1)) | good(c1).  [resolve(28,a,25,a)].
+
+Eliminating good/1
+29 santa(f1(f2(c1))) | good(c1).  [resolve(24,a,25,a)].
+30 -good(c1).  [resolve(18,b,19,a)].
+Derived: santa(f1(f2(c1))).  [resolve(29,b,30,a)].
+31 at(f1(f2(c1)),f2(c1)) | good(c1).  [resolve(26,a,25,a)].
+Derived: at(f1(f2(c1)),f2(c1)).  [resolve(31,b,30,a)].
+32 -santa(x) | talk(c1,x) | good(c1).  [resolve(27,a,25,a)].
+Derived: -santa(x) | talk(c1,x).  [resolve(32,c,30,a)].
+33 -santa(x) | at(x,f2(c1)) | good(c1).  [resolve(28,a,25,a)].
+Derived: -santa(x) | at(x,f2(c1)).  [resolve(33,c,30,a)].
+
+Eliminating santa/1
+34 santa(f1(f2(c1))).  [resolve(29,b,30,a)].
+35 -santa(x) | -talk(c1,x).  [resolve(20,c,19,a)].
+Derived: -talk(c1,f1(f2(c1))).  [resolve(34,a,35,a)].
+36 -santa(x) | talk(c1,x).  [resolve(32,c,30,a)].
+Derived: talk(c1,f1(f2(c1))).  [resolve(36,a,34,a)].
+37 -santa(x) | at(x,f2(c1)).  [resolve(33,c,30,a)].
+Derived: at(f1(f2(c1)),f2(c1)).  [resolve(37,a,34,a)].
+
+Eliminating at/2
+
+Eliminating talk/2
+38 talk(c1,f1(f2(c1))).  [resolve(36,a,34,a)].
+39 -talk(c1,f1(f2(c1))).  [resolve(34,a,35,a)].
+Derived: $F.  [resolve(38,a,39,a)].
+
+============================== end predicate elimination =============
+
+Auto_denials:  (no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ ]).
+Function symbol precedence:  function_order([ ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(neg_binary_resolution).  % (HNE depth_diff=0)
+  % clear(ordered_res).  % (HNE depth_diff=0)
+  % set(ur_resolution).  % (HNE depth_diff=0)
+    % set(ur_resolution) -> set(pos_ur_resolution).
+    % set(ur_resolution) -> set(neg_ur_resolution).
+
+Auto_process settings:  (no changes).
+
+
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 31.
+% Level of proof is 7.
+% Maximum clause weight is 0.000.
+% Given clauses 0.
+
+1 (all x (mall(x) -> (exists y (santa(y) & at(y,x))))) # label(non_clause).  [assumption].
+2 (all x (child(x) -> (all y (visit(x,y) -> (all z (santa(z) -> talk(x,z) & at(z,y))))))) # label(non_clause).  [assumption].
+3 (all x (child(x) & citychild(x) -> (exists y (mall(y) & visit(x,y))))) # label(non_clause).  [assumption].
+4 (all x (child(x) & (good(x) | (exists y (santa(y) & talk(x,y)))) -> gettoy(x))) # label(non_clause).  [assumption].
+5 (all x (child(x) & -citychild(x) -> good(x))) -> (all y (child(y) -> gettoy(y))) # label(non_clause) # label(goal).  [goal].
+6 -child(x) | -citychild(x) | mall(f2(x)).  [clausify(3)].
+7 -mall(x) | santa(f1(x)).  [clausify(1)].
+9 child(c1).  [deny(5)].
+10 -child(x) | -visit(x,y) | -santa(z) | talk(x,z).  [clausify(2)].
+12 -child(x) | -citychild(x) | visit(x,f2(x)).  [clausify(3)].
+13 -child(x) | -good(x) | gettoy(x).  [clausify(4)].
+14 -child(x) | -santa(y) | -talk(x,y) | gettoy(x).  [clausify(4)].
+15 -child(x) | citychild(x) | good(x).  [deny(5)].
+16 -child(x) | -citychild(x) | santa(f1(f2(x))).  [resolve(6,c,7,a)].
+18 -good(c1) | gettoy(c1).  [resolve(9,a,13,a)].
+19 -gettoy(c1).  [deny(5)].
+20 -santa(x) | -talk(c1,x) | gettoy(c1).  [resolve(9,a,14,a)].
+21 -citychild(c1) | visit(c1,f2(c1)).  [resolve(9,a,12,a)].
+22 -visit(c1,x) | -santa(y) | talk(c1,y).  [resolve(9,a,10,a)].
+24 -citychild(c1) | santa(f1(f2(c1))).  [resolve(16,a,9,a)].
+25 citychild(c1) | good(c1).  [resolve(9,a,15,a)].
+27 -citychild(c1) | -santa(x) | talk(c1,x).  [resolve(21,b,22,a)].
+29 santa(f1(f2(c1))) | good(c1).  [resolve(24,a,25,a)].
+30 -good(c1).  [resolve(18,b,19,a)].
+32 -santa(x) | talk(c1,x) | good(c1).  [resolve(27,a,25,a)].
+34 santa(f1(f2(c1))).  [resolve(29,b,30,a)].
+35 -santa(x) | -talk(c1,x).  [resolve(20,c,19,a)].
+36 -santa(x) | talk(c1,x).  [resolve(32,c,30,a)].
+38 talk(c1,f1(f2(c1))).  [resolve(36,a,34,a)].
+39 -talk(c1,f1(f2(c1))).  [resolve(34,a,35,a)].
+40 $F.  [resolve(38,a,39,a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=0. Generated=1. Kept=0. proofs=1.
+Usable=0. Sos=0. Demods=0. Limbo=0, Disabled=37. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=0. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=0. Nonunit_bsub_feature_tests=0.
+Megabytes=0.05.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 6425 exit (max_proofs) Wed Jun 26 22:33:07 2019

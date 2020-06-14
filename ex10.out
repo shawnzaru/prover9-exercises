@@ -1,0 +1,189 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 6414 was started by qwang on grid01,
+Wed Jun 26 22:33:07 2019
+The command was "prover9 -f ex10.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file ex10.in
+
+
+formulas(sos).
+(all x (child(x) -> (all y (candy(y) -> love(x,y))))).
+(all x ((exists y (candy(y) & love(x,y))) -> -fanatic(x))).
+(all x ((exists y (pumpkin(y) & eat(x,y))) -> fanatic(x))).
+(all x all y (pumpkin(y) & buy(x,y) -> carve(x,y) | eat(x,y))).
+(exists x (pumpkin(x) & buy(john,x))).
+candy(lifesavers).
+end_of_list.
+
+formulas(goals).
+child(john) -> (exists x (pumpkin(x) & carve(john,x))).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (child(x) -> (all y (candy(y) -> love(x,y))))) # label(non_clause).  [assumption].
+2 (all x ((exists y (candy(y) & love(x,y))) -> -fanatic(x))) # label(non_clause).  [assumption].
+3 (all x ((exists y (pumpkin(y) & eat(x,y))) -> fanatic(x))) # label(non_clause).  [assumption].
+4 (all x all y (pumpkin(y) & buy(x,y) -> carve(x,y) | eat(x,y))) # label(non_clause).  [assumption].
+5 (exists x (pumpkin(x) & buy(john,x))) # label(non_clause).  [assumption].
+6 child(john) -> (exists x (pumpkin(x) & carve(john,x))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-child(x) | -candy(y) | love(x,y).  [clausify(1)].
+-candy(x) | -love(y,x) | -fanatic(y).  [clausify(2)].
+-pumpkin(x) | -eat(y,x) | fanatic(y).  [clausify(3)].
+-pumpkin(x) | -buy(y,x) | carve(y,x) | eat(y,x).  [clausify(4)].
+pumpkin(c1).  [clausify(5)].
+buy(john,c1).  [clausify(5)].
+candy(lifesavers).  [assumption].
+child(john).  [deny(6)].
+-pumpkin(x) | -carve(john,x).  [deny(6)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating child/1
+7 child(john).  [deny(6)].
+8 -child(x) | -candy(y) | love(x,y).  [clausify(1)].
+Derived: -candy(x) | love(john,x).  [resolve(7,a,8,a)].
+
+Eliminating candy/1
+9 candy(lifesavers).  [assumption].
+10 -candy(x) | -love(y,x) | -fanatic(y).  [clausify(2)].
+Derived: -love(x,lifesavers) | -fanatic(x).  [resolve(9,a,10,a)].
+11 -candy(x) | love(john,x).  [resolve(7,a,8,a)].
+Derived: love(john,lifesavers).  [resolve(11,a,9,a)].
+
+Eliminating pumpkin/1
+12 pumpkin(c1).  [clausify(5)].
+13 -pumpkin(x) | -eat(y,x) | fanatic(y).  [clausify(3)].
+14 -pumpkin(x) | -buy(y,x) | carve(y,x) | eat(y,x).  [clausify(4)].
+Derived: -eat(x,c1) | fanatic(x).  [resolve(12,a,13,a)].
+Derived: -buy(x,c1) | carve(x,c1) | eat(x,c1).  [resolve(12,a,14,a)].
+15 -pumpkin(x) | -carve(john,x).  [deny(6)].
+Derived: -carve(john,c1).  [resolve(15,a,12,a)].
+
+Eliminating buy/2
+16 -buy(x,c1) | carve(x,c1) | eat(x,c1).  [resolve(12,a,14,a)].
+17 buy(john,c1).  [clausify(5)].
+Derived: carve(john,c1) | eat(john,c1).  [resolve(16,a,17,a)].
+
+Eliminating love/2
+18 love(john,lifesavers).  [resolve(11,a,9,a)].
+19 -love(x,lifesavers) | -fanatic(x).  [resolve(9,a,10,a)].
+Derived: -fanatic(john).  [resolve(18,a,19,a)].
+
+Eliminating eat/2
+20 carve(john,c1) | eat(john,c1).  [resolve(16,a,17,a)].
+21 -eat(x,c1) | fanatic(x).  [resolve(12,a,13,a)].
+Derived: carve(john,c1) | fanatic(john).  [resolve(20,b,21,a)].
+
+Eliminating carve/2
+22 carve(john,c1) | fanatic(john).  [resolve(20,b,21,a)].
+23 -carve(john,c1).  [resolve(15,a,12,a)].
+Derived: fanatic(john).  [resolve(22,a,23,a)].
+
+Eliminating fanatic/1
+24 fanatic(john).  [resolve(22,a,23,a)].
+25 -fanatic(john).  [resolve(18,a,19,a)].
+Derived: $F.  [resolve(24,a,25,a)].
+
+============================== end predicate elimination =============
+
+Auto_denials:  (no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ ]).
+Function symbol precedence:  function_order([ ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(neg_binary_resolution).  % (HNE depth_diff=0)
+  % clear(ordered_res).  % (HNE depth_diff=0)
+  % set(ur_resolution).  % (HNE depth_diff=0)
+    % set(ur_resolution) -> set(pos_ur_resolution).
+    % set(ur_resolution) -> set(neg_ur_resolution).
+
+Auto_process settings:  (no changes).
+
+
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 26.
+% Level of proof is 6.
+% Maximum clause weight is 0.000.
+% Given clauses 0.
+
+1 (all x (child(x) -> (all y (candy(y) -> love(x,y))))) # label(non_clause).  [assumption].
+2 (all x ((exists y (candy(y) & love(x,y))) -> -fanatic(x))) # label(non_clause).  [assumption].
+3 (all x ((exists y (pumpkin(y) & eat(x,y))) -> fanatic(x))) # label(non_clause).  [assumption].
+4 (all x all y (pumpkin(y) & buy(x,y) -> carve(x,y) | eat(x,y))) # label(non_clause).  [assumption].
+5 (exists x (pumpkin(x) & buy(john,x))) # label(non_clause).  [assumption].
+6 child(john) -> (exists x (pumpkin(x) & carve(john,x))) # label(non_clause) # label(goal).  [goal].
+7 child(john).  [deny(6)].
+8 -child(x) | -candy(y) | love(x,y).  [clausify(1)].
+9 candy(lifesavers).  [assumption].
+10 -candy(x) | -love(y,x) | -fanatic(y).  [clausify(2)].
+11 -candy(x) | love(john,x).  [resolve(7,a,8,a)].
+12 pumpkin(c1).  [clausify(5)].
+13 -pumpkin(x) | -eat(y,x) | fanatic(y).  [clausify(3)].
+14 -pumpkin(x) | -buy(y,x) | carve(y,x) | eat(y,x).  [clausify(4)].
+15 -pumpkin(x) | -carve(john,x).  [deny(6)].
+16 -buy(x,c1) | carve(x,c1) | eat(x,c1).  [resolve(12,a,14,a)].
+17 buy(john,c1).  [clausify(5)].
+18 love(john,lifesavers).  [resolve(11,a,9,a)].
+19 -love(x,lifesavers) | -fanatic(x).  [resolve(9,a,10,a)].
+20 carve(john,c1) | eat(john,c1).  [resolve(16,a,17,a)].
+21 -eat(x,c1) | fanatic(x).  [resolve(12,a,13,a)].
+22 carve(john,c1) | fanatic(john).  [resolve(20,b,21,a)].
+23 -carve(john,c1).  [resolve(15,a,12,a)].
+24 fanatic(john).  [resolve(22,a,23,a)].
+25 -fanatic(john).  [resolve(18,a,19,a)].
+26 $F.  [resolve(24,a,25,a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=0. Generated=1. Kept=0. proofs=1.
+Usable=0. Sos=0. Demods=0. Limbo=0, Disabled=20. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=0. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=0. Nonunit_bsub_feature_tests=0.
+Megabytes=0.04.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 6414 exit (max_proofs) Wed Jun 26 22:33:07 2019

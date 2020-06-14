@@ -1,0 +1,28 @@
+formulas(sos).
+
+  % 1. every child loves santa.
+  (all x (child(x) -> loves(x,santa))).
+
+  % 2. everyone who loves santa loves any reindeer.
+  (all x (loves(x,santa) -> (all y (reindeer(y) -> loves(x,y))))).
+
+  % 3. rudolph is a reindeer, and rudolph has a red nose.
+  reindeer(rudolph) & rednose(rudolph).
+
+  % 4. anything which has a red nose is weird or is a clown.
+  (all x (rednose(x) -> (weird(x) | clown(x)))).
+
+  % 5. no reindeer is a clown.
+  (all x (reindeer(x) -> -clown(x))).
+
+  % 6. scrooge does not love anything which is weird.
+  (all x (weird(x) -> -loves(scrooge, x))).
+
+end_of_list.
+
+formulas(goals).
+
+  % 7. scrooge is not a child.
+  -child(scrooge).
+
+end_of_list.

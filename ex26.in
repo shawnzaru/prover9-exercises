@@ -1,0 +1,15 @@
+formulas(sos).
+
+  -p(x,y) | q(x,y,f(x,y)).
+  -r(y,z) | q(a,y,z).
+  r(y,z) | -q(a,y,z).
+  p(x,g(x)) | q(x,g(x),z).
+  -r(x,y) | -q(x,w,z).
+
+end_of_list.
+
+formulas(goals).
+
+
+
+end_of_list.

@@ -1,0 +1,184 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 6423 was started by qwang on grid01,
+Wed Jun 26 22:33:07 2019
+The command was "prover9 -f ex19.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file ex19.in
+
+
+formulas(sos).
+(all x (ownsled(x) -> (all y (snowy(y) -> happy(x,y))))).
+(all x (white(x) -> snowy(x))).
+happy(santa,xmas) -> (all x (child(x) & good(x) -> gettoy(x,xmas))).
+(all x (child(x) -> (all y (gettoy(x,y) -> happy(x,y))))).
+ownsled(santa).
+end_of_list.
+
+formulas(goals).
+white(xmas) & (all x (child(x) & -good(x) -> ownsled(x))) -> (all y (child(y) -> happy(y,xmas))).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (ownsled(x) -> (all y (snowy(y) -> happy(x,y))))) # label(non_clause).  [assumption].
+2 (all x (white(x) -> snowy(x))) # label(non_clause).  [assumption].
+3 happy(santa,xmas) -> (all x (child(x) & good(x) -> gettoy(x,xmas))) # label(non_clause).  [assumption].
+4 (all x (child(x) -> (all y (gettoy(x,y) -> happy(x,y))))) # label(non_clause).  [assumption].
+5 white(xmas) & (all x (child(x) & -good(x) -> ownsled(x))) -> (all y (child(y) -> happy(y,xmas))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-ownsled(x) | -snowy(y) | happy(x,y).  [clausify(1)].
+-white(x) | snowy(x).  [clausify(2)].
+-happy(santa,x) | -child(y) | -good(y) | gettoy(y,x).  [clausify(3)].
+-child(x) | -gettoy(x,y) | happy(x,y).  [clausify(4)].
+ownsled(santa).  [assumption].
+white(c1).  [deny(5)].
+-child(x) | good(x) | ownsled(x).  [deny(5)].
+child(c2).  [deny(5)].
+-happy(c2,c1).  [deny(5)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating ownsled/1
+6 ownsled(santa).  [assumption].
+7 -ownsled(x) | -snowy(y) | happy(x,y).  [clausify(1)].
+Derived: -snowy(x) | happy(santa,x).  [resolve(6,a,7,a)].
+8 -child(x) | good(x) | ownsled(x).  [deny(5)].
+Derived: -child(x) | good(x) | -snowy(y) | happy(x,y).  [resolve(8,c,7,a)].
+
+Eliminating white/1
+9 white(c1).  [deny(5)].
+10 -white(x) | snowy(x).  [clausify(2)].
+Derived: snowy(c1).  [resolve(9,a,10,a)].
+
+Eliminating happy/2
+11 -child(x) | -gettoy(x,y) | happy(x,y).  [clausify(4)].
+12 -happy(santa,x) | -child(y) | -good(y) | gettoy(y,x).  [clausify(3)].
+Derived: -child(santa) | -gettoy(santa,x) | -child(y) | -good(y) | gettoy(y,x).  [resolve(11,c,12,a)].
+13 -happy(c2,c1).  [deny(5)].
+Derived: -child(c2) | -gettoy(c2,c1).  [resolve(13,a,11,c)].
+14 -snowy(x) | happy(santa,x).  [resolve(6,a,7,a)].
+Derived: -snowy(x) | -child(y) | -good(y) | gettoy(y,x).  [resolve(14,b,12,a)].
+15 -child(x) | good(x) | -snowy(y) | happy(x,y).  [resolve(8,c,7,a)].
+Derived: -child(c2) | good(c2) | -snowy(c1).  [resolve(15,d,13,a)].
+
+Eliminating snowy/1
+16 -snowy(x) | -child(y) | -good(y) | gettoy(y,x).  [resolve(14,b,12,a)].
+17 snowy(c1).  [resolve(9,a,10,a)].
+Derived: -child(x) | -good(x) | gettoy(x,c1).  [resolve(16,a,17,a)].
+18 -child(c2) | good(c2) | -snowy(c1).  [resolve(15,d,13,a)].
+Derived: -child(c2) | good(c2).  [resolve(18,c,17,a)].
+
+Eliminating good/1
+19 -child(c2) | good(c2).  [resolve(18,c,17,a)].
+20 -child(santa) | -gettoy(santa,x) | -child(y) | -good(y) | gettoy(y,x).  [resolve(11,c,12,a)].
+21 -child(x) | -good(x) | gettoy(x,c1).  [resolve(16,a,17,a)].
+Derived: -child(c2) | -child(santa) | -gettoy(santa,x) | -child(c2) | gettoy(c2,x).  [resolve(19,b,20,d)].
+Derived: -child(c2) | -child(c2) | gettoy(c2,c1).  [resolve(19,b,21,b)].
+
+============================== end predicate elimination =============
+
+Auto_denials:  (no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ child, gettoy ]).
+Function symbol precedence:  function_order([ santa, c1, c2 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(neg_binary_resolution).  % (HNE depth_diff=0)
+  % clear(ordered_res).  % (HNE depth_diff=0)
+  % set(ur_resolution).  % (HNE depth_diff=0)
+    % set(ur_resolution) -> set(pos_ur_resolution).
+    % set(ur_resolution) -> set(neg_ur_resolution).
+
+Auto_process settings:
+  % set(unit_deletion).  % (Horn set with negative nonunits)
+
+kept:      22 child(c2).  [deny(5)].
+           23 -child(c2) | -gettoy(c2,c1).  [resolve(13,a,11,c)].
+kept:      24 -gettoy(c2,c1).  [copy(23),unit_del(a,22)].
+           25 -child(c2) | -child(santa) | -gettoy(santa,x) | -child(c2) | gettoy(c2,x).  [resolve(19,b,20,d)].
+kept:      26 -child(santa) | -gettoy(santa,x) | gettoy(c2,x).  [copy(25),merge(d),unit_del(a,22)].
+           27 -child(c2) | -child(c2) | gettoy(c2,c1).  [resolve(19,b,21,b)].
+
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 25.
+% Level of proof is 6.
+% Maximum clause weight is 3.000.
+% Given clauses 0.
+
+1 (all x (ownsled(x) -> (all y (snowy(y) -> happy(x,y))))) # label(non_clause).  [assumption].
+2 (all x (white(x) -> snowy(x))) # label(non_clause).  [assumption].
+3 happy(santa,xmas) -> (all x (child(x) & good(x) -> gettoy(x,xmas))) # label(non_clause).  [assumption].
+4 (all x (child(x) -> (all y (gettoy(x,y) -> happy(x,y))))) # label(non_clause).  [assumption].
+5 white(xmas) & (all x (child(x) & -good(x) -> ownsled(x))) -> (all y (child(y) -> happy(y,xmas))) # label(non_clause) # label(goal).  [goal].
+6 ownsled(santa).  [assumption].
+7 -ownsled(x) | -snowy(y) | happy(x,y).  [clausify(1)].
+8 -child(x) | good(x) | ownsled(x).  [deny(5)].
+9 white(c1).  [deny(5)].
+10 -white(x) | snowy(x).  [clausify(2)].
+11 -child(x) | -gettoy(x,y) | happy(x,y).  [clausify(4)].
+12 -happy(santa,x) | -child(y) | -good(y) | gettoy(y,x).  [clausify(3)].
+13 -happy(c2,c1).  [deny(5)].
+14 -snowy(x) | happy(santa,x).  [resolve(6,a,7,a)].
+15 -child(x) | good(x) | -snowy(y) | happy(x,y).  [resolve(8,c,7,a)].
+16 -snowy(x) | -child(y) | -good(y) | gettoy(y,x).  [resolve(14,b,12,a)].
+17 snowy(c1).  [resolve(9,a,10,a)].
+18 -child(c2) | good(c2) | -snowy(c1).  [resolve(15,d,13,a)].
+19 -child(c2) | good(c2).  [resolve(18,c,17,a)].
+21 -child(x) | -good(x) | gettoy(x,c1).  [resolve(16,a,17,a)].
+22 child(c2).  [deny(5)].
+23 -child(c2) | -gettoy(c2,c1).  [resolve(13,a,11,c)].
+24 -gettoy(c2,c1).  [copy(23),unit_del(a,22)].
+27 -child(c2) | -child(c2) | gettoy(c2,c1).  [resolve(19,b,21,b)].
+28 $F.  [copy(27),merge(b),unit_del(a,22),unit_del(b,24)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=0. Generated=4. Kept=3. proofs=1.
+Usable=0. Sos=0. Demods=0. Limbo=3, Disabled=20. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=0. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=0. Nonunit_bsub_feature_tests=0.
+Megabytes=0.05.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 6423 exit (max_proofs) Wed Jun 26 22:33:07 2019

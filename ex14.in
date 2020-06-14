@@ -1,0 +1,19 @@
+formulas(sos).
+
+  % 1. every child who finds some [thing that is an] egg or chocolate bunny is happy.
+  (all x ((child(x) & (exists y ((egg(y) | bunny(y)) & find(x,y)))) -> happy(x))).
+
+  % 2. every child who is helped finds some egg.
+  (all x ((child(x) & helped(x)) -> (exists y (egg(y) & find(x,y))))).
+
+  % 3. every child who is not young or who tries hard finds some chocolate bunny.
+  (all x ((child(x) & (-young(x) | tryhard(x))) -> (exists y (bunny(y) & find(x,y))))).
+
+end_of_list.
+
+formulas(goals).
+
+  % 4. if every young child tries hard or is helped, then every child is happy.
+  (all x ((child(x) & young(x)) -> (tryhard(x) | helped(x)))) -> (all y (child(y) -> happy(y))).
+
+end_of_list.

@@ -1,0 +1,28 @@
+formulas(sos).
+
+  % 1. anyone who buys carrots by the bushel owns either a rabbit or a grocery store.
+  (all x (buycarrot(x) -> (exists y (own(x,y) & (rabbit(y) | store(y)))))).
+
+  % 2. every dog chases some rabbit.
+  (all x (dog(x) -> (exists y (rabbit(y) & chase(x,y))))).
+
+  % 3. mary buys carrots by the bushel.
+  buycarrot(mary).
+
+  % 4. anyone who owns a rabbit hates anything that chases any rabbit.
+  (all x ((exists y (rabbit(y) & own(x,y))) -> (all z ((exists u (rabbit(u) & chase(z,u))) -> hate(x,z))))).
+
+  % 5. john owns a dog.
+  (exists x (dog(x) & own(john,x))).
+
+  % 6. someone who hates something owned by another person will not date that person.
+  (all x (all y ((exists z (own(y,z) & hate(x,z))) -> -date(x,y)))).
+
+end_of_list.
+
+formulas(goals).
+
+  % 7. if mary does not own a grocery store, she will not date john.
+  (-(exists x (own(mary,x) & store(x)))) -> -date(mary, john).
+
+end_of_list.

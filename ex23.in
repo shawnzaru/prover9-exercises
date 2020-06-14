@@ -1,0 +1,22 @@
+formulas(sos).
+
+  % 1. every bird sleeps in some tree.
+  (all x (bird(x) -> (exists y (tree(y) & sleep(x,y))))).
+
+  % 2. every loon is a bird, and every loon is aquatic.
+  (all x (loon(x) -> bird(x))) & (all x (loon(x) -> aquatic(x))).
+
+  % 3. every tree in which any aquatic bird sleeps is beside some lake.
+  (all x ((tree(x) & (exists y (bird(y) & aquatic(y) & sleep(y,x)))) -> (exists z (lake(z) & beside(x,z))))).
+
+  % 4. anything that sleeps in anything that is beside any lake eats fish.
+  (all x ((exists y ((exists z (lake(z) & beside(y,z))) & sleep(x,y))) -> eatfish(x))).
+
+end_of_list.
+
+formulas(goals).
+
+  % 5. every loon eats fish.
+  (all x (loon(x) -> eatfish(x))).
+
+end_of_list.

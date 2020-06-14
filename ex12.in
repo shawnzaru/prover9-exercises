@@ -1,0 +1,25 @@
+formulas(sos).
+
+  % 1. every child sees some witch.
+  (all x (child(x) -> (exists y (witch(y) & see(x,y))))).
+
+  % 2. no witch has both a black cat and a pointed hat.
+  -(exists x (witch(x) & hasblackcat(x) & haspointhat(x))).
+
+  % 3. every witch is good or bad.
+  (all x (witch(x) -> (good(x) | bad(x)))).
+
+  % 4. every child who sees any good witch gets candy.
+  (all x ((child(x) & (exists y (witch(y) & good(y)))) -> getcandy(x))).
+
+  % 5. every witch that is bad has a black cat.
+  (all x ((witch(x) & bad(x))-> hasblackcat(x))).
+
+end_of_list.
+
+formulas(goals).
+
+  % 6. if every witch that is seen by any child has a pointed hat, then every child gets candy.
+  (all x ((witch(x) & (exists y (child(y) & see(y,x)))) -> haspointhat(x))) -> (all z (child(z) -> getcandy(z))).
+
+end_of_list.

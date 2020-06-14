@@ -1,0 +1,28 @@
+formulas(sos).
+
+  % 1. anyone who rides any harley is a rough character.
+  (all x (harley(x) -> rough(x))).
+
+  % 2. every biker rides [something that is] either a harley or a bmw.
+  (all x (biker(x) -> (harley(x) | bmw(x)))).
+
+  % 3. anyone who rides any bmw is a yuppie.
+  (all x (bmw(x) -> yuppie(x))).
+
+  % 4. every yuppie is a lawyer.
+  (all x (yuppie(x) -> lawyer(x))).
+
+  % 5. any nice girl does not date anyone who is a rough character.
+  (all x (nice(x) -> (all y (rough(y) -> -date(x, y))))).
+
+  % 6. mary is a nice girl, and john is a biker.
+  nice(mary) & biker(john).
+
+end_of_list.
+
+formulas(goals).
+
+  % 7. if john is not a laywer, then mary does not date john.
+  -lawyer(john) -> -date(mary, john).
+
+end_of_list.

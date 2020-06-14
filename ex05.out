@@ -1,0 +1,164 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 6408 was started by qwang on grid01,
+Wed Jun 26 22:33:07 2019
+The command was "prover9 -f ex05.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file ex05.in
+
+
+formulas(sos).
+(all x (marylove(x) -> star(x))).
+(all x (student(x) & -pass(x) -> -play(x))).
+student(john).
+(all x (student(x) & -study(x) -> -pass(x))).
+(all x (-play(x) -> -star(x))).
+end_of_list.
+
+formulas(goals).
+-study(john) -> -marylove(john).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (marylove(x) -> star(x))) # label(non_clause).  [assumption].
+2 (all x (student(x) & -pass(x) -> -play(x))) # label(non_clause).  [assumption].
+3 (all x (student(x) & -study(x) -> -pass(x))) # label(non_clause).  [assumption].
+4 (all x (-play(x) -> -star(x))) # label(non_clause).  [assumption].
+5 -study(john) -> -marylove(john) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-marylove(x) | star(x).  [clausify(1)].
+-student(x) | pass(x) | -play(x).  [clausify(2)].
+student(john).  [assumption].
+-student(x) | study(x) | -pass(x).  [clausify(3)].
+play(x) | -star(x).  [clausify(4)].
+-study(john).  [deny(5)].
+marylove(john).  [deny(5)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating marylove/1
+6 marylove(john).  [deny(5)].
+7 -marylove(x) | star(x).  [clausify(1)].
+Derived: star(john).  [resolve(6,a,7,a)].
+
+Eliminating student/1
+8 student(john).  [assumption].
+9 -student(x) | pass(x) | -play(x).  [clausify(2)].
+Derived: pass(john) | -play(john).  [resolve(8,a,9,a)].
+10 -student(x) | study(x) | -pass(x).  [clausify(3)].
+Derived: study(john) | -pass(john).  [resolve(10,a,8,a)].
+
+Eliminating play/1
+11 pass(john) | -play(john).  [resolve(8,a,9,a)].
+12 play(x) | -star(x).  [clausify(4)].
+Derived: pass(john) | -star(john).  [resolve(11,b,12,a)].
+
+Eliminating study/1
+13 study(john) | -pass(john).  [resolve(10,a,8,a)].
+14 -study(john).  [deny(5)].
+Derived: -pass(john).  [resolve(13,a,14,a)].
+
+Eliminating star/1
+15 pass(john) | -star(john).  [resolve(11,b,12,a)].
+16 star(john).  [resolve(6,a,7,a)].
+Derived: pass(john).  [resolve(15,b,16,a)].
+
+Eliminating pass/1
+17 pass(john).  [resolve(15,b,16,a)].
+18 -pass(john).  [resolve(13,a,14,a)].
+Derived: $F.  [resolve(17,a,18,a)].
+
+============================== end predicate elimination =============
+
+Auto_denials:  (no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ ]).
+Function symbol precedence:  function_order([ ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(neg_binary_resolution).  % (HNE depth_diff=0)
+  % clear(ordered_res).  % (HNE depth_diff=0)
+  % set(ur_resolution).  % (HNE depth_diff=0)
+    % set(ur_resolution) -> set(pos_ur_resolution).
+    % set(ur_resolution) -> set(neg_ur_resolution).
+
+Auto_process settings:  (no changes).
+
+
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 19.
+% Level of proof is 5.
+% Maximum clause weight is 0.000.
+% Given clauses 0.
+
+1 (all x (marylove(x) -> star(x))) # label(non_clause).  [assumption].
+2 (all x (student(x) & -pass(x) -> -play(x))) # label(non_clause).  [assumption].
+3 (all x (student(x) & -study(x) -> -pass(x))) # label(non_clause).  [assumption].
+4 (all x (-play(x) -> -star(x))) # label(non_clause).  [assumption].
+5 -study(john) -> -marylove(john) # label(non_clause) # label(goal).  [goal].
+6 marylove(john).  [deny(5)].
+7 -marylove(x) | star(x).  [clausify(1)].
+8 student(john).  [assumption].
+9 -student(x) | pass(x) | -play(x).  [clausify(2)].
+10 -student(x) | study(x) | -pass(x).  [clausify(3)].
+11 pass(john) | -play(john).  [resolve(8,a,9,a)].
+12 play(x) | -star(x).  [clausify(4)].
+13 study(john) | -pass(john).  [resolve(10,a,8,a)].
+14 -study(john).  [deny(5)].
+15 pass(john) | -star(john).  [resolve(11,b,12,a)].
+16 star(john).  [resolve(6,a,7,a)].
+17 pass(john).  [resolve(15,b,16,a)].
+18 -pass(john).  [resolve(13,a,14,a)].
+19 $F.  [resolve(17,a,18,a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=0. Generated=1. Kept=0. proofs=1.
+Usable=0. Sos=0. Demods=0. Limbo=0, Disabled=14. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=0. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=0. Nonunit_bsub_feature_tests=0.
+Megabytes=0.03.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 6408 exit (max_proofs) Wed Jun 26 22:33:07 2019

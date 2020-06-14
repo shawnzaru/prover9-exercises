@@ -1,0 +1,25 @@
+formulas(sos).
+
+  % 1. anyone who owns any sled is happy when it is snowy.
+  (all x (ownsled(x) -> (all y (snowy(y) -> happy(x,y))))).
+
+  % 2. when it is white, it is snowy.
+  (all x (white(x) -> snowy(x))).
+
+  % 3. if santa is happy at christmas, then every child who is good gets some toy at christmas.
+  happy(santa, xmas) -> (all x ((child(x) & good(x)) -> gettoy(x, xmas))).
+
+  % 4. any child who gets a toy at any time is happy at that time.
+  (all x (child(x) -> (all y (gettoy(x,y) -> happy(x,y))))).
+
+  % 5. santa owns a sled.
+  ownsled(santa).
+
+end_of_list.
+
+formulas(goals).
+
+  % 6. if it is white at christmas and every child who is not good owns some sled, then every child is happy at christmas.
+  (white(xmas) & (all x ((child(x) & -good(x)) -> ownsled(x)))) -> (all y (child(y) -> happy(y, xmas))).
+
+end_of_list.

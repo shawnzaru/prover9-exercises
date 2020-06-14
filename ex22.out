@@ -1,0 +1,208 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 6426 was started by qwang on grid01,
+Wed Jun 26 22:33:07 2019
+The command was "prover9 -f ex22.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file ex22.in
+
+
+formulas(sos).
+(all x (feelwarm(x) -> drunk(x) | (all y (costume(y) & have(x,y) -> warm(y))))).
+(all x (costume(x) & warm(x) -> furry(x))).
+(all x (ai(x) -> cs(x))).
+(all x (ai(x) -> (exists y (costume(y) & robot(y) & have(x,y))))).
+-(exists x (costume(x) & robot(x) & furry(x))).
+end_of_list.
+
+formulas(goals).
+(all x (cs(x) -> feelwarm(x))) -> (all y (ai(y) -> drunk(y))).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (feelwarm(x) -> drunk(x) | (all y (costume(y) & have(x,y) -> warm(y))))) # label(non_clause).  [assumption].
+2 (all x (costume(x) & warm(x) -> furry(x))) # label(non_clause).  [assumption].
+3 (all x (ai(x) -> cs(x))) # label(non_clause).  [assumption].
+4 (all x (ai(x) -> (exists y (costume(y) & robot(y) & have(x,y))))) # label(non_clause).  [assumption].
+5 -(exists x (costume(x) & robot(x) & furry(x))) # label(non_clause).  [assumption].
+6 (all x (cs(x) -> feelwarm(x))) -> (all y (ai(y) -> drunk(y))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-feelwarm(x) | drunk(x) | -costume(y) | -have(x,y) | warm(y).  [clausify(1)].
+-costume(x) | -warm(x) | furry(x).  [clausify(2)].
+-ai(x) | cs(x).  [clausify(3)].
+-ai(x) | costume(f1(x)).  [clausify(4)].
+-ai(x) | robot(f1(x)).  [clausify(4)].
+-ai(x) | have(x,f1(x)).  [clausify(4)].
+-costume(x) | -robot(x) | -furry(x).  [clausify(5)].
+-cs(x) | feelwarm(x).  [deny(6)].
+ai(c1).  [deny(6)].
+-drunk(c1).  [deny(6)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating feelwarm/1
+7 -cs(x) | feelwarm(x).  [deny(6)].
+8 -feelwarm(x) | drunk(x) | -costume(y) | -have(x,y) | warm(y).  [clausify(1)].
+Derived: -cs(x) | drunk(x) | -costume(y) | -have(x,y) | warm(y).  [resolve(7,b,8,a)].
+
+Eliminating costume/1
+9 -ai(x) | costume(f1(x)).  [clausify(4)].
+10 -costume(x) | -warm(x) | furry(x).  [clausify(2)].
+Derived: -ai(x) | -warm(f1(x)) | furry(f1(x)).  [resolve(9,b,10,a)].
+11 -costume(x) | -robot(x) | -furry(x).  [clausify(5)].
+Derived: -robot(f1(x)) | -furry(f1(x)) | -ai(x).  [resolve(11,a,9,b)].
+12 -cs(x) | drunk(x) | -costume(y) | -have(x,y) | warm(y).  [resolve(7,b,8,a)].
+Derived: -cs(x) | drunk(x) | -have(x,f1(y)) | warm(f1(y)) | -ai(y).  [resolve(12,c,9,b)].
+
+Eliminating ai/1
+13 ai(c1).  [deny(6)].
+14 -ai(x) | cs(x).  [clausify(3)].
+15 -ai(x) | robot(f1(x)).  [clausify(4)].
+16 -ai(x) | have(x,f1(x)).  [clausify(4)].
+Derived: cs(c1).  [resolve(13,a,14,a)].
+Derived: robot(f1(c1)).  [resolve(13,a,15,a)].
+Derived: have(c1,f1(c1)).  [resolve(13,a,16,a)].
+17 -ai(x) | -warm(f1(x)) | furry(f1(x)).  [resolve(9,b,10,a)].
+Derived: -warm(f1(c1)) | furry(f1(c1)).  [resolve(17,a,13,a)].
+18 -robot(f1(x)) | -furry(f1(x)) | -ai(x).  [resolve(11,a,9,b)].
+Derived: -robot(f1(c1)) | -furry(f1(c1)).  [resolve(18,c,13,a)].
+19 -cs(x) | drunk(x) | -have(x,f1(y)) | warm(f1(y)) | -ai(y).  [resolve(12,c,9,b)].
+Derived: -cs(x) | drunk(x) | -have(x,f1(c1)) | warm(f1(c1)).  [resolve(19,e,13,a)].
+
+Eliminating drunk/1
+20 -cs(x) | drunk(x) | -have(x,f1(c1)) | warm(f1(c1)).  [resolve(19,e,13,a)].
+21 -drunk(c1).  [deny(6)].
+Derived: -cs(c1) | -have(c1,f1(c1)) | warm(f1(c1)).  [resolve(20,b,21,a)].
+
+Eliminating cs/1
+22 -cs(c1) | -have(c1,f1(c1)) | warm(f1(c1)).  [resolve(20,b,21,a)].
+23 cs(c1).  [resolve(13,a,14,a)].
+Derived: -have(c1,f1(c1)) | warm(f1(c1)).  [resolve(22,a,23,a)].
+
+Eliminating robot/1
+24 -robot(f1(c1)) | -furry(f1(c1)).  [resolve(18,c,13,a)].
+25 robot(f1(c1)).  [resolve(13,a,15,a)].
+Derived: -furry(f1(c1)).  [resolve(24,a,25,a)].
+
+Eliminating have/2
+26 -have(c1,f1(c1)) | warm(f1(c1)).  [resolve(22,a,23,a)].
+27 have(c1,f1(c1)).  [resolve(13,a,16,a)].
+Derived: warm(f1(c1)).  [resolve(26,a,27,a)].
+
+Eliminating warm/1
+28 warm(f1(c1)).  [resolve(26,a,27,a)].
+29 -warm(f1(c1)) | furry(f1(c1)).  [resolve(17,a,13,a)].
+Derived: furry(f1(c1)).  [resolve(28,a,29,a)].
+
+Eliminating furry/1
+30 furry(f1(c1)).  [resolve(28,a,29,a)].
+31 -furry(f1(c1)).  [resolve(24,a,25,a)].
+Derived: $F.  [resolve(30,a,31,a)].
+
+============================== end predicate elimination =============
+
+Auto_denials:  (no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ ]).
+Function symbol precedence:  function_order([ ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(neg_binary_resolution).  % (HNE depth_diff=0)
+  % clear(ordered_res).  % (HNE depth_diff=0)
+  % set(ur_resolution).  % (HNE depth_diff=0)
+    % set(ur_resolution) -> set(pos_ur_resolution).
+    % set(ur_resolution) -> set(neg_ur_resolution).
+
+Auto_process settings:  (no changes).
+
+
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 32.
+% Level of proof is 9.
+% Maximum clause weight is 0.000.
+% Given clauses 0.
+
+1 (all x (feelwarm(x) -> drunk(x) | (all y (costume(y) & have(x,y) -> warm(y))))) # label(non_clause).  [assumption].
+2 (all x (costume(x) & warm(x) -> furry(x))) # label(non_clause).  [assumption].
+3 (all x (ai(x) -> cs(x))) # label(non_clause).  [assumption].
+4 (all x (ai(x) -> (exists y (costume(y) & robot(y) & have(x,y))))) # label(non_clause).  [assumption].
+5 -(exists x (costume(x) & robot(x) & furry(x))) # label(non_clause).  [assumption].
+6 (all x (cs(x) -> feelwarm(x))) -> (all y (ai(y) -> drunk(y))) # label(non_clause) # label(goal).  [goal].
+7 -cs(x) | feelwarm(x).  [deny(6)].
+8 -feelwarm(x) | drunk(x) | -costume(y) | -have(x,y) | warm(y).  [clausify(1)].
+9 -ai(x) | costume(f1(x)).  [clausify(4)].
+10 -costume(x) | -warm(x) | furry(x).  [clausify(2)].
+11 -costume(x) | -robot(x) | -furry(x).  [clausify(5)].
+12 -cs(x) | drunk(x) | -costume(y) | -have(x,y) | warm(y).  [resolve(7,b,8,a)].
+13 ai(c1).  [deny(6)].
+14 -ai(x) | cs(x).  [clausify(3)].
+15 -ai(x) | robot(f1(x)).  [clausify(4)].
+16 -ai(x) | have(x,f1(x)).  [clausify(4)].
+17 -ai(x) | -warm(f1(x)) | furry(f1(x)).  [resolve(9,b,10,a)].
+18 -robot(f1(x)) | -furry(f1(x)) | -ai(x).  [resolve(11,a,9,b)].
+19 -cs(x) | drunk(x) | -have(x,f1(y)) | warm(f1(y)) | -ai(y).  [resolve(12,c,9,b)].
+20 -cs(x) | drunk(x) | -have(x,f1(c1)) | warm(f1(c1)).  [resolve(19,e,13,a)].
+21 -drunk(c1).  [deny(6)].
+22 -cs(c1) | -have(c1,f1(c1)) | warm(f1(c1)).  [resolve(20,b,21,a)].
+23 cs(c1).  [resolve(13,a,14,a)].
+24 -robot(f1(c1)) | -furry(f1(c1)).  [resolve(18,c,13,a)].
+25 robot(f1(c1)).  [resolve(13,a,15,a)].
+26 -have(c1,f1(c1)) | warm(f1(c1)).  [resolve(22,a,23,a)].
+27 have(c1,f1(c1)).  [resolve(13,a,16,a)].
+28 warm(f1(c1)).  [resolve(26,a,27,a)].
+29 -warm(f1(c1)) | furry(f1(c1)).  [resolve(17,a,13,a)].
+30 furry(f1(c1)).  [resolve(28,a,29,a)].
+31 -furry(f1(c1)).  [resolve(24,a,25,a)].
+32 $F.  [resolve(30,a,31,a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=0. Generated=1. Kept=0. proofs=1.
+Usable=0. Sos=0. Demods=0. Limbo=0, Disabled=26. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=0. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=0. Nonunit_bsub_feature_tests=0.
+Megabytes=0.04.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 6426 exit (max_proofs) Wed Jun 26 22:33:07 2019

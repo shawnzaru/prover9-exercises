@@ -1,0 +1,156 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 6433 was started by qwang on grid01,
+Wed Jun 26 22:33:07 2019
+The command was "prover9 -f ex26.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file ex26.in
+
+
+formulas(sos).
+-p(x,y) | q(x,y,f(x,y)).
+-r(y,z) | q(a,y,z).
+r(y,z) | -q(a,y,z).
+p(x,g(x)) | q(x,g(x),z).
+-r(x,y) | -q(x,w,z).
+end_of_list.
+
+formulas(goals).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-p(x,y) | q(x,y,f(x,y)).  [assumption].
+-r(x,y) | q(a,x,y).  [assumption].
+r(x,y) | -q(a,x,y).  [assumption].
+p(x,g(x)) | q(x,g(x),y).  [assumption].
+-r(x,y) | -q(x,z,u).  [assumption].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating p/2
+1 p(x,g(x)) | q(x,g(x),y).  [assumption].
+2 -p(x,y) | q(x,y,f(x,y)).  [assumption].
+Derived: q(x,g(x),y) | q(x,g(x),f(x,g(x))).  [resolve(1,a,2,a)].
+
+Eliminating r/2
+3 r(x,y) | -q(a,x,y).  [assumption].
+4 -r(x,y) | q(a,x,y).  [assumption].
+5 -r(x,y) | -q(x,z,u).  [assumption].
+Derived: -q(x,y,z) | -q(a,x,u).  [resolve(5,a,3,a)].
+
+============================== end predicate elimination =============
+
+Auto_denials:  (non-Horn, no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ q ]).
+Function symbol precedence:  function_order([ a, f, g ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(binary_resolution).  % (non-Horn)
+  % set(neg_ur_resolution).  % (non-Horn, less than 100 clauses)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(unit_deletion).  % (non-Horn)
+
+kept:      6 q(x,g(x),y) | q(x,g(x),f(x,g(x))).  [resolve(1,a,2,a)].
+kept:      7 -q(x,y,z) | -q(a,x,u).  [resolve(5,a,3,a)].
+kept:      8 q(x,g(x),f(x,g(x))).  [factor(6,a,b)].
+kept:      9 -q(a,a,x).  [factor(7,a,b)].
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+% Clauses after input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+7 -q(x,y,z) | -q(a,x,u).  [resolve(5,a,3,a)].
+8 q(x,g(x),f(x,g(x))).  [factor(6,a,b)].
+9 -q(a,a,x).  [factor(7,a,b)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.00 seconds.
+
+given #1 (I,wt=8): 7 -q(x,y,z) | -q(a,x,u).  [resolve(5,a,3,a)].
+
+given #2 (I,wt=8): 8 q(x,g(x),f(x,g(x))).  [factor(6,a,b)].
+
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 9.
+% Level of proof is 4.
+% Maximum clause weight is 13.000.
+% Given clauses 2.
+
+1 p(x,g(x)) | q(x,g(x),y).  [assumption].
+2 -p(x,y) | q(x,y,f(x,y)).  [assumption].
+3 r(x,y) | -q(a,x,y).  [assumption].
+5 -r(x,y) | -q(x,z,u).  [assumption].
+6 q(x,g(x),y) | q(x,g(x),f(x,g(x))).  [resolve(1,a,2,a)].
+7 -q(x,y,z) | -q(a,x,u).  [resolve(5,a,3,a)].
+8 q(x,g(x),f(x,g(x))).  [factor(6,a,b)].
+10 -q(g(a),x,y).  [resolve(8,a,7,b)].
+11 $F.  [resolve(10,a,8,a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=2. Generated=5. Kept=5. proofs=1.
+Usable=2. Sos=1. Demods=0. Limbo=0, Disabled=8. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=0. Back_subsumed=1.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=0. Nonunit_bsub_feature_tests=3.
+Megabytes=0.03.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 6433 exit (max_proofs) Wed Jun 26 22:33:07 2019

@@ -1,0 +1,22 @@
+formulas(sos).
+
+  % 1. every student who makes good grades is brilliant or studies.
+  (all x (goodgrade(x) -> (brilliant(x) | study(x)))).
+
+  % 2. every student who is a cs major has some roommate. [make 'roommate' a binary predicate.]
+  (all x (csmajor(x) -> (exists y (roommate(y,x))))).
+
+  % 3. every student who has any roommate who likes to party goes to sixth street.
+  (all x ((exists y (roommate(y,x) & likeparty(y))) -> sixthstreet(x))).
+
+  % 4. anyone who goes to sixth street does not study.
+  (all x (sixthstreet(x) -> -study(x))).
+
+end_of_list.
+
+formulas(goals).
+
+  % 5. if every roommate of every cs major likes to party, then every student who is a cs major and makes good grades is brilliant.
+  (all x (csmajor(x) -> (all y (roommate(y,x) -> likeparty(y))))) -> (all x ((csmajor(x) & goodgrade(x)) -> brilliant(x))).
+
+end_of_list.

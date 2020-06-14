@@ -1,0 +1,28 @@
+formulas(sos).
+
+  % 1. every child loves every candy.
+  (all x (child(x) -> (all y (candy(y) -> love(x,y))))).
+
+  % 2. anyone who loves some candy is not a nutrition fanatic.
+  (all x ((exists y (candy(y) & love(x,y))) -> -fanatic(x))).
+
+  % 3. anyone who eats any pumpkin is a nutrition fanatic.
+  (all x ((exists y (pumpkin(y) & eat(x,y))) -> fanatic(x))).
+
+  % 4. anyone who buys any pumpkin either carves it or eats it.
+  (all x (all y ((pumpkin(y) & buy(x,y)) -> (carve(x,y) | eat(x,y))))).
+
+  % 5. john buys a pumpkin.
+  (exists x (pumpkin(x) & buy(john, x))).
+
+  % 6. lifesavers is a candy.
+  candy(lifesavers).
+
+end_of_list.
+
+formulas(goals).
+
+  % 7. if john is a child, then john carves some pumpkin.
+  child(john) -> (exists x (pumpkin(x) & carve(john,x))).
+
+end_of_list.

@@ -1,0 +1,217 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 6419 was started by qwang on grid01,
+Wed Jun 26 22:33:07 2019
+The command was "prover9 -f ex15.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file ex15.in
+
+
+formulas(sos).
+(all x ((exists y (student(y) & play(y,x))) -> tennis(x) | soccer(x) | chess(x))).
+(all x (chess(x) -> -vigorous(x))).
+(all x (healthy(x) -> (exists y (vigorous(y) & play(x,y))))).
+(all x ((exists y (chess(y) & play(x,y))) -> -(exists z (soccer(z) & play(x,z))))).
+end_of_list.
+
+formulas(goals).
+(all x (student(x) -> healthy(x))) -> (all y (student(y) -> ((exists z (chess(z) & play(y,z))) -> (exists u (tennis(u) & play(y,u)))))).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x ((exists y (student(y) & play(y,x))) -> tennis(x) | soccer(x) | chess(x))) # label(non_clause).  [assumption].
+2 (all x (chess(x) -> -vigorous(x))) # label(non_clause).  [assumption].
+3 (all x (healthy(x) -> (exists y (vigorous(y) & play(x,y))))) # label(non_clause).  [assumption].
+4 (all x ((exists y (chess(y) & play(x,y))) -> -(exists z (soccer(z) & play(x,z))))) # label(non_clause).  [assumption].
+5 (all x (student(x) -> healthy(x))) -> (all y (student(y) -> ((exists z (chess(z) & play(y,z))) -> (exists u (tennis(u) & play(y,u)))))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-student(x) | -play(x,y) | tennis(y) | soccer(y) | chess(y).  [clausify(1)].
+-chess(x) | -vigorous(x).  [clausify(2)].
+-healthy(x) | vigorous(f1(x)).  [clausify(3)].
+-healthy(x) | play(x,f1(x)).  [clausify(3)].
+-chess(x) | -play(y,x) | -soccer(z) | -play(y,z).  [clausify(4)].
+-student(x) | healthy(x).  [deny(5)].
+student(c1).  [deny(5)].
+chess(c2).  [deny(5)].
+play(c1,c2).  [deny(5)].
+-tennis(x) | -play(c1,x).  [deny(5)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating student/1
+6 student(c1).  [deny(5)].
+7 -student(x) | -play(x,y) | tennis(y) | soccer(y) | chess(y).  [clausify(1)].
+8 -student(x) | healthy(x).  [deny(5)].
+Derived: -play(c1,x) | tennis(x) | soccer(x) | chess(x).  [resolve(6,a,7,a)].
+Derived: healthy(c1).  [resolve(6,a,8,a)].
+
+Eliminating chess/1
+9 chess(c2).  [deny(5)].
+10 -chess(x) | -vigorous(x).  [clausify(2)].
+11 -chess(x) | -play(y,x) | -soccer(z) | -play(y,z).  [clausify(4)].
+Derived: -vigorous(c2).  [resolve(9,a,10,a)].
+Derived: -play(x,c2) | -soccer(y) | -play(x,y).  [resolve(9,a,11,a)].
+12 -play(c1,x) | tennis(x) | soccer(x) | chess(x).  [resolve(6,a,7,a)].
+Derived: -play(c1,x) | tennis(x) | soccer(x) | -vigorous(x).  [resolve(12,d,10,a)].
+Derived: -play(c1,x) | tennis(x) | soccer(x) | -play(y,x) | -soccer(z) | -play(y,z).  [resolve(12,d,11,a)].
+
+Eliminating healthy/1
+13 healthy(c1).  [resolve(6,a,8,a)].
+14 -healthy(x) | vigorous(f1(x)).  [clausify(3)].
+15 -healthy(x) | play(x,f1(x)).  [clausify(3)].
+Derived: vigorous(f1(c1)).  [resolve(13,a,14,a)].
+Derived: play(c1,f1(c1)).  [resolve(13,a,15,a)].
+
+Eliminating tennis/1
+16 -play(c1,x) | tennis(x) | soccer(x) | -vigorous(x).  [resolve(12,d,10,a)].
+17 -tennis(x) | -play(c1,x).  [deny(5)].
+Derived: -play(c1,x) | soccer(x) | -vigorous(x) | -play(c1,x).  [resolve(16,b,17,a)].
+18 -play(c1,x) | tennis(x) | soccer(x) | -play(y,x) | -soccer(z) | -play(y,z).  [resolve(12,d,11,a)].
+Derived: -play(c1,x) | soccer(x) | -play(y,x) | -soccer(z) | -play(y,z) | -play(c1,x).  [resolve(18,b,17,a)].
+
+Eliminating vigorous/1
+19 vigorous(f1(c1)).  [resolve(13,a,14,a)].
+20 -vigorous(c2).  [resolve(9,a,10,a)].
+21 -play(c1,x) | soccer(x) | -vigorous(x) | -play(c1,x).  [resolve(16,b,17,a)].
+Derived: -play(c1,f1(c1)) | soccer(f1(c1)) | -play(c1,f1(c1)).  [resolve(21,c,19,a)].
+
+============================== end predicate elimination =============
+
+Auto_denials:  (no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ soccer, play ]).
+Function symbol precedence:  function_order([ c1, c2, f1 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(neg_binary_resolution).  % (HNE depth_diff=0)
+  % clear(ordered_res).  % (HNE depth_diff=0)
+  % set(ur_resolution).  % (HNE depth_diff=0)
+    % set(ur_resolution) -> set(pos_ur_resolution).
+    % set(ur_resolution) -> set(neg_ur_resolution).
+
+Auto_process settings:
+  % set(unit_deletion).  % (Horn set with negative nonunits)
+
+kept:      22 play(c1,c2).  [deny(5)].
+kept:      23 -play(x,c2) | -soccer(y) | -play(x,y).  [resolve(9,a,11,a)].
+kept:      24 play(c1,f1(c1)).  [resolve(13,a,15,a)].
+           25 -play(c1,x) | soccer(x) | -play(y,x) | -soccer(z) | -play(y,z) | -play(c1,x).  [resolve(18,b,17,a)].
+kept:      26 -play(c1,x) | soccer(x) | -play(y,x) | -soccer(z) | -play(y,z).  [copy(25),merge(f)].
+           27 -play(c1,f1(c1)) | soccer(f1(c1)) | -play(c1,f1(c1)).  [resolve(21,c,19,a)].
+kept:      28 soccer(f1(c1)).  [copy(27),merge(c),unit_del(a,24)].
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+% Clauses after input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+22 play(c1,c2).  [deny(5)].
+23 -play(x,c2) | -soccer(y) | -play(x,y).  [resolve(9,a,11,a)].
+24 play(c1,f1(c1)).  [resolve(13,a,15,a)].
+26 -play(c1,x) | soccer(x) | -play(y,x) | -soccer(z) | -play(y,z).  [copy(25),merge(f)].
+28 soccer(f1(c1)).  [copy(27),merge(c),unit_del(a,24)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.00 seconds.
+
+given #1 (I,wt=3): 22 play(c1,c2).  [deny(5)].
+
+given #2 (I,wt=8): 23 -play(x,c2) | -soccer(y) | -play(x,y).  [resolve(9,a,11,a)].
+
+given #3 (I,wt=4): 24 play(c1,f1(c1)).  [resolve(13,a,15,a)].
+
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 25.
+% Level of proof is 7.
+% Maximum clause weight is 8.000.
+% Given clauses 3.
+
+1 (all x ((exists y (student(y) & play(y,x))) -> tennis(x) | soccer(x) | chess(x))) # label(non_clause).  [assumption].
+2 (all x (chess(x) -> -vigorous(x))) # label(non_clause).  [assumption].
+3 (all x (healthy(x) -> (exists y (vigorous(y) & play(x,y))))) # label(non_clause).  [assumption].
+4 (all x ((exists y (chess(y) & play(x,y))) -> -(exists z (soccer(z) & play(x,z))))) # label(non_clause).  [assumption].
+5 (all x (student(x) -> healthy(x))) -> (all y (student(y) -> ((exists z (chess(z) & play(y,z))) -> (exists u (tennis(u) & play(y,u)))))) # label(non_clause) # label(goal).  [goal].
+6 student(c1).  [deny(5)].
+7 -student(x) | -play(x,y) | tennis(y) | soccer(y) | chess(y).  [clausify(1)].
+8 -student(x) | healthy(x).  [deny(5)].
+9 chess(c2).  [deny(5)].
+10 -chess(x) | -vigorous(x).  [clausify(2)].
+11 -chess(x) | -play(y,x) | -soccer(z) | -play(y,z).  [clausify(4)].
+12 -play(c1,x) | tennis(x) | soccer(x) | chess(x).  [resolve(6,a,7,a)].
+13 healthy(c1).  [resolve(6,a,8,a)].
+14 -healthy(x) | vigorous(f1(x)).  [clausify(3)].
+15 -healthy(x) | play(x,f1(x)).  [clausify(3)].
+16 -play(c1,x) | tennis(x) | soccer(x) | -vigorous(x).  [resolve(12,d,10,a)].
+17 -tennis(x) | -play(c1,x).  [deny(5)].
+19 vigorous(f1(c1)).  [resolve(13,a,14,a)].
+21 -play(c1,x) | soccer(x) | -vigorous(x) | -play(c1,x).  [resolve(16,b,17,a)].
+22 play(c1,c2).  [deny(5)].
+23 -play(x,c2) | -soccer(y) | -play(x,y).  [resolve(9,a,11,a)].
+24 play(c1,f1(c1)).  [resolve(13,a,15,a)].
+27 -play(c1,f1(c1)) | soccer(f1(c1)) | -play(c1,f1(c1)).  [resolve(21,c,19,a)].
+28 soccer(f1(c1)).  [copy(27),merge(c),unit_del(a,24)].
+31 $F.  [resolve(24,a,23,c),unit_del(a,22),unit_del(b,28)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=3. Generated=9. Kept=7. proofs=1.
+Usable=3. Sos=4. Demods=0. Limbo=0, Disabled=21. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=1. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=0. Nonunit_bsub_feature_tests=5.
+Megabytes=0.06.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 6419 exit (max_proofs) Wed Jun 26 22:33:07 2019

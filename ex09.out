@@ -1,0 +1,179 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 6413 was started by qwang on grid01,
+Wed Jun 26 22:33:07 2019
+The command was "prover9 -f ex09.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file ex09.in
+
+
+formulas(sos).
+(all x (investor(x) -> (exists y ((stock(y) | bond(y)) & buy(x,y))))).
+djcrash -> (all x (stock(x) & -goldstock(x) -> fall(x))).
+tbrise -> (all x (bond(x) -> fall(x))).
+(all x (investor(x) & (exists y (buy(x,y) & fall(y))) -> -happy(x))).
+end_of_list.
+
+formulas(goals).
+djcrash & tbrise -> (all x (investor(x) & happy(x) -> (exists y (goldstock(y) & buy(x,y))))).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (investor(x) -> (exists y ((stock(y) | bond(y)) & buy(x,y))))) # label(non_clause).  [assumption].
+2 djcrash -> (all x (stock(x) & -goldstock(x) -> fall(x))) # label(non_clause).  [assumption].
+3 tbrise -> (all x (bond(x) -> fall(x))) # label(non_clause).  [assumption].
+4 (all x (investor(x) & (exists y (buy(x,y) & fall(y))) -> -happy(x))) # label(non_clause).  [assumption].
+5 djcrash & tbrise -> (all x (investor(x) & happy(x) -> (exists y (goldstock(y) & buy(x,y))))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-investor(x) | stock(f1(x)) | bond(f1(x)).  [clausify(1)].
+-investor(x) | buy(x,f1(x)).  [clausify(1)].
+-djcrash | -stock(x) | goldstock(x) | fall(x).  [clausify(2)].
+-tbrise | -bond(x) | fall(x).  [clausify(3)].
+-investor(x) | -buy(x,y) | -fall(y) | -happy(x).  [clausify(4)].
+djcrash.  [deny(5)].
+tbrise.  [deny(5)].
+investor(c1).  [deny(5)].
+happy(c1).  [deny(5)].
+-goldstock(x) | -buy(c1,x).  [deny(5)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating investor/1
+6 investor(c1).  [deny(5)].
+7 -investor(x) | stock(f1(x)) | bond(f1(x)).  [clausify(1)].
+8 -investor(x) | buy(x,f1(x)).  [clausify(1)].
+9 -investor(x) | -buy(x,y) | -fall(y) | -happy(x).  [clausify(4)].
+Derived: stock(f1(c1)) | bond(f1(c1)).  [resolve(6,a,7,a)].
+Derived: buy(c1,f1(c1)).  [resolve(6,a,8,a)].
+Derived: -buy(c1,x) | -fall(x) | -happy(c1).  [resolve(6,a,9,a)].
+
+Eliminating stock/1
+10 stock(f1(c1)) | bond(f1(c1)).  [resolve(6,a,7,a)].
+11 -djcrash | -stock(x) | goldstock(x) | fall(x).  [clausify(2)].
+Derived: bond(f1(c1)) | -djcrash | goldstock(f1(c1)) | fall(f1(c1)).  [resolve(10,a,11,b)].
+
+Eliminating bond/1
+12 bond(f1(c1)) | -djcrash | goldstock(f1(c1)) | fall(f1(c1)).  [resolve(10,a,11,b)].
+13 -tbrise | -bond(x) | fall(x).  [clausify(3)].
+Derived: -djcrash | goldstock(f1(c1)) | fall(f1(c1)) | -tbrise | fall(f1(c1)).  [resolve(12,a,13,b)].
+
+Eliminating happy/1
+14 -buy(c1,x) | -fall(x) | -happy(c1).  [resolve(6,a,9,a)].
+15 happy(c1).  [deny(5)].
+Derived: -buy(c1,x) | -fall(x).  [resolve(14,c,15,a)].
+
+Eliminating goldstock/1
+16 -djcrash | goldstock(f1(c1)) | fall(f1(c1)) | -tbrise | fall(f1(c1)).  [resolve(12,a,13,b)].
+17 -goldstock(x) | -buy(c1,x).  [deny(5)].
+Derived: -djcrash | fall(f1(c1)) | -tbrise | fall(f1(c1)) | -buy(c1,f1(c1)).  [resolve(16,b,17,a)].
+
+Eliminating buy/2
+18 -buy(c1,x) | -fall(x).  [resolve(14,c,15,a)].
+19 buy(c1,f1(c1)).  [resolve(6,a,8,a)].
+Derived: -fall(f1(c1)).  [resolve(18,a,19,a)].
+20 -djcrash | fall(f1(c1)) | -tbrise | fall(f1(c1)) | -buy(c1,f1(c1)).  [resolve(16,b,17,a)].
+Derived: -djcrash | fall(f1(c1)) | -tbrise | fall(f1(c1)).  [resolve(20,e,19,a)].
+
+============================== end predicate elimination =============
+
+Auto_denials:  (non-Horn, no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ djcrash, tbrise, fall ]).
+Function symbol precedence:  function_order([ c1, f1 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(binary_resolution).  % (non-Horn)
+  % set(neg_ur_resolution).  % (non-Horn, less than 100 clauses)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(unit_deletion).  % (non-Horn)
+
+kept:      21 djcrash.  [deny(5)].
+kept:      22 tbrise.  [deny(5)].
+kept:      23 -fall(f1(c1)).  [resolve(18,a,19,a)].
+           24 -djcrash | fall(f1(c1)) | -tbrise | fall(f1(c1)).  [resolve(20,e,19,a)].
+
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 25.
+% Level of proof is 7.
+% Maximum clause weight is 3.000.
+% Given clauses 0.
+
+1 (all x (investor(x) -> (exists y ((stock(y) | bond(y)) & buy(x,y))))) # label(non_clause).  [assumption].
+2 djcrash -> (all x (stock(x) & -goldstock(x) -> fall(x))) # label(non_clause).  [assumption].
+3 tbrise -> (all x (bond(x) -> fall(x))) # label(non_clause).  [assumption].
+4 (all x (investor(x) & (exists y (buy(x,y) & fall(y))) -> -happy(x))) # label(non_clause).  [assumption].
+5 djcrash & tbrise -> (all x (investor(x) & happy(x) -> (exists y (goldstock(y) & buy(x,y))))) # label(non_clause) # label(goal).  [goal].
+6 investor(c1).  [deny(5)].
+7 -investor(x) | stock(f1(x)) | bond(f1(x)).  [clausify(1)].
+8 -investor(x) | buy(x,f1(x)).  [clausify(1)].
+9 -investor(x) | -buy(x,y) | -fall(y) | -happy(x).  [clausify(4)].
+10 stock(f1(c1)) | bond(f1(c1)).  [resolve(6,a,7,a)].
+11 -djcrash | -stock(x) | goldstock(x) | fall(x).  [clausify(2)].
+12 bond(f1(c1)) | -djcrash | goldstock(f1(c1)) | fall(f1(c1)).  [resolve(10,a,11,b)].
+13 -tbrise | -bond(x) | fall(x).  [clausify(3)].
+14 -buy(c1,x) | -fall(x) | -happy(c1).  [resolve(6,a,9,a)].
+15 happy(c1).  [deny(5)].
+16 -djcrash | goldstock(f1(c1)) | fall(f1(c1)) | -tbrise | fall(f1(c1)).  [resolve(12,a,13,b)].
+17 -goldstock(x) | -buy(c1,x).  [deny(5)].
+18 -buy(c1,x) | -fall(x).  [resolve(14,c,15,a)].
+19 buy(c1,f1(c1)).  [resolve(6,a,8,a)].
+20 -djcrash | fall(f1(c1)) | -tbrise | fall(f1(c1)) | -buy(c1,f1(c1)).  [resolve(16,b,17,a)].
+21 djcrash.  [deny(5)].
+22 tbrise.  [deny(5)].
+23 -fall(f1(c1)).  [resolve(18,a,19,a)].
+24 -djcrash | fall(f1(c1)) | -tbrise | fall(f1(c1)).  [resolve(20,e,19,a)].
+25 $F.  [copy(24),merge(d),unit_del(a,21),unit_del(b,23),unit_del(c,22)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=0. Generated=4. Kept=3. proofs=1.
+Usable=0. Sos=0. Demods=0. Limbo=3, Disabled=19. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=0. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=0. Nonunit_bsub_feature_tests=0.
+Megabytes=0.04.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 6413 exit (max_proofs) Wed Jun 26 22:33:07 2019

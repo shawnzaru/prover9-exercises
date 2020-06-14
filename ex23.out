@@ -1,0 +1,201 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 6428 was started by qwang on grid01,
+Wed Jun 26 22:33:07 2019
+The command was "prover9 -f ex23.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file ex23.in
+
+
+formulas(sos).
+(all x (bird(x) -> (exists y (tree(y) & sleep(x,y))))).
+(all x (loon(x) -> bird(x))) & (all x (loon(x) -> aquatic(x))).
+(all x (tree(x) & (exists y (bird(y) & aquatic(y) & sleep(y,x))) -> (exists z (lake(z) & beside(x,z))))).
+(all x ((exists y ((exists z (lake(z) & beside(y,z))) & sleep(x,y))) -> eatfish(x))).
+end_of_list.
+
+formulas(goals).
+(all x (loon(x) -> eatfish(x))).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (bird(x) -> (exists y (tree(y) & sleep(x,y))))) # label(non_clause).  [assumption].
+2 (all x (loon(x) -> bird(x))) & (all x (loon(x) -> aquatic(x))) # label(non_clause).  [assumption].
+3 (all x (tree(x) & (exists y (bird(y) & aquatic(y) & sleep(y,x))) -> (exists z (lake(z) & beside(x,z))))) # label(non_clause).  [assumption].
+4 (all x ((exists y ((exists z (lake(z) & beside(y,z))) & sleep(x,y))) -> eatfish(x))) # label(non_clause).  [assumption].
+5 (all x (loon(x) -> eatfish(x))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-bird(x) | tree(f1(x)).  [clausify(1)].
+-bird(x) | sleep(x,f1(x)).  [clausify(1)].
+-loon(x) | bird(x).  [clausify(2)].
+-loon(x) | aquatic(x).  [clausify(2)].
+-tree(x) | -bird(y) | -aquatic(y) | -sleep(y,x) | lake(f2(x)).  [clausify(3)].
+-tree(x) | -bird(y) | -aquatic(y) | -sleep(y,x) | beside(x,f2(x)).  [clausify(3)].
+-lake(x) | -beside(y,x) | -sleep(z,y) | eatfish(z).  [clausify(4)].
+loon(c1).  [deny(5)].
+-eatfish(c1).  [deny(5)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating bird/1
+6 -loon(x) | bird(x).  [clausify(2)].
+7 -bird(x) | tree(f1(x)).  [clausify(1)].
+8 -bird(x) | sleep(x,f1(x)).  [clausify(1)].
+Derived: -loon(x) | tree(f1(x)).  [resolve(6,b,7,a)].
+Derived: -loon(x) | sleep(x,f1(x)).  [resolve(6,b,8,a)].
+9 -tree(x) | -bird(y) | -aquatic(y) | -sleep(y,x) | lake(f2(x)).  [clausify(3)].
+Derived: -tree(x) | -aquatic(y) | -sleep(y,x) | lake(f2(x)) | -loon(y).  [resolve(9,b,6,b)].
+10 -tree(x) | -bird(y) | -aquatic(y) | -sleep(y,x) | beside(x,f2(x)).  [clausify(3)].
+Derived: -tree(x) | -aquatic(y) | -sleep(y,x) | beside(x,f2(x)) | -loon(y).  [resolve(10,b,6,b)].
+
+Eliminating loon/1
+11 loon(c1).  [deny(5)].
+12 -loon(x) | aquatic(x).  [clausify(2)].
+Derived: aquatic(c1).  [resolve(11,a,12,a)].
+13 -loon(x) | tree(f1(x)).  [resolve(6,b,7,a)].
+Derived: tree(f1(c1)).  [resolve(13,a,11,a)].
+14 -loon(x) | sleep(x,f1(x)).  [resolve(6,b,8,a)].
+Derived: sleep(c1,f1(c1)).  [resolve(14,a,11,a)].
+15 -tree(x) | -aquatic(y) | -sleep(y,x) | lake(f2(x)) | -loon(y).  [resolve(9,b,6,b)].
+Derived: -tree(x) | -aquatic(c1) | -sleep(c1,x) | lake(f2(x)).  [resolve(15,e,11,a)].
+16 -tree(x) | -aquatic(y) | -sleep(y,x) | beside(x,f2(x)) | -loon(y).  [resolve(10,b,6,b)].
+Derived: -tree(x) | -aquatic(c1) | -sleep(c1,x) | beside(x,f2(x)).  [resolve(16,e,11,a)].
+
+Eliminating lake/1
+17 -tree(x) | -aquatic(c1) | -sleep(c1,x) | lake(f2(x)).  [resolve(15,e,11,a)].
+18 -lake(x) | -beside(y,x) | -sleep(z,y) | eatfish(z).  [clausify(4)].
+Derived: -tree(x) | -aquatic(c1) | -sleep(c1,x) | -beside(y,f2(x)) | -sleep(z,y) | eatfish(z).  [resolve(17,d,18,a)].
+
+Eliminating eatfish/1
+19 -tree(x) | -aquatic(c1) | -sleep(c1,x) | -beside(y,f2(x)) | -sleep(z,y) | eatfish(z).  [resolve(17,d,18,a)].
+20 -eatfish(c1).  [deny(5)].
+Derived: -tree(x) | -aquatic(c1) | -sleep(c1,x) | -beside(y,f2(x)) | -sleep(c1,y).  [resolve(19,f,20,a)].
+
+Eliminating aquatic/1
+21 -tree(x) | -aquatic(c1) | -sleep(c1,x) | beside(x,f2(x)).  [resolve(16,e,11,a)].
+22 aquatic(c1).  [resolve(11,a,12,a)].
+Derived: -tree(x) | -sleep(c1,x) | beside(x,f2(x)).  [resolve(21,b,22,a)].
+23 -tree(x) | -aquatic(c1) | -sleep(c1,x) | -beside(y,f2(x)) | -sleep(c1,y).  [resolve(19,f,20,a)].
+Derived: -tree(x) | -sleep(c1,x) | -beside(y,f2(x)) | -sleep(c1,y).  [resolve(23,b,22,a)].
+
+Eliminating tree/1
+24 -tree(x) | -sleep(c1,x) | beside(x,f2(x)).  [resolve(21,b,22,a)].
+25 tree(f1(c1)).  [resolve(13,a,11,a)].
+Derived: -sleep(c1,f1(c1)) | beside(f1(c1),f2(f1(c1))).  [resolve(24,a,25,a)].
+26 -tree(x) | -sleep(c1,x) | -beside(y,f2(x)) | -sleep(c1,y).  [resolve(23,b,22,a)].
+Derived: -sleep(c1,f1(c1)) | -beside(x,f2(f1(c1))) | -sleep(c1,x).  [resolve(26,a,25,a)].
+
+Eliminating beside/2
+27 -sleep(c1,f1(c1)) | -beside(x,f2(f1(c1))) | -sleep(c1,x).  [resolve(26,a,25,a)].
+28 -sleep(c1,f1(c1)) | beside(f1(c1),f2(f1(c1))).  [resolve(24,a,25,a)].
+Derived: -sleep(c1,f1(c1)) | -sleep(c1,f1(c1)) | -sleep(c1,f1(c1)).  [resolve(27,b,28,b)].
+
+============================== end predicate elimination =============
+
+Auto_denials:  (no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ sleep ]).
+Function symbol precedence:  function_order([ c1, f1 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(neg_binary_resolution).  % (HNE depth_diff=0)
+  % clear(ordered_res).  % (HNE depth_diff=0)
+  % set(ur_resolution).  % (HNE depth_diff=0)
+    % set(ur_resolution) -> set(pos_ur_resolution).
+    % set(ur_resolution) -> set(neg_ur_resolution).
+
+Auto_process settings:
+  % set(unit_deletion).  % (Horn set with negative nonunits)
+
+kept:      29 sleep(c1,f1(c1)).  [resolve(14,a,11,a)].
+           30 -sleep(c1,f1(c1)) | -sleep(c1,f1(c1)) | -sleep(c1,f1(c1)).  [resolve(27,b,28,b)].
+
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 31.
+% Level of proof is 9.
+% Maximum clause weight is 4.000.
+% Given clauses 0.
+
+1 (all x (bird(x) -> (exists y (tree(y) & sleep(x,y))))) # label(non_clause).  [assumption].
+2 (all x (loon(x) -> bird(x))) & (all x (loon(x) -> aquatic(x))) # label(non_clause).  [assumption].
+3 (all x (tree(x) & (exists y (bird(y) & aquatic(y) & sleep(y,x))) -> (exists z (lake(z) & beside(x,z))))) # label(non_clause).  [assumption].
+4 (all x ((exists y ((exists z (lake(z) & beside(y,z))) & sleep(x,y))) -> eatfish(x))) # label(non_clause).  [assumption].
+5 (all x (loon(x) -> eatfish(x))) # label(non_clause) # label(goal).  [goal].
+6 -loon(x) | bird(x).  [clausify(2)].
+7 -bird(x) | tree(f1(x)).  [clausify(1)].
+8 -bird(x) | sleep(x,f1(x)).  [clausify(1)].
+9 -tree(x) | -bird(y) | -aquatic(y) | -sleep(y,x) | lake(f2(x)).  [clausify(3)].
+10 -tree(x) | -bird(y) | -aquatic(y) | -sleep(y,x) | beside(x,f2(x)).  [clausify(3)].
+11 loon(c1).  [deny(5)].
+12 -loon(x) | aquatic(x).  [clausify(2)].
+13 -loon(x) | tree(f1(x)).  [resolve(6,b,7,a)].
+14 -loon(x) | sleep(x,f1(x)).  [resolve(6,b,8,a)].
+15 -tree(x) | -aquatic(y) | -sleep(y,x) | lake(f2(x)) | -loon(y).  [resolve(9,b,6,b)].
+16 -tree(x) | -aquatic(y) | -sleep(y,x) | beside(x,f2(x)) | -loon(y).  [resolve(10,b,6,b)].
+17 -tree(x) | -aquatic(c1) | -sleep(c1,x) | lake(f2(x)).  [resolve(15,e,11,a)].
+18 -lake(x) | -beside(y,x) | -sleep(z,y) | eatfish(z).  [clausify(4)].
+19 -tree(x) | -aquatic(c1) | -sleep(c1,x) | -beside(y,f2(x)) | -sleep(z,y) | eatfish(z).  [resolve(17,d,18,a)].
+20 -eatfish(c1).  [deny(5)].
+21 -tree(x) | -aquatic(c1) | -sleep(c1,x) | beside(x,f2(x)).  [resolve(16,e,11,a)].
+22 aquatic(c1).  [resolve(11,a,12,a)].
+23 -tree(x) | -aquatic(c1) | -sleep(c1,x) | -beside(y,f2(x)) | -sleep(c1,y).  [resolve(19,f,20,a)].
+24 -tree(x) | -sleep(c1,x) | beside(x,f2(x)).  [resolve(21,b,22,a)].
+25 tree(f1(c1)).  [resolve(13,a,11,a)].
+26 -tree(x) | -sleep(c1,x) | -beside(y,f2(x)) | -sleep(c1,y).  [resolve(23,b,22,a)].
+27 -sleep(c1,f1(c1)) | -beside(x,f2(f1(c1))) | -sleep(c1,x).  [resolve(26,a,25,a)].
+28 -sleep(c1,f1(c1)) | beside(f1(c1),f2(f1(c1))).  [resolve(24,a,25,a)].
+29 sleep(c1,f1(c1)).  [resolve(14,a,11,a)].
+30 -sleep(c1,f1(c1)) | -sleep(c1,f1(c1)) | -sleep(c1,f1(c1)).  [resolve(27,b,28,b)].
+31 $F.  [copy(30),merge(b),merge(c),unit_del(a,29)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=0. Generated=2. Kept=1. proofs=1.
+Usable=0. Sos=0. Demods=0. Limbo=1, Disabled=25. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=0. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=0. Nonunit_bsub_feature_tests=0.
+Megabytes=0.05.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 6428 exit (max_proofs) Wed Jun 26 22:33:07 2019

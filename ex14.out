@@ -1,0 +1,269 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 6418 was started by qwang on grid01,
+Wed Jun 26 22:33:07 2019
+The command was "prover9 -f ex14.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file ex14.in
+
+
+formulas(sos).
+(all x (child(x) & (exists y ((egg(y) | bunny(y)) & find(x,y))) -> happy(x))).
+(all x (child(x) & helped(x) -> (exists y (egg(y) & find(x,y))))).
+(all x (child(x) & (-young(x) | tryhard(x)) -> (exists y (bunny(y) & find(x,y))))).
+end_of_list.
+
+formulas(goals).
+(all x (child(x) & young(x) -> tryhard(x) | helped(x))) -> (all y (child(y) -> happy(y))).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (child(x) & (exists y ((egg(y) | bunny(y)) & find(x,y))) -> happy(x))) # label(non_clause).  [assumption].
+2 (all x (child(x) & helped(x) -> (exists y (egg(y) & find(x,y))))) # label(non_clause).  [assumption].
+3 (all x (child(x) & (-young(x) | tryhard(x)) -> (exists y (bunny(y) & find(x,y))))) # label(non_clause).  [assumption].
+4 (all x (child(x) & young(x) -> tryhard(x) | helped(x))) -> (all y (child(y) -> happy(y))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-child(x) | -egg(y) | -find(x,y) | happy(x).  [clausify(1)].
+-child(x) | -bunny(y) | -find(x,y) | happy(x).  [clausify(1)].
+-child(x) | -helped(x) | egg(f1(x)).  [clausify(2)].
+-child(x) | -helped(x) | find(x,f1(x)).  [clausify(2)].
+-child(x) | young(x) | bunny(f2(x)).  [clausify(3)].
+-child(x) | young(x) | find(x,f2(x)).  [clausify(3)].
+-child(x) | -tryhard(x) | bunny(f2(x)).  [clausify(3)].
+-child(x) | -tryhard(x) | find(x,f2(x)).  [clausify(3)].
+-child(x) | -young(x) | tryhard(x) | helped(x).  [deny(4)].
+child(c1).  [deny(4)].
+-happy(c1).  [deny(4)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating child/1
+5 child(c1).  [deny(4)].
+6 -child(x) | -egg(y) | -find(x,y) | happy(x).  [clausify(1)].
+7 -child(x) | -bunny(y) | -find(x,y) | happy(x).  [clausify(1)].
+8 -child(x) | -helped(x) | egg(f1(x)).  [clausify(2)].
+9 -child(x) | -helped(x) | find(x,f1(x)).  [clausify(2)].
+10 -child(x) | young(x) | bunny(f2(x)).  [clausify(3)].
+11 -child(x) | young(x) | find(x,f2(x)).  [clausify(3)].
+12 -child(x) | -tryhard(x) | bunny(f2(x)).  [clausify(3)].
+13 -child(x) | -tryhard(x) | find(x,f2(x)).  [clausify(3)].
+14 -child(x) | -young(x) | tryhard(x) | helped(x).  [deny(4)].
+Derived: -egg(x) | -find(c1,x) | happy(c1).  [resolve(5,a,6,a)].
+Derived: -bunny(x) | -find(c1,x) | happy(c1).  [resolve(5,a,7,a)].
+Derived: -helped(c1) | egg(f1(c1)).  [resolve(5,a,8,a)].
+Derived: -helped(c1) | find(c1,f1(c1)).  [resolve(5,a,9,a)].
+Derived: young(c1) | bunny(f2(c1)).  [resolve(5,a,10,a)].
+Derived: young(c1) | find(c1,f2(c1)).  [resolve(5,a,11,a)].
+Derived: -tryhard(c1) | bunny(f2(c1)).  [resolve(5,a,12,a)].
+Derived: -tryhard(c1) | find(c1,f2(c1)).  [resolve(5,a,13,a)].
+Derived: -young(c1) | tryhard(c1) | helped(c1).  [resolve(5,a,14,a)].
+
+Eliminating happy/1
+15 -egg(x) | -find(c1,x) | happy(c1).  [resolve(5,a,6,a)].
+16 -happy(c1).  [deny(4)].
+Derived: -egg(x) | -find(c1,x).  [resolve(15,c,16,a)].
+17 -bunny(x) | -find(c1,x) | happy(c1).  [resolve(5,a,7,a)].
+Derived: -bunny(x) | -find(c1,x).  [resolve(17,c,16,a)].
+
+Eliminating helped/1
+18 -young(c1) | tryhard(c1) | helped(c1).  [resolve(5,a,14,a)].
+19 -helped(c1) | egg(f1(c1)).  [resolve(5,a,8,a)].
+20 -helped(c1) | find(c1,f1(c1)).  [resolve(5,a,9,a)].
+Derived: -young(c1) | tryhard(c1) | egg(f1(c1)).  [resolve(18,c,19,a)].
+Derived: -young(c1) | tryhard(c1) | find(c1,f1(c1)).  [resolve(18,c,20,a)].
+
+Eliminating young/1
+21 -young(c1) | tryhard(c1) | egg(f1(c1)).  [resolve(18,c,19,a)].
+22 young(c1) | bunny(f2(c1)).  [resolve(5,a,10,a)].
+23 young(c1) | find(c1,f2(c1)).  [resolve(5,a,11,a)].
+Derived: tryhard(c1) | egg(f1(c1)) | bunny(f2(c1)).  [resolve(21,a,22,a)].
+Derived: tryhard(c1) | egg(f1(c1)) | find(c1,f2(c1)).  [resolve(21,a,23,a)].
+24 -young(c1) | tryhard(c1) | find(c1,f1(c1)).  [resolve(18,c,20,a)].
+Derived: tryhard(c1) | find(c1,f1(c1)) | bunny(f2(c1)).  [resolve(24,a,22,a)].
+Derived: tryhard(c1) | find(c1,f1(c1)) | find(c1,f2(c1)).  [resolve(24,a,23,a)].
+
+Eliminating tryhard/1
+25 tryhard(c1) | egg(f1(c1)) | bunny(f2(c1)).  [resolve(21,a,22,a)].
+26 -tryhard(c1) | bunny(f2(c1)).  [resolve(5,a,12,a)].
+27 -tryhard(c1) | find(c1,f2(c1)).  [resolve(5,a,13,a)].
+Derived: egg(f1(c1)) | bunny(f2(c1)) | bunny(f2(c1)).  [resolve(25,a,26,a)].
+28 tryhard(c1) | egg(f1(c1)) | find(c1,f2(c1)).  [resolve(21,a,23,a)].
+Derived: egg(f1(c1)) | find(c1,f2(c1)) | find(c1,f2(c1)).  [resolve(28,a,27,a)].
+29 tryhard(c1) | find(c1,f1(c1)) | bunny(f2(c1)).  [resolve(24,a,22,a)].
+Derived: find(c1,f1(c1)) | bunny(f2(c1)) | bunny(f2(c1)).  [resolve(29,a,26,a)].
+30 tryhard(c1) | find(c1,f1(c1)) | find(c1,f2(c1)).  [resolve(24,a,23,a)].
+Derived: find(c1,f1(c1)) | find(c1,f2(c1)) | find(c1,f2(c1)).  [resolve(30,a,27,a)].
+
+Eliminating egg/1
+31 egg(f1(c1)) | bunny(f2(c1)) | bunny(f2(c1)).  [resolve(25,a,26,a)].
+32 -egg(x) | -find(c1,x).  [resolve(15,c,16,a)].
+Derived: bunny(f2(c1)) | bunny(f2(c1)) | -find(c1,f1(c1)).  [resolve(31,a,32,a)].
+33 egg(f1(c1)) | find(c1,f2(c1)) | find(c1,f2(c1)).  [resolve(28,a,27,a)].
+Derived: find(c1,f2(c1)) | find(c1,f2(c1)) | -find(c1,f1(c1)).  [resolve(33,a,32,a)].
+
+============================== end predicate elimination =============
+
+Auto_denials:  (non-Horn, no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ bunny, find ]).
+Function symbol precedence:  function_order([ c1, f1, f2 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(binary_resolution).  % (non-Horn)
+  % set(neg_ur_resolution).  % (non-Horn, less than 100 clauses)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(unit_deletion).  % (non-Horn)
+
+kept:      34 -bunny(x) | -find(c1,x).  [resolve(17,c,16,a)].
+           35 find(c1,f1(c1)) | bunny(f2(c1)) | bunny(f2(c1)).  [resolve(29,a,26,a)].
+kept:      36 find(c1,f1(c1)) | bunny(f2(c1)).  [copy(35),merge(c)].
+           37 find(c1,f1(c1)) | find(c1,f2(c1)) | find(c1,f2(c1)).  [resolve(30,a,27,a)].
+kept:      38 find(c1,f1(c1)) | find(c1,f2(c1)).  [copy(37),merge(c)].
+           39 bunny(f2(c1)) | bunny(f2(c1)) | -find(c1,f1(c1)).  [resolve(31,a,32,a)].
+kept:      40 bunny(f2(c1)) | -find(c1,f1(c1)).  [copy(39),merge(b)].
+           41 find(c1,f2(c1)) | find(c1,f2(c1)) | -find(c1,f1(c1)).  [resolve(33,a,32,a)].
+kept:      42 find(c1,f2(c1)) | -find(c1,f1(c1)).  [copy(41),merge(b)].
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+% Clauses after input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+34 -bunny(x) | -find(c1,x).  [resolve(17,c,16,a)].
+36 find(c1,f1(c1)) | bunny(f2(c1)).  [copy(35),merge(c)].
+38 find(c1,f1(c1)) | find(c1,f2(c1)).  [copy(37),merge(c)].
+40 bunny(f2(c1)) | -find(c1,f1(c1)).  [copy(39),merge(b)].
+42 find(c1,f2(c1)) | -find(c1,f1(c1)).  [copy(41),merge(b)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.00 seconds.
+
+given #1 (I,wt=5): 34 -bunny(x) | -find(c1,x).  [resolve(17,c,16,a)].
+
+given #2 (I,wt=7): 36 find(c1,f1(c1)) | bunny(f2(c1)).  [copy(35),merge(c)].
+
+given #3 (I,wt=8): 38 find(c1,f1(c1)) | find(c1,f2(c1)).  [copy(37),merge(c)].
+
+given #4 (I,wt=7): 40 bunny(f2(c1)) | -find(c1,f1(c1)).  [copy(39),merge(b)].
+
+given #5 (A,wt=3): 45 bunny(f2(c1)).  [resolve(40,b,36,a),merge(b)].
+
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 47.
+% Level of proof is 11.
+% Maximum clause weight is 8.000.
+% Given clauses 5.
+
+1 (all x (child(x) & (exists y ((egg(y) | bunny(y)) & find(x,y))) -> happy(x))) # label(non_clause).  [assumption].
+2 (all x (child(x) & helped(x) -> (exists y (egg(y) & find(x,y))))) # label(non_clause).  [assumption].
+3 (all x (child(x) & (-young(x) | tryhard(x)) -> (exists y (bunny(y) & find(x,y))))) # label(non_clause).  [assumption].
+4 (all x (child(x) & young(x) -> tryhard(x) | helped(x))) -> (all y (child(y) -> happy(y))) # label(non_clause) # label(goal).  [goal].
+5 child(c1).  [deny(4)].
+6 -child(x) | -egg(y) | -find(x,y) | happy(x).  [clausify(1)].
+7 -child(x) | -bunny(y) | -find(x,y) | happy(x).  [clausify(1)].
+8 -child(x) | -helped(x) | egg(f1(x)).  [clausify(2)].
+9 -child(x) | -helped(x) | find(x,f1(x)).  [clausify(2)].
+10 -child(x) | young(x) | bunny(f2(x)).  [clausify(3)].
+11 -child(x) | young(x) | find(x,f2(x)).  [clausify(3)].
+12 -child(x) | -tryhard(x) | bunny(f2(x)).  [clausify(3)].
+13 -child(x) | -tryhard(x) | find(x,f2(x)).  [clausify(3)].
+14 -child(x) | -young(x) | tryhard(x) | helped(x).  [deny(4)].
+15 -egg(x) | -find(c1,x) | happy(c1).  [resolve(5,a,6,a)].
+16 -happy(c1).  [deny(4)].
+17 -bunny(x) | -find(c1,x) | happy(c1).  [resolve(5,a,7,a)].
+18 -young(c1) | tryhard(c1) | helped(c1).  [resolve(5,a,14,a)].
+19 -helped(c1) | egg(f1(c1)).  [resolve(5,a,8,a)].
+20 -helped(c1) | find(c1,f1(c1)).  [resolve(5,a,9,a)].
+21 -young(c1) | tryhard(c1) | egg(f1(c1)).  [resolve(18,c,19,a)].
+22 young(c1) | bunny(f2(c1)).  [resolve(5,a,10,a)].
+23 young(c1) | find(c1,f2(c1)).  [resolve(5,a,11,a)].
+24 -young(c1) | tryhard(c1) | find(c1,f1(c1)).  [resolve(18,c,20,a)].
+25 tryhard(c1) | egg(f1(c1)) | bunny(f2(c1)).  [resolve(21,a,22,a)].
+26 -tryhard(c1) | bunny(f2(c1)).  [resolve(5,a,12,a)].
+27 -tryhard(c1) | find(c1,f2(c1)).  [resolve(5,a,13,a)].
+28 tryhard(c1) | egg(f1(c1)) | find(c1,f2(c1)).  [resolve(21,a,23,a)].
+29 tryhard(c1) | find(c1,f1(c1)) | bunny(f2(c1)).  [resolve(24,a,22,a)].
+30 tryhard(c1) | find(c1,f1(c1)) | find(c1,f2(c1)).  [resolve(24,a,23,a)].
+31 egg(f1(c1)) | bunny(f2(c1)) | bunny(f2(c1)).  [resolve(25,a,26,a)].
+32 -egg(x) | -find(c1,x).  [resolve(15,c,16,a)].
+33 egg(f1(c1)) | find(c1,f2(c1)) | find(c1,f2(c1)).  [resolve(28,a,27,a)].
+34 -bunny(x) | -find(c1,x).  [resolve(17,c,16,a)].
+35 find(c1,f1(c1)) | bunny(f2(c1)) | bunny(f2(c1)).  [resolve(29,a,26,a)].
+36 find(c1,f1(c1)) | bunny(f2(c1)).  [copy(35),merge(c)].
+37 find(c1,f1(c1)) | find(c1,f2(c1)) | find(c1,f2(c1)).  [resolve(30,a,27,a)].
+38 find(c1,f1(c1)) | find(c1,f2(c1)).  [copy(37),merge(c)].
+39 bunny(f2(c1)) | bunny(f2(c1)) | -find(c1,f1(c1)).  [resolve(31,a,32,a)].
+40 bunny(f2(c1)) | -find(c1,f1(c1)).  [copy(39),merge(b)].
+41 find(c1,f2(c1)) | find(c1,f2(c1)) | -find(c1,f1(c1)).  [resolve(33,a,32,a)].
+42 find(c1,f2(c1)) | -find(c1,f1(c1)).  [copy(41),merge(b)].
+44 find(c1,f1(c1)) | -bunny(f2(c1)).  [resolve(38,b,34,b)].
+45 bunny(f2(c1)).  [resolve(40,b,36,a),merge(b)].
+46 find(c1,f1(c1)).  [back_unit_del(44),unit_del(b,45)].
+47 find(c1,f2(c1)).  [back_unit_del(42),unit_del(b,46)].
+48 $F.  [ur(34,a,45,a),unit_del(a,47)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=5. Generated=11. Kept=10. proofs=1.
+Usable=2. Sos=2. Demods=0. Limbo=0, Disabled=40. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=0. Back_subsumed=4.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=2.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=0. Nonunit_bsub_feature_tests=11.
+Megabytes=0.07.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 6418 exit (max_proofs) Wed Jun 26 22:33:07 2019

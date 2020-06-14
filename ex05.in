@@ -1,0 +1,25 @@
+formulas(sos).
+
+  % 1. anyone whom mary loves is a football star.
+  (all x (marylove(x) -> star(x))).
+
+  % 2. any student who does not pass does not play.
+  (all x ((student(x) & -pass(x)) -> -play(x))).
+
+  % 3. john is a student.
+  student(john).
+
+  % 4. any student who does not study does not pass.
+  (all x ((student(x) & -study(x)) -> -pass(x))).
+
+  % 5. anyone who does not play is not a football star.
+  (all x (-play(x) -> -star(x))).
+
+end_of_list.
+
+formulas(goals).
+
+  % 6. if john does not study, then mary does not love john.
+  -study(john) -> -marylove(john).
+
+end_of_list.

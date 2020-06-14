@@ -1,0 +1,468 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 6430 was started by qwang on grid01,
+Wed Jun 26 22:33:07 2019
+The command was "prover9 -f ex25.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file ex25.in
+
+
+formulas(sos).
+(all x (wolf(x) -> animal(x))).
+(all x (fox(x) -> animal(x))).
+(all x (bird(x) -> animal(x))).
+(all x (catepillar(x) -> animal(x))).
+(all x (snail(x) -> animal(x))).
+(exists x wolf(x)).
+(exists x fox(x)).
+(exists x bird(x)).
+(exists x catepillar(x)).
+(exists x snail(x)).
+(exists x grain(x)).
+(all x (grain(x) -> plant(x))).
+(all x ((all y (plant(y) -> eat(x,y))) | (all z (animal(z) & smaller(z,x) & (exists u (plant(u) & eat(z,u))) -> eat(x,z))))).
+(all x (catepillar(x) -> (all y (bird(y) -> smaller(x,y))))).
+(all x (snail(x) -> (all y (bird(y) -> smaller(x,y))))).
+(all x (bird(x) -> (all y (fox(y) -> smaller(x,y))))).
+(all x (fox(x) -> (all y (wolf(y) -> smaller(x,y))))).
+(all x (wolf(x) -> (all y (fox(y) -> -eat(x,y))))).
+(all x (wolf(x) -> (all y (grain(y) -> -eat(x,y))))).
+(all x (bird(x) -> (all y (catepillar(y) -> eat(x,y))))).
+(all x (bird(x) -> (all y (snail(y) -> -eat(x,y))))).
+(all x (catepillar(x) -> (exists y (plant(y) & eat(x,y))))).
+(all x (snail(x) -> (exists y (plant(y) & eat(x,y))))).
+end_of_list.
+
+formulas(goals).
+(exists x (animal(x) & (exists y (eat(x,y) & (exists z (grain(z) & eat(y,z))))))).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (wolf(x) -> animal(x))) # label(non_clause).  [assumption].
+2 (all x (fox(x) -> animal(x))) # label(non_clause).  [assumption].
+3 (all x (bird(x) -> animal(x))) # label(non_clause).  [assumption].
+4 (all x (catepillar(x) -> animal(x))) # label(non_clause).  [assumption].
+5 (all x (snail(x) -> animal(x))) # label(non_clause).  [assumption].
+6 (exists x wolf(x)) # label(non_clause).  [assumption].
+7 (exists x fox(x)) # label(non_clause).  [assumption].
+8 (exists x bird(x)) # label(non_clause).  [assumption].
+9 (exists x catepillar(x)) # label(non_clause).  [assumption].
+10 (exists x snail(x)) # label(non_clause).  [assumption].
+11 (exists x grain(x)) # label(non_clause).  [assumption].
+12 (all x (grain(x) -> plant(x))) # label(non_clause).  [assumption].
+13 (all x ((all y (plant(y) -> eat(x,y))) | (all z (animal(z) & smaller(z,x) & (exists u (plant(u) & eat(z,u))) -> eat(x,z))))) # label(non_clause).  [assumption].
+14 (all x (catepillar(x) -> (all y (bird(y) -> smaller(x,y))))) # label(non_clause).  [assumption].
+15 (all x (snail(x) -> (all y (bird(y) -> smaller(x,y))))) # label(non_clause).  [assumption].
+16 (all x (bird(x) -> (all y (fox(y) -> smaller(x,y))))) # label(non_clause).  [assumption].
+17 (all x (fox(x) -> (all y (wolf(y) -> smaller(x,y))))) # label(non_clause).  [assumption].
+18 (all x (wolf(x) -> (all y (fox(y) -> -eat(x,y))))) # label(non_clause).  [assumption].
+19 (all x (wolf(x) -> (all y (grain(y) -> -eat(x,y))))) # label(non_clause).  [assumption].
+20 (all x (bird(x) -> (all y (catepillar(y) -> eat(x,y))))) # label(non_clause).  [assumption].
+21 (all x (bird(x) -> (all y (snail(y) -> -eat(x,y))))) # label(non_clause).  [assumption].
+22 (all x (catepillar(x) -> (exists y (plant(y) & eat(x,y))))) # label(non_clause).  [assumption].
+23 (all x (snail(x) -> (exists y (plant(y) & eat(x,y))))) # label(non_clause).  [assumption].
+24 (exists x (animal(x) & (exists y (eat(x,y) & (exists z (grain(z) & eat(y,z))))))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-wolf(x) | animal(x).  [clausify(1)].
+-fox(x) | animal(x).  [clausify(2)].
+-bird(x) | animal(x).  [clausify(3)].
+-catepillar(x) | animal(x).  [clausify(4)].
+-snail(x) | animal(x).  [clausify(5)].
+wolf(c1).  [clausify(6)].
+fox(c2).  [clausify(7)].
+bird(c3).  [clausify(8)].
+catepillar(c4).  [clausify(9)].
+snail(c5).  [clausify(10)].
+grain(c6).  [clausify(11)].
+-grain(x) | plant(x).  [clausify(12)].
+-plant(x) | eat(y,x) | -animal(z) | -smaller(z,y) | -plant(u) | -eat(z,u) | eat(y,z).  [clausify(13)].
+-catepillar(x) | -bird(y) | smaller(x,y).  [clausify(14)].
+-snail(x) | -bird(y) | smaller(x,y).  [clausify(15)].
+-bird(x) | -fox(y) | smaller(x,y).  [clausify(16)].
+-fox(x) | -wolf(y) | smaller(x,y).  [clausify(17)].
+-wolf(x) | -fox(y) | -eat(x,y).  [clausify(18)].
+-wolf(x) | -grain(y) | -eat(x,y).  [clausify(19)].
+-bird(x) | -catepillar(y) | eat(x,y).  [clausify(20)].
+-bird(x) | -snail(y) | -eat(x,y).  [clausify(21)].
+-catepillar(x) | plant(f1(x)).  [clausify(22)].
+-catepillar(x) | eat(x,f1(x)).  [clausify(22)].
+-snail(x) | plant(f2(x)).  [clausify(23)].
+-snail(x) | eat(x,f2(x)).  [clausify(23)].
+-animal(x) | -eat(x,y) | -grain(z) | -eat(y,z).  [deny(24)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating wolf/1
+25 wolf(c1).  [clausify(6)].
+26 -wolf(x) | animal(x).  [clausify(1)].
+Derived: animal(c1).  [resolve(25,a,26,a)].
+27 -fox(x) | -wolf(y) | smaller(x,y).  [clausify(17)].
+Derived: -fox(x) | smaller(x,c1).  [resolve(27,b,25,a)].
+28 -wolf(x) | -fox(y) | -eat(x,y).  [clausify(18)].
+Derived: -fox(x) | -eat(c1,x).  [resolve(28,a,25,a)].
+29 -wolf(x) | -grain(y) | -eat(x,y).  [clausify(19)].
+Derived: -grain(x) | -eat(c1,x).  [resolve(29,a,25,a)].
+
+Eliminating fox/1
+30 fox(c2).  [clausify(7)].
+31 -fox(x) | animal(x).  [clausify(2)].
+Derived: animal(c2).  [resolve(30,a,31,a)].
+32 -bird(x) | -fox(y) | smaller(x,y).  [clausify(16)].
+Derived: -bird(x) | smaller(x,c2).  [resolve(32,b,30,a)].
+33 -fox(x) | smaller(x,c1).  [resolve(27,b,25,a)].
+Derived: smaller(c2,c1).  [resolve(33,a,30,a)].
+34 -fox(x) | -eat(c1,x).  [resolve(28,a,25,a)].
+Derived: -eat(c1,c2).  [resolve(34,a,30,a)].
+
+Eliminating bird/1
+35 bird(c3).  [clausify(8)].
+36 -bird(x) | animal(x).  [clausify(3)].
+Derived: animal(c3).  [resolve(35,a,36,a)].
+37 -catepillar(x) | -bird(y) | smaller(x,y).  [clausify(14)].
+Derived: -catepillar(x) | smaller(x,c3).  [resolve(37,b,35,a)].
+38 -snail(x) | -bird(y) | smaller(x,y).  [clausify(15)].
+Derived: -snail(x) | smaller(x,c3).  [resolve(38,b,35,a)].
+39 -bird(x) | -catepillar(y) | eat(x,y).  [clausify(20)].
+Derived: -catepillar(x) | eat(c3,x).  [resolve(39,a,35,a)].
+40 -bird(x) | -snail(y) | -eat(x,y).  [clausify(21)].
+Derived: -snail(x) | -eat(c3,x).  [resolve(40,a,35,a)].
+41 -bird(x) | smaller(x,c2).  [resolve(32,b,30,a)].
+Derived: smaller(c3,c2).  [resolve(41,a,35,a)].
+
+Eliminating catepillar/1
+42 catepillar(c4).  [clausify(9)].
+43 -catepillar(x) | animal(x).  [clausify(4)].
+Derived: animal(c4).  [resolve(42,a,43,a)].
+44 -catepillar(x) | plant(f1(x)).  [clausify(22)].
+Derived: plant(f1(c4)).  [resolve(44,a,42,a)].
+45 -catepillar(x) | eat(x,f1(x)).  [clausify(22)].
+Derived: eat(c4,f1(c4)).  [resolve(45,a,42,a)].
+46 -catepillar(x) | smaller(x,c3).  [resolve(37,b,35,a)].
+Derived: smaller(c4,c3).  [resolve(46,a,42,a)].
+47 -catepillar(x) | eat(c3,x).  [resolve(39,a,35,a)].
+Derived: eat(c3,c4).  [resolve(47,a,42,a)].
+
+Eliminating snail/1
+48 snail(c5).  [clausify(10)].
+49 -snail(x) | animal(x).  [clausify(5)].
+Derived: animal(c5).  [resolve(48,a,49,a)].
+50 -snail(x) | plant(f2(x)).  [clausify(23)].
+Derived: plant(f2(c5)).  [resolve(50,a,48,a)].
+51 -snail(x) | eat(x,f2(x)).  [clausify(23)].
+Derived: eat(c5,f2(c5)).  [resolve(51,a,48,a)].
+52 -snail(x) | smaller(x,c3).  [resolve(38,b,35,a)].
+Derived: smaller(c5,c3).  [resolve(52,a,48,a)].
+53 -snail(x) | -eat(c3,x).  [resolve(40,a,35,a)].
+Derived: -eat(c3,c5).  [resolve(53,a,48,a)].
+
+Eliminating grain/1
+54 -grain(x) | plant(x).  [clausify(12)].
+55 grain(c6).  [clausify(11)].
+Derived: plant(c6).  [resolve(54,a,55,a)].
+56 -animal(x) | -eat(x,y) | -grain(z) | -eat(y,z).  [deny(24)].
+Derived: -animal(x) | -eat(x,y) | -eat(y,c6).  [resolve(56,c,55,a)].
+57 -grain(x) | -eat(c1,x).  [resolve(29,a,25,a)].
+Derived: -eat(c1,c6).  [resolve(57,a,55,a)].
+
+Eliminating animal/1
+58 animal(c1).  [resolve(25,a,26,a)].
+59 -plant(x) | eat(y,x) | -animal(z) | -smaller(z,y) | -plant(u) | -eat(z,u) | eat(y,z).  [clausify(13)].
+Derived: -plant(x) | eat(y,x) | -smaller(c1,y) | -plant(z) | -eat(c1,z) | eat(y,c1).  [resolve(58,a,59,c)].
+60 animal(c2).  [resolve(30,a,31,a)].
+Derived: -plant(x) | eat(y,x) | -smaller(c2,y) | -plant(z) | -eat(c2,z) | eat(y,c2).  [resolve(60,a,59,c)].
+61 animal(c3).  [resolve(35,a,36,a)].
+Derived: -plant(x) | eat(y,x) | -smaller(c3,y) | -plant(z) | -eat(c3,z) | eat(y,c3).  [resolve(61,a,59,c)].
+62 animal(c4).  [resolve(42,a,43,a)].
+Derived: -plant(x) | eat(y,x) | -smaller(c4,y) | -plant(z) | -eat(c4,z) | eat(y,c4).  [resolve(62,a,59,c)].
+63 animal(c5).  [resolve(48,a,49,a)].
+Derived: -plant(x) | eat(y,x) | -smaller(c5,y) | -plant(z) | -eat(c5,z) | eat(y,c5).  [resolve(63,a,59,c)].
+64 -animal(x) | -eat(x,y) | -eat(y,c6).  [resolve(56,c,55,a)].
+Derived: -eat(c1,x) | -eat(x,c6).  [resolve(64,a,58,a)].
+Derived: -eat(c2,x) | -eat(x,c6).  [resolve(64,a,60,a)].
+Derived: -eat(c3,x) | -eat(x,c6).  [resolve(64,a,61,a)].
+Derived: -eat(c4,x) | -eat(x,c6).  [resolve(64,a,62,a)].
+Derived: -eat(c5,x) | -eat(x,c6).  [resolve(64,a,63,a)].
+
+Eliminating smaller/2
+65 -plant(x) | eat(y,x) | -smaller(c1,y) | -plant(z) | -eat(c1,z) | eat(y,c1).  [resolve(58,a,59,c)].
+66 smaller(c2,c1).  [resolve(33,a,30,a)].
+67 smaller(c3,c2).  [resolve(41,a,35,a)].
+68 smaller(c4,c3).  [resolve(46,a,42,a)].
+69 smaller(c5,c3).  [resolve(52,a,48,a)].
+70 -plant(x) | eat(y,x) | -smaller(c2,y) | -plant(z) | -eat(c2,z) | eat(y,c2).  [resolve(60,a,59,c)].
+Derived: -plant(x) | eat(c1,x) | -plant(y) | -eat(c2,y) | eat(c1,c2).  [resolve(70,c,66,a)].
+71 -plant(x) | eat(y,x) | -smaller(c3,y) | -plant(z) | -eat(c3,z) | eat(y,c3).  [resolve(61,a,59,c)].
+Derived: -plant(x) | eat(c2,x) | -plant(y) | -eat(c3,y) | eat(c2,c3).  [resolve(71,c,67,a)].
+72 -plant(x) | eat(y,x) | -smaller(c4,y) | -plant(z) | -eat(c4,z) | eat(y,c4).  [resolve(62,a,59,c)].
+Derived: -plant(x) | eat(c3,x) | -plant(y) | -eat(c4,y) | eat(c3,c4).  [resolve(72,c,68,a)].
+73 -plant(x) | eat(y,x) | -smaller(c5,y) | -plant(z) | -eat(c5,z) | eat(y,c5).  [resolve(63,a,59,c)].
+Derived: -plant(x) | eat(c3,x) | -plant(y) | -eat(c5,y) | eat(c3,c5).  [resolve(73,c,69,a)].
+
+============================== end predicate elimination =============
+
+Auto_denials:  (non-Horn, no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ plant, eat ]).
+Function symbol precedence:  function_order([ c1, c2, c3, c4, c5, c6, f1, f2 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(binary_resolution).  % (non-Horn)
+  % set(neg_ur_resolution).  % (non-Horn, less than 100 clauses)
+
+Auto_process settings:
+  % set(factor).  % (non-Horn)
+  % set(unit_deletion).  % (non-Horn)
+
+kept:      74 -eat(c1,c2).  [resolve(34,a,30,a)].
+kept:      75 plant(f1(c4)).  [resolve(44,a,42,a)].
+kept:      76 eat(c4,f1(c4)).  [resolve(45,a,42,a)].
+kept:      77 eat(c3,c4).  [resolve(47,a,42,a)].
+kept:      78 plant(f2(c5)).  [resolve(50,a,48,a)].
+kept:      79 eat(c5,f2(c5)).  [resolve(51,a,48,a)].
+kept:      80 -eat(c3,c5).  [resolve(53,a,48,a)].
+kept:      81 plant(c6).  [resolve(54,a,55,a)].
+kept:      82 -eat(c1,c6).  [resolve(57,a,55,a)].
+kept:      83 -eat(c1,x) | -eat(x,c6).  [resolve(64,a,58,a)].
+kept:      84 -eat(c2,x) | -eat(x,c6).  [resolve(64,a,60,a)].
+kept:      85 -eat(c3,x) | -eat(x,c6).  [resolve(64,a,61,a)].
+kept:      86 -eat(c4,x) | -eat(x,c6).  [resolve(64,a,62,a)].
+kept:      87 -eat(c5,x) | -eat(x,c6).  [resolve(64,a,63,a)].
+           88 -plant(x) | eat(c1,x) | -plant(y) | -eat(c2,y) | eat(c1,c2).  [resolve(70,c,66,a)].
+kept:      89 -plant(x) | eat(c1,x) | -plant(y) | -eat(c2,y).  [copy(88),unit_del(e,74)].
+kept:      90 -plant(x) | eat(c2,x) | -plant(y) | -eat(c3,y) | eat(c2,c3).  [resolve(71,c,67,a)].
+           91 -plant(x) | eat(c3,x) | -plant(y) | -eat(c5,y) | eat(c3,c5).  [resolve(73,c,69,a)].
+kept:      92 -plant(x) | eat(c3,x) | -plant(y) | -eat(c5,y).  [copy(91),unit_del(e,80)].
+kept:      93 -plant(x) | eat(c1,x) | -eat(c2,x).  [factor(89,a,c)].
+kept:      94 -plant(x) | eat(c2,x) | -eat(c3,x) | eat(c2,c3).  [factor(90,a,c)].
+kept:      95 -plant(c3) | eat(c2,c3) | -plant(x) | -eat(c3,x).  [factor(90,b,e)].
+kept:      96 -plant(x) | eat(c3,x) | -eat(c5,x).  [factor(92,a,c)].
+kept:      97 -plant(c3) | eat(c2,c3) | -eat(c3,c3).  [factor(94,b,d)].
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+% Clauses after input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+74 -eat(c1,c2).  [resolve(34,a,30,a)].
+75 plant(f1(c4)).  [resolve(44,a,42,a)].
+76 eat(c4,f1(c4)).  [resolve(45,a,42,a)].
+77 eat(c3,c4).  [resolve(47,a,42,a)].
+78 plant(f2(c5)).  [resolve(50,a,48,a)].
+79 eat(c5,f2(c5)).  [resolve(51,a,48,a)].
+80 -eat(c3,c5).  [resolve(53,a,48,a)].
+81 plant(c6).  [resolve(54,a,55,a)].
+82 -eat(c1,c6).  [resolve(57,a,55,a)].
+83 -eat(c1,x) | -eat(x,c6).  [resolve(64,a,58,a)].
+84 -eat(c2,x) | -eat(x,c6).  [resolve(64,a,60,a)].
+85 -eat(c3,x) | -eat(x,c6).  [resolve(64,a,61,a)].
+86 -eat(c4,x) | -eat(x,c6).  [resolve(64,a,62,a)].
+87 -eat(c5,x) | -eat(x,c6).  [resolve(64,a,63,a)].
+89 -plant(x) | eat(c1,x) | -plant(y) | -eat(c2,y).  [copy(88),unit_del(e,74)].
+90 -plant(x) | eat(c2,x) | -plant(y) | -eat(c3,y) | eat(c2,c3).  [resolve(71,c,67,a)].
+92 -plant(x) | eat(c3,x) | -plant(y) | -eat(c5,y).  [copy(91),unit_del(e,80)].
+93 -plant(x) | eat(c1,x) | -eat(c2,x).  [factor(89,a,c)].
+94 -plant(x) | eat(c2,x) | -eat(c3,x) | eat(c2,c3).  [factor(90,a,c)].
+95 -plant(c3) | eat(c2,c3) | -plant(x) | -eat(c3,x).  [factor(90,b,e)].
+96 -plant(x) | eat(c3,x) | -eat(c5,x).  [factor(92,a,c)].
+97 -plant(c3) | eat(c2,c3) | -eat(c3,c3).  [factor(94,b,d)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.00 seconds.
+
+given #1 (I,wt=3): 74 -eat(c1,c2).  [resolve(34,a,30,a)].
+
+given #2 (I,wt=3): 75 plant(f1(c4)).  [resolve(44,a,42,a)].
+
+given #3 (I,wt=4): 76 eat(c4,f1(c4)).  [resolve(45,a,42,a)].
+
+given #4 (I,wt=3): 77 eat(c3,c4).  [resolve(47,a,42,a)].
+
+given #5 (I,wt=3): 78 plant(f2(c5)).  [resolve(50,a,48,a)].
+
+given #6 (I,wt=4): 79 eat(c5,f2(c5)).  [resolve(51,a,48,a)].
+
+given #7 (I,wt=3): 80 -eat(c3,c5).  [resolve(53,a,48,a)].
+
+given #8 (I,wt=2): 81 plant(c6).  [resolve(54,a,55,a)].
+
+given #9 (I,wt=3): 82 -eat(c1,c6).  [resolve(57,a,55,a)].
+
+given #10 (I,wt=6): 83 -eat(c1,x) | -eat(x,c6).  [resolve(64,a,58,a)].
+
+given #11 (I,wt=6): 84 -eat(c2,x) | -eat(x,c6).  [resolve(64,a,60,a)].
+
+given #12 (I,wt=6): 85 -eat(c3,x) | -eat(x,c6).  [resolve(64,a,61,a)].
+
+given #13 (I,wt=6): 86 -eat(c4,x) | -eat(x,c6).  [resolve(64,a,62,a)].
+
+given #14 (I,wt=6): 87 -eat(c5,x) | -eat(x,c6).  [resolve(64,a,63,a)].
+
+given #15 (I,wt=10): 89 -plant(x) | eat(c1,x) | -plant(y) | -eat(c2,y).  [copy(88),unit_del(e,74)].
+
+given #16 (I,wt=13): 90 -plant(x) | eat(c2,x) | -plant(y) | -eat(c3,y) | eat(c2,c3).  [resolve(71,c,67,a)].
+
+given #17 (I,wt=10): 92 -plant(x) | eat(c3,x) | -plant(y) | -eat(c5,y).  [copy(91),unit_del(e,80)].
+
+given #18 (I,wt=8): 93 -plant(x) | eat(c1,x) | -eat(c2,x).  [factor(89,a,c)].
+
+given #19 (I,wt=11): 94 -plant(x) | eat(c2,x) | -eat(c3,x) | eat(c2,c3).  [factor(90,a,c)].
+
+given #20 (I,wt=10): 95 -plant(c3) | eat(c2,c3) | -plant(x) | -eat(c3,x).  [factor(90,b,e)].
+
+given #21 (I,wt=8): 97 -plant(c3) | eat(c2,c3) | -eat(c3,c3).  [factor(94,b,d)].
+
+given #22 (A,wt=3): 98 -eat(c4,c6).  [resolve(85,a,77,a)].
+
+given #23 (F,wt=2): 108 -plant(c5).  [ur(92,b,80,a,c,78,a,d,79,a)].
+
+given #24 (F,wt=3): 101 -eat(c2,c6).  [ur(89,a,81,a,b,82,a,c,81,a)].
+
+given #25 (F,wt=4): 99 -eat(f1(c4),c6).  [resolve(86,a,76,a)].
+
+given #26 (F,wt=4): 100 -eat(f2(c5),c6).  [resolve(87,a,79,a)].
+
+given #27 (T,wt=5): 107 -plant(x) | eat(c3,x).  [resolve(92,d,79,a),unit_del(c,78)].
+
+given #28 (T,wt=3): 109 eat(c3,c6).  [resolve(107,a,81,a)].
+
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 71.
+% Level of proof is 9.
+% Maximum clause weight is 13.000.
+% Given clauses 28.
+
+2 (all x (fox(x) -> animal(x))) # label(non_clause).  [assumption].
+3 (all x (bird(x) -> animal(x))) # label(non_clause).  [assumption].
+5 (all x (snail(x) -> animal(x))) # label(non_clause).  [assumption].
+6 (exists x wolf(x)) # label(non_clause).  [assumption].
+7 (exists x fox(x)) # label(non_clause).  [assumption].
+8 (exists x bird(x)) # label(non_clause).  [assumption].
+10 (exists x snail(x)) # label(non_clause).  [assumption].
+11 (exists x grain(x)) # label(non_clause).  [assumption].
+12 (all x (grain(x) -> plant(x))) # label(non_clause).  [assumption].
+13 (all x ((all y (plant(y) -> eat(x,y))) | (all z (animal(z) & smaller(z,x) & (exists u (plant(u) & eat(z,u))) -> eat(x,z))))) # label(non_clause).  [assumption].
+15 (all x (snail(x) -> (all y (bird(y) -> smaller(x,y))))) # label(non_clause).  [assumption].
+16 (all x (bird(x) -> (all y (fox(y) -> smaller(x,y))))) # label(non_clause).  [assumption].
+17 (all x (fox(x) -> (all y (wolf(y) -> smaller(x,y))))) # label(non_clause).  [assumption].
+18 (all x (wolf(x) -> (all y (fox(y) -> -eat(x,y))))) # label(non_clause).  [assumption].
+19 (all x (wolf(x) -> (all y (grain(y) -> -eat(x,y))))) # label(non_clause).  [assumption].
+21 (all x (bird(x) -> (all y (snail(y) -> -eat(x,y))))) # label(non_clause).  [assumption].
+23 (all x (snail(x) -> (exists y (plant(y) & eat(x,y))))) # label(non_clause).  [assumption].
+24 (exists x (animal(x) & (exists y (eat(x,y) & (exists z (grain(z) & eat(y,z))))))) # label(non_clause) # label(goal).  [goal].
+25 wolf(c1).  [clausify(6)].
+27 -fox(x) | -wolf(y) | smaller(x,y).  [clausify(17)].
+28 -wolf(x) | -fox(y) | -eat(x,y).  [clausify(18)].
+29 -wolf(x) | -grain(y) | -eat(x,y).  [clausify(19)].
+30 fox(c2).  [clausify(7)].
+31 -fox(x) | animal(x).  [clausify(2)].
+32 -bird(x) | -fox(y) | smaller(x,y).  [clausify(16)].
+33 -fox(x) | smaller(x,c1).  [resolve(27,b,25,a)].
+34 -fox(x) | -eat(c1,x).  [resolve(28,a,25,a)].
+35 bird(c3).  [clausify(8)].
+36 -bird(x) | animal(x).  [clausify(3)].
+38 -snail(x) | -bird(y) | smaller(x,y).  [clausify(15)].
+40 -bird(x) | -snail(y) | -eat(x,y).  [clausify(21)].
+41 -bird(x) | smaller(x,c2).  [resolve(32,b,30,a)].
+48 snail(c5).  [clausify(10)].
+49 -snail(x) | animal(x).  [clausify(5)].
+50 -snail(x) | plant(f2(x)).  [clausify(23)].
+51 -snail(x) | eat(x,f2(x)).  [clausify(23)].
+52 -snail(x) | smaller(x,c3).  [resolve(38,b,35,a)].
+53 -snail(x) | -eat(c3,x).  [resolve(40,a,35,a)].
+54 -grain(x) | plant(x).  [clausify(12)].
+55 grain(c6).  [clausify(11)].
+56 -animal(x) | -eat(x,y) | -grain(z) | -eat(y,z).  [deny(24)].
+57 -grain(x) | -eat(c1,x).  [resolve(29,a,25,a)].
+59 -plant(x) | eat(y,x) | -animal(z) | -smaller(z,y) | -plant(u) | -eat(z,u) | eat(y,z).  [clausify(13)].
+60 animal(c2).  [resolve(30,a,31,a)].
+61 animal(c3).  [resolve(35,a,36,a)].
+63 animal(c5).  [resolve(48,a,49,a)].
+64 -animal(x) | -eat(x,y) | -eat(y,c6).  [resolve(56,c,55,a)].
+66 smaller(c2,c1).  [resolve(33,a,30,a)].
+67 smaller(c3,c2).  [resolve(41,a,35,a)].
+69 smaller(c5,c3).  [resolve(52,a,48,a)].
+70 -plant(x) | eat(y,x) | -smaller(c2,y) | -plant(z) | -eat(c2,z) | eat(y,c2).  [resolve(60,a,59,c)].
+71 -plant(x) | eat(y,x) | -smaller(c3,y) | -plant(z) | -eat(c3,z) | eat(y,c3).  [resolve(61,a,59,c)].
+73 -plant(x) | eat(y,x) | -smaller(c5,y) | -plant(z) | -eat(c5,z) | eat(y,c5).  [resolve(63,a,59,c)].
+74 -eat(c1,c2).  [resolve(34,a,30,a)].
+78 plant(f2(c5)).  [resolve(50,a,48,a)].
+79 eat(c5,f2(c5)).  [resolve(51,a,48,a)].
+80 -eat(c3,c5).  [resolve(53,a,48,a)].
+81 plant(c6).  [resolve(54,a,55,a)].
+82 -eat(c1,c6).  [resolve(57,a,55,a)].
+84 -eat(c2,x) | -eat(x,c6).  [resolve(64,a,60,a)].
+88 -plant(x) | eat(c1,x) | -plant(y) | -eat(c2,y) | eat(c1,c2).  [resolve(70,c,66,a)].
+89 -plant(x) | eat(c1,x) | -plant(y) | -eat(c2,y).  [copy(88),unit_del(e,74)].
+90 -plant(x) | eat(c2,x) | -plant(y) | -eat(c3,y) | eat(c2,c3).  [resolve(71,c,67,a)].
+91 -plant(x) | eat(c3,x) | -plant(y) | -eat(c5,y) | eat(c3,c5).  [resolve(73,c,69,a)].
+92 -plant(x) | eat(c3,x) | -plant(y) | -eat(c5,y).  [copy(91),unit_del(e,80)].
+94 -plant(x) | eat(c2,x) | -eat(c3,x) | eat(c2,c3).  [factor(90,a,c)].
+101 -eat(c2,c6).  [ur(89,a,81,a,b,82,a,c,81,a)].
+107 -plant(x) | eat(c3,x).  [resolve(92,d,79,a),unit_del(c,78)].
+109 eat(c3,c6).  [resolve(107,a,81,a)].
+113 eat(c2,c3).  [resolve(109,a,94,c),unit_del(a,81),unit_del(b,101)].
+118 $F.  [resolve(109,a,84,b),unit_del(a,113)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=28. Generated=53. Kept=42. proofs=1.
+Usable=27. Sos=7. Demods=0. Limbo=6, Disabled=69. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=10. Back_subsumed=2.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=6. Nonunit_bsub_feature_tests=32.
+Megabytes=0.15.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 6430 exit (max_proofs) Wed Jun 26 22:33:07 2019

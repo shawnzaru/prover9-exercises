@@ -1,0 +1,198 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 6405 was started by qwang on grid01,
+Wed Jun 26 22:33:07 2019
+The command was "prover9 -f ex02.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file ex02.in
+
+
+formulas(sos).
+(all x (child(x) -> loves(x,santa))).
+(all x (loves(x,santa) -> (all y (reindeer(y) -> loves(x,y))))).
+reindeer(rudolph) & rednose(rudolph).
+(all x (rednose(x) -> weird(x) | clown(x))).
+(all x (reindeer(x) -> -clown(x))).
+(all x (weird(x) -> -loves(scrooge,x))).
+end_of_list.
+
+formulas(goals).
+-child(scrooge).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (child(x) -> loves(x,santa))) # label(non_clause).  [assumption].
+2 (all x (loves(x,santa) -> (all y (reindeer(y) -> loves(x,y))))) # label(non_clause).  [assumption].
+3 reindeer(rudolph) & rednose(rudolph) # label(non_clause).  [assumption].
+4 (all x (rednose(x) -> weird(x) | clown(x))) # label(non_clause).  [assumption].
+5 (all x (reindeer(x) -> -clown(x))) # label(non_clause).  [assumption].
+6 (all x (weird(x) -> -loves(scrooge,x))) # label(non_clause).  [assumption].
+7 -child(scrooge) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-child(x) | loves(x,santa).  [clausify(1)].
+-loves(x,santa) | -reindeer(y) | loves(x,y).  [clausify(2)].
+reindeer(rudolph).  [clausify(3)].
+rednose(rudolph).  [clausify(3)].
+-rednose(x) | weird(x) | clown(x).  [clausify(4)].
+-reindeer(x) | -clown(x).  [clausify(5)].
+-weird(x) | -loves(scrooge,x).  [clausify(6)].
+child(scrooge).  [deny(7)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating child/1
+8 child(scrooge).  [deny(7)].
+9 -child(x) | loves(x,santa).  [clausify(1)].
+Derived: loves(scrooge,santa).  [resolve(8,a,9,a)].
+
+Eliminating reindeer/1
+10 reindeer(rudolph).  [clausify(3)].
+11 -loves(x,santa) | -reindeer(y) | loves(x,y).  [clausify(2)].
+Derived: -loves(x,santa) | loves(x,rudolph).  [resolve(10,a,11,b)].
+12 -reindeer(x) | -clown(x).  [clausify(5)].
+Derived: -clown(rudolph).  [resolve(12,a,10,a)].
+
+Eliminating rednose/1
+13 -rednose(x) | weird(x) | clown(x).  [clausify(4)].
+14 rednose(rudolph).  [clausify(3)].
+Derived: weird(rudolph) | clown(rudolph).  [resolve(13,a,14,a)].
+
+Eliminating weird/1
+15 weird(rudolph) | clown(rudolph).  [resolve(13,a,14,a)].
+16 -weird(x) | -loves(scrooge,x).  [clausify(6)].
+Derived: clown(rudolph) | -loves(scrooge,rudolph).  [resolve(15,a,16,a)].
+
+Eliminating clown/1
+17 clown(rudolph) | -loves(scrooge,rudolph).  [resolve(15,a,16,a)].
+18 -clown(rudolph).  [resolve(12,a,10,a)].
+Derived: -loves(scrooge,rudolph).  [resolve(17,a,18,a)].
+
+============================== end predicate elimination =============
+
+Auto_denials:  (no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ loves ]).
+Function symbol precedence:  function_order([ santa, rudolph, scrooge ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(neg_binary_resolution).  % (HNE depth_diff=0)
+  % clear(ordered_res).  % (HNE depth_diff=0)
+  % set(ur_resolution).  % (HNE depth_diff=0)
+    % set(ur_resolution) -> set(pos_ur_resolution).
+    % set(ur_resolution) -> set(neg_ur_resolution).
+
+Auto_process settings:  (no changes).
+
+kept:      19 loves(scrooge,santa).  [resolve(8,a,9,a)].
+kept:      20 -loves(x,santa) | loves(x,rudolph).  [resolve(10,a,11,b)].
+kept:      21 -loves(scrooge,rudolph).  [resolve(17,a,18,a)].
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+% Clauses after input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+19 loves(scrooge,santa).  [resolve(8,a,9,a)].
+20 -loves(x,santa) | loves(x,rudolph).  [resolve(10,a,11,b)].
+21 -loves(scrooge,rudolph).  [resolve(17,a,18,a)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.00 seconds.
+
+given #1 (I,wt=3): 19 loves(scrooge,santa).  [resolve(8,a,9,a)].
+
+given #2 (I,wt=6): 20 -loves(x,santa) | loves(x,rudolph).  [resolve(10,a,11,b)].
+
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 23.
+% Level of proof is 5.
+% Maximum clause weight is 6.000.
+% Given clauses 2.
+
+1 (all x (child(x) -> loves(x,santa))) # label(non_clause).  [assumption].
+2 (all x (loves(x,santa) -> (all y (reindeer(y) -> loves(x,y))))) # label(non_clause).  [assumption].
+3 reindeer(rudolph) & rednose(rudolph) # label(non_clause).  [assumption].
+4 (all x (rednose(x) -> weird(x) | clown(x))) # label(non_clause).  [assumption].
+5 (all x (reindeer(x) -> -clown(x))) # label(non_clause).  [assumption].
+6 (all x (weird(x) -> -loves(scrooge,x))) # label(non_clause).  [assumption].
+7 -child(scrooge) # label(non_clause) # label(goal).  [goal].
+8 child(scrooge).  [deny(7)].
+9 -child(x) | loves(x,santa).  [clausify(1)].
+10 reindeer(rudolph).  [clausify(3)].
+11 -loves(x,santa) | -reindeer(y) | loves(x,y).  [clausify(2)].
+12 -reindeer(x) | -clown(x).  [clausify(5)].
+13 -rednose(x) | weird(x) | clown(x).  [clausify(4)].
+14 rednose(rudolph).  [clausify(3)].
+15 weird(rudolph) | clown(rudolph).  [resolve(13,a,14,a)].
+16 -weird(x) | -loves(scrooge,x).  [clausify(6)].
+17 clown(rudolph) | -loves(scrooge,rudolph).  [resolve(15,a,16,a)].
+18 -clown(rudolph).  [resolve(12,a,10,a)].
+19 loves(scrooge,santa).  [resolve(8,a,9,a)].
+20 -loves(x,santa) | loves(x,rudolph).  [resolve(10,a,11,b)].
+21 -loves(scrooge,rudolph).  [resolve(17,a,18,a)].
+22 loves(scrooge,rudolph).  [ur(20,a,19,a)].
+23 $F.  [resolve(22,a,21,a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=2. Generated=4. Kept=4. proofs=1.
+Usable=2. Sos=1. Demods=0. Limbo=0, Disabled=14. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=0. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=0. Nonunit_bsub_feature_tests=1.
+Megabytes=0.04.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 6405 exit (max_proofs) Wed Jun 26 22:33:07 2019

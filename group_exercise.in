@@ -1,0 +1,41 @@
+%------------------------------------------
+%  P(x,y,z) := "x * y = z"
+%------------------------------------------
+
+formulas(sos).
+
+  % totality
+  P(x,y,m(x,y)).
+
+  % associativity
+  -P(x,y,u) | -P(y,z,v) | -P(x,v,w) | P(u,z,w).
+  -P(x,y,u) | -P(y,z,v) | -P(u,z,w) | P(x,v,w).
+
+  % existence of left-neutral element and left-inverses
+  P(e,y,y).
+  P(i(y),y,e).
+
+  % existence of right-neutral element and right-inverses (negated)
+  %-P(j(x),x,j(x)) | -P(k(x),z,x).
+
+  % existence of right-neutral element (negated) (a)
+  %-P(j(x),x,j(x)).
+  
+  % abelian
+  P(x,y,z) -> P(y,x,z).
+
+  % x * y * x^{-1} = y (negated) (b)
+  P(a,b,c) & -P(c, i(a), b).
+
+end_of_list.
+
+
+formulas(goals).
+
+  % existence of right-neutral element and right inverses
+  %(exists x (all y P(y,x,y) & all y exists z P(y,z,x))).
+  
+  % x * y * x^{-1} = y
+  %P(x,y,z) -> P(z, i(x), y).
+
+end_of_list.

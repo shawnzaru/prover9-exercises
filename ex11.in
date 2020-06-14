@@ -1,0 +1,28 @@
+formulas(sos).
+
+  % 1. every tree that is an oak contains some grackle.
+  (all x ((tree(x) & oak(x)) -> (exists y (grackle(y) & contain(x,y))))).
+
+  % 2. if anyone walks under any tree that contains any grackle, then he hates every grackle.
+  (all x ((exists y (tree(y) & under(x,y) & (exists z (grackle(z) & contain(y,z))))) -> (all u (grackle(u) -> hate(x,u))))).
+
+  % 3. for every building, there is some tree that is beside it.
+  (all x (building(x) -> (exists y (tree(y) & beside(y,x))))).
+
+  % 4. taylor hall is a building.
+  building(taylor).
+
+  % 5. every cs student visits taylor hall.
+  (all x (student(x) -> visit(x,taylor))).
+
+  % 6. if anyone visits any building, then he walks under every tree that is beside that building.
+  (all x (all y ((building(y) & visit(x,y)) -> (all z ((tree(z) & beside(z,y)) -> under(x,z)))))).
+
+end_of_list.
+
+formulas(goals).
+
+  % 7. if some cs student does not hate some grackle, then there is some tree beside taylor hall that is not an oak.
+  (exists x (student(x) & (exists y (grackle(y) & -hate(x,y))))) -> (exists z (tree(z) & beside(z,taylor) & -oak(z))).
+
+end_of_list.

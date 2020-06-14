@@ -1,0 +1,183 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 64732 was started by qwang on grid01,
+Fri May 31 17:37:40 2019
+The command was "prover9 -f group_exercise.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file group_exercise.in
+
+
+formulas(sos).
+P(x,y,m(x,y)).
+-P(x,y,u) | -P(y,z,v) | -P(x,v,w) | P(u,z,w).
+-P(x,y,u) | -P(y,z,v) | -P(u,z,w) | P(x,v,w).
+P(e,y,y).
+P(i(y),y,e).
+P(x,y,z) -> P(y,x,z).
+P(a,b,c) & -P(c,i(a),b).
+end_of_list.
+
+formulas(goals).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 P(x,y,z) -> P(y,x,z) # label(non_clause).  [assumption].
+2 P(a,b,c) & -P(c,i(a),b) # label(non_clause).  [assumption].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+P(x,y,m(x,y)).  [assumption].
+-P(x,y,z) | -P(y,u,w) | -P(x,w,v5) | P(z,u,v5).  [assumption].
+-P(x,y,z) | -P(y,u,w) | -P(z,u,v5) | P(x,w,v5).  [assumption].
+P(e,x,x).  [assumption].
+P(i(x),x,e).  [assumption].
+-P(x,y,z) | P(y,x,z).  [clausify(1)].
+P(a,b,c).  [clausify(2)].
+-P(c,i(a),b).  [clausify(2)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+No predicates eliminated.
+
+============================== end predicate elimination =============
+
+Auto_denials:  (no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ P ]).
+Function symbol precedence:  function_order([ e, a, b, c, m, i ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(neg_binary_resolution).  % (HNE depth_diff=0)
+  % clear(ordered_res).  % (HNE depth_diff=0)
+  % set(ur_resolution).  % (HNE depth_diff=0)
+    % set(ur_resolution) -> set(pos_ur_resolution).
+    % set(ur_resolution) -> set(neg_ur_resolution).
+
+Auto_process settings:  (no changes).
+
+kept:      3 P(x,y,m(x,y)).  [assumption].
+kept:      4 -P(x,y,z) | -P(y,u,w) | -P(x,w,v5) | P(z,u,v5).  [assumption].
+kept:      5 -P(x,y,z) | -P(y,u,w) | -P(z,u,v5) | P(x,w,v5).  [assumption].
+kept:      6 P(e,x,x).  [assumption].
+kept:      7 P(i(x),x,e).  [assumption].
+kept:      8 -P(x,y,z) | P(y,x,z).  [clausify(1)].
+kept:      9 P(a,b,c).  [clausify(2)].
+kept:      10 -P(c,i(a),b).  [clausify(2)].
+
+============================== end of process initial clauses ========
+
+============================== CLAUSES FOR SEARCH ====================
+
+% Clauses after input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+3 P(x,y,m(x,y)).  [assumption].
+4 -P(x,y,z) | -P(y,u,w) | -P(x,w,v5) | P(z,u,v5).  [assumption].
+5 -P(x,y,z) | -P(y,u,w) | -P(z,u,v5) | P(x,w,v5).  [assumption].
+6 P(e,x,x).  [assumption].
+7 P(i(x),x,e).  [assumption].
+8 -P(x,y,z) | P(y,x,z).  [clausify(1)].
+9 P(a,b,c).  [clausify(2)].
+10 -P(c,i(a),b).  [clausify(2)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== end of clauses for search =============
+
+============================== SEARCH ================================
+
+% Starting search at 0.00 seconds.
+
+given #1 (I,wt=6): 3 P(x,y,m(x,y)).  [assumption].
+
+given #2 (I,wt=16): 4 -P(x,y,z) | -P(y,u,w) | -P(x,w,v5) | P(z,u,v5).  [assumption].
+
+given #3 (I,wt=16): 5 -P(x,y,z) | -P(y,u,w) | -P(z,u,v5) | P(x,w,v5).  [assumption].
+
+given #4 (I,wt=4): 6 P(e,x,x).  [assumption].
+
+given #5 (I,wt=5): 7 P(i(x),x,e).  [assumption].
+
+given #6 (I,wt=8): 8 -P(x,y,z) | P(y,x,z).  [clausify(1)].
+
+given #7 (I,wt=4): 9 P(a,b,c).  [clausify(2)].
+
+given #8 (I,wt=5): 10 -P(c,i(a),b).  [clausify(2)].
+-------- Proof 1 -------- 
+
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 11.
+% Level of proof is 3.
+% Maximum clause weight is 16.000.
+% Given clauses 8.
+
+1 P(x,y,z) -> P(y,x,z) # label(non_clause).  [assumption].
+2 P(a,b,c) & -P(c,i(a),b) # label(non_clause).  [assumption].
+5 -P(x,y,z) | -P(y,u,w) | -P(z,u,v5) | P(x,w,v5).  [assumption].
+6 P(e,x,x).  [assumption].
+7 P(i(x),x,e).  [assumption].
+8 -P(x,y,z) | P(y,x,z).  [clausify(1)].
+9 P(a,b,c).  [clausify(2)].
+10 -P(c,i(a),b).  [clausify(2)].
+42 P(i(a),c,b).  [ur(5,a,7,a,b,9,a,c,6,a)].
+54 -P(i(a),c,b).  [resolve(10,a,8,b)].
+55 $F.  [resolve(54,a,42,a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=8. Generated=79. Kept=52. proofs=1.
+Usable=8. Sos=43. Demods=0. Limbo=0, Disabled=8. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=27. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=1. Nonunit_bsub_feature_tests=7.
+Megabytes=0.10.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+------ process 64732 exit (max_proofs) ------
+
+Process 64732 exit (max_proofs) Fri May 31 17:37:40 2019

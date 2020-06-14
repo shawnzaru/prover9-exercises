@@ -1,0 +1,22 @@
+formulas(sos).
+
+  % 1. for every mall, there is some santa who is at the mall.
+  (all x (mall(x) -> (exists y (santa(y) & at(y, x))))).
+
+  % 2. every child who visits anywhere talks with every santa who is at the place visited.
+  (all x (child(x) -> (all y (visit(x,y) -> (all z (santa(z) -> (talk(x,z) & at(z,y)))))))).
+
+  % 3. every child who is a city child visits some mall.
+  (all x ((child(x) & citychild(x)) -> (exists y (mall(y) & visit(x,y))))).
+
+  % 4. every child who is good or who talks with some santa gets some toy.
+  (all x ((child(x) & (good(x) | (exists y (santa(y) & talk(x,y))))) -> gettoy(x))).
+
+end_of_list.
+
+formulas(goals).
+
+  % 5. if every child who is not a city child is good, then every child gets some toy.
+  (all x ((child(x) & -citychild(x)) -> good(x))) -> (all y (child(y) -> gettoy(y))).
+
+end_of_list.

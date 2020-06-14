@@ -1,0 +1,172 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 6417 was started by qwang on grid01,
+Wed Jun 26 22:33:07 2019
+The command was "prover9 -f ex13.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file ex13.in
+
+
+formulas(sos).
+(all x (boy(x) | girl(x) -> child(x))).
+(all x (child(x) -> getdoll(x) | gettrain(x) | getcoal(x))).
+-(exists x (boy(x) & getdoll(x))).
+-(exists x (child(x) & good(x) & getcoal(x))).
+end_of_list.
+
+formulas(goals).
+-(exists x (child(x) & gettrain(x))) -> -(exists y (boy(y) & good(y))).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (boy(x) | girl(x) -> child(x))) # label(non_clause).  [assumption].
+2 (all x (child(x) -> getdoll(x) | gettrain(x) | getcoal(x))) # label(non_clause).  [assumption].
+3 -(exists x (boy(x) & getdoll(x))) # label(non_clause).  [assumption].
+4 -(exists x (child(x) & good(x) & getcoal(x))) # label(non_clause).  [assumption].
+5 -(exists x (child(x) & gettrain(x))) -> -(exists y (boy(y) & good(y))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-boy(x) | child(x).  [clausify(1)].
+-girl(x) | child(x).  [clausify(1)].
+-child(x) | getdoll(x) | gettrain(x) | getcoal(x).  [clausify(2)].
+-boy(x) | -getdoll(x).  [clausify(3)].
+-child(x) | -good(x) | -getcoal(x).  [clausify(4)].
+-child(x) | -gettrain(x).  [deny(5)].
+boy(c1).  [deny(5)].
+good(c1).  [deny(5)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating boy/1
+6 boy(c1).  [deny(5)].
+7 -boy(x) | child(x).  [clausify(1)].
+8 -boy(x) | -getdoll(x).  [clausify(3)].
+Derived: child(c1).  [resolve(6,a,7,a)].
+Derived: -getdoll(c1).  [resolve(6,a,8,a)].
+
+Eliminating girl/1
+
+Eliminating child/1
+9 child(c1).  [resolve(6,a,7,a)].
+10 -child(x) | getdoll(x) | gettrain(x) | getcoal(x).  [clausify(2)].
+11 -child(x) | -good(x) | -getcoal(x).  [clausify(4)].
+12 -child(x) | -gettrain(x).  [deny(5)].
+Derived: getdoll(c1) | gettrain(c1) | getcoal(c1).  [resolve(9,a,10,a)].
+Derived: -good(c1) | -getcoal(c1).  [resolve(9,a,11,a)].
+Derived: -gettrain(c1).  [resolve(9,a,12,a)].
+
+Eliminating good/1
+13 -good(c1) | -getcoal(c1).  [resolve(9,a,11,a)].
+14 good(c1).  [deny(5)].
+Derived: -getcoal(c1).  [resolve(13,a,14,a)].
+
+Eliminating getdoll/1
+15 getdoll(c1) | gettrain(c1) | getcoal(c1).  [resolve(9,a,10,a)].
+16 -getdoll(c1).  [resolve(6,a,8,a)].
+Derived: gettrain(c1) | getcoal(c1).  [resolve(15,a,16,a)].
+
+Eliminating gettrain/1
+17 gettrain(c1) | getcoal(c1).  [resolve(15,a,16,a)].
+18 -gettrain(c1).  [resolve(9,a,12,a)].
+Derived: getcoal(c1).  [resolve(17,a,18,a)].
+
+Eliminating getcoal/1
+19 getcoal(c1).  [resolve(17,a,18,a)].
+20 -getcoal(c1).  [resolve(13,a,14,a)].
+Derived: $F.  [resolve(19,a,20,a)].
+
+============================== end predicate elimination =============
+
+Auto_denials:  (no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ ]).
+Function symbol precedence:  function_order([ ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(neg_binary_resolution).  % (HNE depth_diff=0)
+  % clear(ordered_res).  % (HNE depth_diff=0)
+  % set(ur_resolution).  % (HNE depth_diff=0)
+    % set(ur_resolution) -> set(pos_ur_resolution).
+    % set(ur_resolution) -> set(neg_ur_resolution).
+
+Auto_process settings:  (no changes).
+
+
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 21.
+% Level of proof is 6.
+% Maximum clause weight is 0.000.
+% Given clauses 0.
+
+1 (all x (boy(x) | girl(x) -> child(x))) # label(non_clause).  [assumption].
+2 (all x (child(x) -> getdoll(x) | gettrain(x) | getcoal(x))) # label(non_clause).  [assumption].
+3 -(exists x (boy(x) & getdoll(x))) # label(non_clause).  [assumption].
+4 -(exists x (child(x) & good(x) & getcoal(x))) # label(non_clause).  [assumption].
+5 -(exists x (child(x) & gettrain(x))) -> -(exists y (boy(y) & good(y))) # label(non_clause) # label(goal).  [goal].
+6 boy(c1).  [deny(5)].
+7 -boy(x) | child(x).  [clausify(1)].
+8 -boy(x) | -getdoll(x).  [clausify(3)].
+9 child(c1).  [resolve(6,a,7,a)].
+10 -child(x) | getdoll(x) | gettrain(x) | getcoal(x).  [clausify(2)].
+11 -child(x) | -good(x) | -getcoal(x).  [clausify(4)].
+12 -child(x) | -gettrain(x).  [deny(5)].
+13 -good(c1) | -getcoal(c1).  [resolve(9,a,11,a)].
+14 good(c1).  [deny(5)].
+15 getdoll(c1) | gettrain(c1) | getcoal(c1).  [resolve(9,a,10,a)].
+16 -getdoll(c1).  [resolve(6,a,8,a)].
+17 gettrain(c1) | getcoal(c1).  [resolve(15,a,16,a)].
+18 -gettrain(c1).  [resolve(9,a,12,a)].
+19 getcoal(c1).  [resolve(17,a,18,a)].
+20 -getcoal(c1).  [resolve(13,a,14,a)].
+21 $F.  [resolve(19,a,20,a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=0. Generated=1. Kept=0. proofs=1.
+Usable=0. Sos=0. Demods=0. Limbo=0, Disabled=17. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=0. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=0. Nonunit_bsub_feature_tests=0.
+Megabytes=0.04.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 6417 exit (max_proofs) Wed Jun 26 22:33:07 2019

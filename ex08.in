@@ -1,0 +1,26 @@
+formulas(sos).
+
+  % 1. every child loves anyone who gives the child any present.
+  (all x (child(x) -> (all y (givepresent(y, x) -> love(x,y))))).
+
+  % 2. every child will be given some present by santa if santa can travel on christmas eve.
+  (all x (child(x) -> (travel(santa, xmas) -> givepresent(santa, x)))).
+
+  % 3. it is foggy on christmas eve.
+  foggy(xmas).
+
+  % 4. anytime it is foggy, anyone can travel if he has some source of light.
+  (all x (foggy(x) -> (all y (haslight(y) -> travel(y, x))))).
+
+  % 5. any reindeer with a red nose is a source of light.
+  % (anyone who has a reindeer with a red nose has a source of light)
+  (all x (hasdeer(x) -> haslight(x))).
+
+end_of_list.
+
+formulas(goals).
+
+  % 6. if santa has some reindeer with a red nose, then every child loves santa.
+  hasdeer(santa) -> (all x (child(x) -> love(x, santa))).
+
+end_of_list.

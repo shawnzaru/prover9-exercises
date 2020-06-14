@@ -1,0 +1,22 @@
+formulas(sos).
+
+  % 1. anyone who is on sixth street and is not a police officer has some costume.
+  (all x ((sixthstreet(x) & -police(x)) -> (exists y (costume(y) & have(x, y))))).
+
+  % 2. no cs student is a police officer.
+  -(exists x (cs(x) & police(x))).
+
+  % 3. every costume that is good is a robot costume.
+  (all x ((costume(x) & good(x)) -> robot(x))).
+
+  % 4. for anyone, if they are on sixth street and are happy, then every costume they have is good or they are drunk.
+  (all x ((sixthstreet(x) & happy(x)) -> ((all y ((costume(y) & have(x,y)) -> good(y))) | drunk(x)))).
+
+end_of_list.
+
+formulas(goals).
+
+  % 5. if no cs student is drunk and every cs student on sixth street is happy, then every cs student on sixth street has some costume that is a robot costume.
+  (-(exists x (cs(x) & drunk(x))) & (all y ((cs(y) & sixthstreet(y)) -> happy(y)))) -> (all z ((cs(z) & sixthstreet(z)) -> (exists u (costume(u) & robot(u) & have(z,u))))).
+
+end_of_list.

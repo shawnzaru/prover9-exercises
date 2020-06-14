@@ -1,0 +1,22 @@
+formulas(sos).
+
+  % 1. anything that is played by any student is tennis, soccer, or chess.
+  (all x ((exists y (student(y) & play(y,x))) -> (tennis(x) | soccer(x) | chess(x)))).
+
+  % 2. anything that is chess is not vigorous.
+  (all x (chess(x) -> -vigorous(x))).
+
+  % 3. anyone who is healthy plays something that is vigorous.
+  (all x (healthy(x) -> (exists y (vigorous(y) & play(x, y))))).
+
+  % 4. anyone who plays any chess does not play any soccer.
+  (all x ((exists y (chess(y) & play(x,y))) -> -(exists z (soccer(z) & play(x,z))))).
+
+end_of_list.
+
+formulas(goals).
+
+  % 5. if every student is healthy, then every student who plays any chess plays some tennis.
+  (all x (student(x) -> healthy(x))) -> (all y (student(y) -> ((exists z (chess(z) & play(y,z))) -> (exists u (tennis(u) & play(y,u)))))).
+
+end_of_list.

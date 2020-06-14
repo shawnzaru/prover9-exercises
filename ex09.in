@@ -1,0 +1,22 @@
+formulas(sos).
+
+  % 1. every investor bought [something that is] stocks or bonds.
+  (all x (investor(x) -> (exists y ((stock(y) | bond(y)) & buy(x,y))))).
+
+  % 2. if the dow-jones average crashes, then all stocks that are not gold stocks fall.
+  djcrash -> (all x ((stock(x) & -goldstock(x)) -> fall(x))).
+
+  % 3. if the t-bill interest rate rises, then all bonds fall.
+  tbrise -> (all x (bond(x) -> fall(x))).
+
+  % 4. every investor who bought something that falls is not happy.
+  (all x ((investor(x) & (exists y (buy(x,y) & fall(y)))) -> -happy(x))).
+
+end_of_list.
+
+formulas(goals).
+
+  % 5. if the dow-jones average crashes and the t-bill interest rate rises, then any investor who is happy bought some gold stock.
+  (djcrash & tbrise) -> (all x ((investor(x) & happy(x)) -> (exists y (goldstock(y) & buy(x, y))))).
+
+end_of_list.

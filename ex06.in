@@ -1,0 +1,22 @@
+formulas(sos).
+
+  % 1. every coyote chases some roadrunner.
+  (all x (coyote(x) -> (exists y (runner(y) & chase(x,y))))).
+
+  % 2. every roadrunner who says 'beep-beep' is smart.
+  (all x ((runner(x) & beep(x)) -> smart(x))).
+
+  % 3. no coyote catches any smart roadrunner.
+  -(exists x (coyote(x) & (exists y (runner(y) & smart(y) & catch(x,y))))).
+
+  % 4. any coyote who chases some roadrunner but does not catch it is frustrated.
+  (all x ((coyote(x) & (exists y (runner(y) & chase(x,y) & -catch(x,y)))) -> frustrated(x))).
+
+end_of_list.
+
+formulas(goals).
+
+  % 5. if all roadrunners say 'beep-beep', then all coyotes are frustrated.
+  (all x (runner(x) -> beep(x))) -> (all y (coyote(y) -> frustrated(y))).
+
+end_of_list.

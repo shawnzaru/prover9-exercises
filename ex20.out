@@ -1,0 +1,217 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 6424 was started by qwang on grid01,
+Wed Jun 26 22:33:07 2019
+The command was "prover9 -f ex20.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file ex20.in
+
+
+formulas(sos).
+(all x (sixthstreet(x) & -police(x) -> (exists y (costume(y) & have(x,y))))).
+-(exists x (cs(x) & police(x))).
+(all x (costume(x) & good(x) -> robot(x))).
+(all x (sixthstreet(x) & happy(x) -> (all y (costume(y) & have(x,y) -> good(y))) | drunk(x))).
+end_of_list.
+
+formulas(goals).
+-(exists x (cs(x) & drunk(x))) & (all y (cs(y) & sixthstreet(y) -> happy(y))) -> (all z (cs(z) & sixthstreet(z) -> (exists u (costume(u) & robot(u) & have(z,u))))).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (sixthstreet(x) & -police(x) -> (exists y (costume(y) & have(x,y))))) # label(non_clause).  [assumption].
+2 -(exists x (cs(x) & police(x))) # label(non_clause).  [assumption].
+3 (all x (costume(x) & good(x) -> robot(x))) # label(non_clause).  [assumption].
+4 (all x (sixthstreet(x) & happy(x) -> (all y (costume(y) & have(x,y) -> good(y))) | drunk(x))) # label(non_clause).  [assumption].
+5 -(exists x (cs(x) & drunk(x))) & (all y (cs(y) & sixthstreet(y) -> happy(y))) -> (all z (cs(z) & sixthstreet(z) -> (exists u (costume(u) & robot(u) & have(z,u))))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-sixthstreet(x) | police(x) | costume(f1(x)).  [clausify(1)].
+-sixthstreet(x) | police(x) | have(x,f1(x)).  [clausify(1)].
+-cs(x) | -police(x).  [clausify(2)].
+-costume(x) | -good(x) | robot(x).  [clausify(3)].
+-sixthstreet(x) | -happy(x) | -costume(y) | -have(x,y) | good(y) | drunk(x).  [clausify(4)].
+-cs(x) | -drunk(x).  [deny(5)].
+-cs(x) | -sixthstreet(x) | happy(x).  [deny(5)].
+cs(c1).  [deny(5)].
+sixthstreet(c1).  [deny(5)].
+-costume(x) | -robot(x) | -have(c1,x).  [deny(5)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating sixthstreet/1
+6 sixthstreet(c1).  [deny(5)].
+7 -sixthstreet(x) | police(x) | costume(f1(x)).  [clausify(1)].
+8 -sixthstreet(x) | police(x) | have(x,f1(x)).  [clausify(1)].
+9 -sixthstreet(x) | -happy(x) | -costume(y) | -have(x,y) | good(y) | drunk(x).  [clausify(4)].
+10 -cs(x) | -sixthstreet(x) | happy(x).  [deny(5)].
+Derived: police(c1) | costume(f1(c1)).  [resolve(6,a,7,a)].
+Derived: police(c1) | have(c1,f1(c1)).  [resolve(6,a,8,a)].
+Derived: -happy(c1) | -costume(x) | -have(c1,x) | good(x) | drunk(c1).  [resolve(6,a,9,a)].
+Derived: -cs(c1) | happy(c1).  [resolve(6,a,10,b)].
+
+Eliminating cs/1
+11 cs(c1).  [deny(5)].
+12 -cs(x) | -police(x).  [clausify(2)].
+13 -cs(x) | -drunk(x).  [deny(5)].
+Derived: -police(c1).  [resolve(11,a,12,a)].
+Derived: -drunk(c1).  [resolve(11,a,13,a)].
+14 -cs(c1) | happy(c1).  [resolve(6,a,10,b)].
+Derived: happy(c1).  [resolve(14,a,11,a)].
+
+Eliminating costume/1
+15 police(c1) | costume(f1(c1)).  [resolve(6,a,7,a)].
+16 -costume(x) | -good(x) | robot(x).  [clausify(3)].
+17 -costume(x) | -robot(x) | -have(c1,x).  [deny(5)].
+Derived: police(c1) | -good(f1(c1)) | robot(f1(c1)).  [resolve(15,b,16,a)].
+Derived: police(c1) | -robot(f1(c1)) | -have(c1,f1(c1)).  [resolve(15,b,17,a)].
+18 -happy(c1) | -costume(x) | -have(c1,x) | good(x) | drunk(c1).  [resolve(6,a,9,a)].
+Derived: -happy(c1) | -have(c1,f1(c1)) | good(f1(c1)) | drunk(c1) | police(c1).  [resolve(18,b,15,b)].
+
+Eliminating police/1
+19 -police(c1).  [resolve(11,a,12,a)].
+20 police(c1) | have(c1,f1(c1)).  [resolve(6,a,8,a)].
+Derived: have(c1,f1(c1)).  [resolve(19,a,20,a)].
+21 police(c1) | -good(f1(c1)) | robot(f1(c1)).  [resolve(15,b,16,a)].
+Derived: -good(f1(c1)) | robot(f1(c1)).  [resolve(21,a,19,a)].
+22 police(c1) | -robot(f1(c1)) | -have(c1,f1(c1)).  [resolve(15,b,17,a)].
+Derived: -robot(f1(c1)) | -have(c1,f1(c1)).  [resolve(22,a,19,a)].
+23 -happy(c1) | -have(c1,f1(c1)) | good(f1(c1)) | drunk(c1) | police(c1).  [resolve(18,b,15,b)].
+Derived: -happy(c1) | -have(c1,f1(c1)) | good(f1(c1)) | drunk(c1).  [resolve(23,e,19,a)].
+
+Eliminating drunk/1
+24 -happy(c1) | -have(c1,f1(c1)) | good(f1(c1)) | drunk(c1).  [resolve(23,e,19,a)].
+25 -drunk(c1).  [resolve(11,a,13,a)].
+Derived: -happy(c1) | -have(c1,f1(c1)) | good(f1(c1)).  [resolve(24,d,25,a)].
+
+Eliminating happy/1
+26 -happy(c1) | -have(c1,f1(c1)) | good(f1(c1)).  [resolve(24,d,25,a)].
+27 happy(c1).  [resolve(14,a,11,a)].
+Derived: -have(c1,f1(c1)) | good(f1(c1)).  [resolve(26,a,27,a)].
+
+Eliminating have/2
+28 -robot(f1(c1)) | -have(c1,f1(c1)).  [resolve(22,a,19,a)].
+29 have(c1,f1(c1)).  [resolve(19,a,20,a)].
+Derived: -robot(f1(c1)).  [resolve(28,b,29,a)].
+30 -have(c1,f1(c1)) | good(f1(c1)).  [resolve(26,a,27,a)].
+Derived: good(f1(c1)).  [resolve(30,a,29,a)].
+
+Eliminating good/1
+31 good(f1(c1)).  [resolve(30,a,29,a)].
+32 -good(f1(c1)) | robot(f1(c1)).  [resolve(21,a,19,a)].
+Derived: robot(f1(c1)).  [resolve(31,a,32,a)].
+
+Eliminating robot/1
+33 robot(f1(c1)).  [resolve(31,a,32,a)].
+34 -robot(f1(c1)).  [resolve(28,b,29,a)].
+Derived: $F.  [resolve(33,a,34,a)].
+
+============================== end predicate elimination =============
+
+Auto_denials:  (no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ ]).
+Function symbol precedence:  function_order([ ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(neg_binary_resolution).  % (HNE depth_diff=0)
+  % clear(ordered_res).  % (HNE depth_diff=0)
+  % set(ur_resolution).  % (HNE depth_diff=0)
+    % set(ur_resolution) -> set(pos_ur_resolution).
+    % set(ur_resolution) -> set(neg_ur_resolution).
+
+Auto_process settings:  (no changes).
+
+
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 35.
+% Level of proof is 9.
+% Maximum clause weight is 0.000.
+% Given clauses 0.
+
+1 (all x (sixthstreet(x) & -police(x) -> (exists y (costume(y) & have(x,y))))) # label(non_clause).  [assumption].
+2 -(exists x (cs(x) & police(x))) # label(non_clause).  [assumption].
+3 (all x (costume(x) & good(x) -> robot(x))) # label(non_clause).  [assumption].
+4 (all x (sixthstreet(x) & happy(x) -> (all y (costume(y) & have(x,y) -> good(y))) | drunk(x))) # label(non_clause).  [assumption].
+5 -(exists x (cs(x) & drunk(x))) & (all y (cs(y) & sixthstreet(y) -> happy(y))) -> (all z (cs(z) & sixthstreet(z) -> (exists u (costume(u) & robot(u) & have(z,u))))) # label(non_clause) # label(goal).  [goal].
+6 sixthstreet(c1).  [deny(5)].
+7 -sixthstreet(x) | police(x) | costume(f1(x)).  [clausify(1)].
+8 -sixthstreet(x) | police(x) | have(x,f1(x)).  [clausify(1)].
+9 -sixthstreet(x) | -happy(x) | -costume(y) | -have(x,y) | good(y) | drunk(x).  [clausify(4)].
+10 -cs(x) | -sixthstreet(x) | happy(x).  [deny(5)].
+11 cs(c1).  [deny(5)].
+12 -cs(x) | -police(x).  [clausify(2)].
+13 -cs(x) | -drunk(x).  [deny(5)].
+14 -cs(c1) | happy(c1).  [resolve(6,a,10,b)].
+15 police(c1) | costume(f1(c1)).  [resolve(6,a,7,a)].
+16 -costume(x) | -good(x) | robot(x).  [clausify(3)].
+17 -costume(x) | -robot(x) | -have(c1,x).  [deny(5)].
+18 -happy(c1) | -costume(x) | -have(c1,x) | good(x) | drunk(c1).  [resolve(6,a,9,a)].
+19 -police(c1).  [resolve(11,a,12,a)].
+20 police(c1) | have(c1,f1(c1)).  [resolve(6,a,8,a)].
+21 police(c1) | -good(f1(c1)) | robot(f1(c1)).  [resolve(15,b,16,a)].
+22 police(c1) | -robot(f1(c1)) | -have(c1,f1(c1)).  [resolve(15,b,17,a)].
+23 -happy(c1) | -have(c1,f1(c1)) | good(f1(c1)) | drunk(c1) | police(c1).  [resolve(18,b,15,b)].
+24 -happy(c1) | -have(c1,f1(c1)) | good(f1(c1)) | drunk(c1).  [resolve(23,e,19,a)].
+25 -drunk(c1).  [resolve(11,a,13,a)].
+26 -happy(c1) | -have(c1,f1(c1)) | good(f1(c1)).  [resolve(24,d,25,a)].
+27 happy(c1).  [resolve(14,a,11,a)].
+28 -robot(f1(c1)) | -have(c1,f1(c1)).  [resolve(22,a,19,a)].
+29 have(c1,f1(c1)).  [resolve(19,a,20,a)].
+30 -have(c1,f1(c1)) | good(f1(c1)).  [resolve(26,a,27,a)].
+31 good(f1(c1)).  [resolve(30,a,29,a)].
+32 -good(f1(c1)) | robot(f1(c1)).  [resolve(21,a,19,a)].
+33 robot(f1(c1)).  [resolve(31,a,32,a)].
+34 -robot(f1(c1)).  [resolve(28,b,29,a)].
+35 $F.  [resolve(33,a,34,a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=0. Generated=1. Kept=0. proofs=1.
+Usable=0. Sos=0. Demods=0. Limbo=0, Disabled=30. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=0. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=0. Nonunit_bsub_feature_tests=0.
+Megabytes=0.05.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 6424 exit (max_proofs) Wed Jun 26 22:33:07 2019

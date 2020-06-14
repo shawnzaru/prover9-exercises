@@ -1,0 +1,26 @@
+%------------------------------------------
+%  B(x)   :=  "x is a barber"
+%  S(x,y) :=  "x shaves y"
+%------------------------------------------
+
+formulas(sos).
+
+  % every barber shaves all persons who do not shave themselves.
+  %(all x (B(x) -> (all y (-S(y,y) -> S(x,y))))).
+  -B(x) | S(y,y) | S(x,y).
+
+  % no barber shaves any person who shaves himself.
+  %-(exists x (B(x) & (exists y (S(y,y) & S(x,y))))).
+  -B(x) | -S(y,y) | -S(x,y).
+
+  % negated goal in clausal form.
+  B(c1).
+
+end_of_list.
+
+formulas(goals).
+
+  % there are no barbers.
+  %-(exists x (B(x))).
+
+end_of_list.

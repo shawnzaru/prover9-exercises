@@ -1,0 +1,212 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 6415 was started by qwang on grid01,
+Wed Jun 26 22:33:07 2019
+The command was "prover9 -f ex11.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file ex11.in
+
+
+formulas(sos).
+(all x (tree(x) & oak(x) -> (exists y (grackle(y) & contain(x,y))))).
+(all x ((exists y (tree(y) & under(x,y) & (exists z (grackle(z) & contain(y,z))))) -> (all u (grackle(u) -> hate(x,u))))).
+(all x (building(x) -> (exists y (tree(y) & beside(y,x))))).
+building(taylor).
+(all x (student(x) -> visit(x,taylor))).
+(all x all y (building(y) & visit(x,y) -> (all z (tree(z) & beside(z,y) -> under(x,z))))).
+end_of_list.
+
+formulas(goals).
+(exists x (student(x) & (exists y (grackle(y) & -hate(x,y))))) -> (exists z (tree(z) & beside(z,taylor) & -oak(z))).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (tree(x) & oak(x) -> (exists y (grackle(y) & contain(x,y))))) # label(non_clause).  [assumption].
+2 (all x ((exists y (tree(y) & under(x,y) & (exists z (grackle(z) & contain(y,z))))) -> (all u (grackle(u) -> hate(x,u))))) # label(non_clause).  [assumption].
+3 (all x (building(x) -> (exists y (tree(y) & beside(y,x))))) # label(non_clause).  [assumption].
+4 (all x (student(x) -> visit(x,taylor))) # label(non_clause).  [assumption].
+5 (all x all y (building(y) & visit(x,y) -> (all z (tree(z) & beside(z,y) -> under(x,z))))) # label(non_clause).  [assumption].
+6 (exists x (student(x) & (exists y (grackle(y) & -hate(x,y))))) -> (exists z (tree(z) & beside(z,taylor) & -oak(z))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-tree(x) | -oak(x) | grackle(f1(x)).  [clausify(1)].
+-tree(x) | -oak(x) | contain(x,f1(x)).  [clausify(1)].
+-tree(x) | -under(y,x) | -grackle(z) | -contain(x,z) | -grackle(u) | hate(y,u).  [clausify(2)].
+-building(x) | tree(f2(x)).  [clausify(3)].
+-building(x) | beside(f2(x),x).  [clausify(3)].
+building(taylor).  [assumption].
+-student(x) | visit(x,taylor).  [clausify(4)].
+-building(x) | -visit(y,x) | -tree(z) | -beside(z,x) | under(y,z).  [clausify(5)].
+student(c1).  [deny(6)].
+grackle(c2).  [deny(6)].
+-hate(c1,c2).  [deny(6)].
+-tree(x) | -beside(x,taylor) | oak(x).  [deny(6)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating tree/1
+7 -building(x) | tree(f2(x)).  [clausify(3)].
+8 -tree(x) | -oak(x) | grackle(f1(x)).  [clausify(1)].
+9 -tree(x) | -oak(x) | contain(x,f1(x)).  [clausify(1)].
+10 -tree(x) | -under(y,x) | -grackle(z) | -contain(x,z) | -grackle(u) | hate(y,u).  [clausify(2)].
+Derived: -building(x) | -oak(f2(x)) | grackle(f1(f2(x))).  [resolve(7,b,8,a)].
+Derived: -building(x) | -oak(f2(x)) | contain(f2(x),f1(f2(x))).  [resolve(7,b,9,a)].
+Derived: -building(x) | -under(y,f2(x)) | -grackle(z) | -contain(f2(x),z) | -grackle(u) | hate(y,u).  [resolve(7,b,10,a)].
+11 -building(x) | -visit(y,x) | -tree(z) | -beside(z,x) | under(y,z).  [clausify(5)].
+Derived: -building(x) | -visit(y,x) | -beside(f2(z),x) | under(y,f2(z)) | -building(z).  [resolve(11,c,7,b)].
+12 -tree(x) | -beside(x,taylor) | oak(x).  [deny(6)].
+Derived: -beside(f2(x),taylor) | oak(f2(x)) | -building(x).  [resolve(12,a,7,b)].
+
+Eliminating beside/2
+13 -building(x) | -visit(y,x) | -beside(f2(z),x) | under(y,f2(z)) | -building(z).  [resolve(11,c,7,b)].
+14 -building(x) | beside(f2(x),x).  [clausify(3)].
+Derived: -building(x) | -visit(y,x) | under(y,f2(x)) | -building(x) | -building(x).  [resolve(13,c,14,b)].
+15 -beside(f2(x),taylor) | oak(f2(x)) | -building(x).  [resolve(12,a,7,b)].
+Derived: oak(f2(taylor)) | -building(taylor) | -building(taylor).  [resolve(15,a,14,b)].
+
+Eliminating student/1
+16 student(c1).  [deny(6)].
+17 -student(x) | visit(x,taylor).  [clausify(4)].
+Derived: visit(c1,taylor).  [resolve(16,a,17,a)].
+
+Eliminating hate/2
+18 -building(x) | -under(y,f2(x)) | -grackle(z) | -contain(f2(x),z) | -grackle(u) | hate(y,u).  [resolve(7,b,10,a)].
+19 -hate(c1,c2).  [deny(6)].
+Derived: -building(x) | -under(c1,f2(x)) | -grackle(y) | -contain(f2(x),y) | -grackle(c2).  [resolve(18,f,19,a)].
+
+Eliminating oak/1
+20 oak(f2(taylor)) | -building(taylor) | -building(taylor).  [resolve(15,a,14,b)].
+21 -building(x) | -oak(f2(x)) | grackle(f1(f2(x))).  [resolve(7,b,8,a)].
+22 -building(x) | -oak(f2(x)) | contain(f2(x),f1(f2(x))).  [resolve(7,b,9,a)].
+Derived: -building(taylor) | -building(taylor) | -building(taylor) | grackle(f1(f2(taylor))).  [resolve(20,a,21,b)].
+Derived: -building(taylor) | -building(taylor) | -building(taylor) | contain(f2(taylor),f1(f2(taylor))).  [resolve(20,a,22,b)].
+
+Eliminating visit/2
+23 visit(c1,taylor).  [resolve(16,a,17,a)].
+24 -building(x) | -visit(y,x) | under(y,f2(x)) | -building(x) | -building(x).  [resolve(13,c,14,b)].
+Derived: -building(taylor) | under(c1,f2(taylor)) | -building(taylor) | -building(taylor).  [resolve(23,a,24,b)].
+
+Eliminating under/2
+25 -building(taylor) | under(c1,f2(taylor)) | -building(taylor) | -building(taylor).  [resolve(23,a,24,b)].
+26 -building(x) | -under(c1,f2(x)) | -grackle(y) | -contain(f2(x),y) | -grackle(c2).  [resolve(18,f,19,a)].
+Derived: -building(taylor) | -building(taylor) | -building(taylor) | -building(taylor) | -grackle(x) | -contain(f2(taylor),x) | -grackle(c2).  [resolve(25,b,26,b)].
+
+Eliminating contain/2
+27 -building(taylor) | -building(taylor) | -building(taylor) | -building(taylor) | -grackle(x) | -contain(f2(taylor),x) | -grackle(c2).  [resolve(25,b,26,b)].
+28 -building(taylor) | -building(taylor) | -building(taylor) | contain(f2(taylor),f1(f2(taylor))).  [resolve(20,a,22,b)].
+Derived: -building(taylor) | -building(taylor) | -building(taylor) | -building(taylor) | -grackle(f1(f2(taylor))) | -grackle(c2) | -building(taylor) | -building(taylor) | -building(taylor).  [resolve(27,f,28,d)].
+
+============================== end predicate elimination =============
+
+Auto_denials:  (no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ building, grackle ]).
+Function symbol precedence:  function_order([ taylor, c2, f1, f2 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(neg_binary_resolution).  % (HNE depth_diff=-2)
+  % clear(ordered_res).  % (HNE depth_diff=-2)
+  % set(ur_resolution).  % (HNE depth_diff=-2)
+    % set(ur_resolution) -> set(pos_ur_resolution).
+    % set(ur_resolution) -> set(neg_ur_resolution).
+
+Auto_process settings:
+  % set(unit_deletion).  % (Horn set with negative nonunits)
+
+kept:      29 building(taylor).  [assumption].
+kept:      30 grackle(c2).  [deny(6)].
+           31 -building(taylor) | -building(taylor) | -building(taylor) | grackle(f1(f2(taylor))).  [resolve(20,a,21,b)].
+kept:      32 grackle(f1(f2(taylor))).  [copy(31),merge(b),merge(c),unit_del(a,29)].
+           33 -building(taylor) | -building(taylor) | -building(taylor) | -building(taylor) | -grackle(f1(f2(taylor))) | -grackle(c2) | -building(taylor) | -building(taylor) | -building(taylor).  [resolve(27,f,28,d)].
+
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 34.
+% Level of proof is 7.
+% Maximum clause weight is 4.000.
+% Given clauses 0.
+
+1 (all x (tree(x) & oak(x) -> (exists y (grackle(y) & contain(x,y))))) # label(non_clause).  [assumption].
+2 (all x ((exists y (tree(y) & under(x,y) & (exists z (grackle(z) & contain(y,z))))) -> (all u (grackle(u) -> hate(x,u))))) # label(non_clause).  [assumption].
+3 (all x (building(x) -> (exists y (tree(y) & beside(y,x))))) # label(non_clause).  [assumption].
+4 (all x (student(x) -> visit(x,taylor))) # label(non_clause).  [assumption].
+5 (all x all y (building(y) & visit(x,y) -> (all z (tree(z) & beside(z,y) -> under(x,z))))) # label(non_clause).  [assumption].
+6 (exists x (student(x) & (exists y (grackle(y) & -hate(x,y))))) -> (exists z (tree(z) & beside(z,taylor) & -oak(z))) # label(non_clause) # label(goal).  [goal].
+7 -building(x) | tree(f2(x)).  [clausify(3)].
+8 -tree(x) | -oak(x) | grackle(f1(x)).  [clausify(1)].
+9 -tree(x) | -oak(x) | contain(x,f1(x)).  [clausify(1)].
+10 -tree(x) | -under(y,x) | -grackle(z) | -contain(x,z) | -grackle(u) | hate(y,u).  [clausify(2)].
+11 -building(x) | -visit(y,x) | -tree(z) | -beside(z,x) | under(y,z).  [clausify(5)].
+12 -tree(x) | -beside(x,taylor) | oak(x).  [deny(6)].
+13 -building(x) | -visit(y,x) | -beside(f2(z),x) | under(y,f2(z)) | -building(z).  [resolve(11,c,7,b)].
+14 -building(x) | beside(f2(x),x).  [clausify(3)].
+15 -beside(f2(x),taylor) | oak(f2(x)) | -building(x).  [resolve(12,a,7,b)].
+16 student(c1).  [deny(6)].
+17 -student(x) | visit(x,taylor).  [clausify(4)].
+18 -building(x) | -under(y,f2(x)) | -grackle(z) | -contain(f2(x),z) | -grackle(u) | hate(y,u).  [resolve(7,b,10,a)].
+19 -hate(c1,c2).  [deny(6)].
+20 oak(f2(taylor)) | -building(taylor) | -building(taylor).  [resolve(15,a,14,b)].
+21 -building(x) | -oak(f2(x)) | grackle(f1(f2(x))).  [resolve(7,b,8,a)].
+22 -building(x) | -oak(f2(x)) | contain(f2(x),f1(f2(x))).  [resolve(7,b,9,a)].
+23 visit(c1,taylor).  [resolve(16,a,17,a)].
+24 -building(x) | -visit(y,x) | under(y,f2(x)) | -building(x) | -building(x).  [resolve(13,c,14,b)].
+25 -building(taylor) | under(c1,f2(taylor)) | -building(taylor) | -building(taylor).  [resolve(23,a,24,b)].
+26 -building(x) | -under(c1,f2(x)) | -grackle(y) | -contain(f2(x),y) | -grackle(c2).  [resolve(18,f,19,a)].
+27 -building(taylor) | -building(taylor) | -building(taylor) | -building(taylor) | -grackle(x) | -contain(f2(taylor),x) | -grackle(c2).  [resolve(25,b,26,b)].
+28 -building(taylor) | -building(taylor) | -building(taylor) | contain(f2(taylor),f1(f2(taylor))).  [resolve(20,a,22,b)].
+29 building(taylor).  [assumption].
+30 grackle(c2).  [deny(6)].
+31 -building(taylor) | -building(taylor) | -building(taylor) | grackle(f1(f2(taylor))).  [resolve(20,a,21,b)].
+32 grackle(f1(f2(taylor))).  [copy(31),merge(b),merge(c),unit_del(a,29)].
+33 -building(taylor) | -building(taylor) | -building(taylor) | -building(taylor) | -grackle(f1(f2(taylor))) | -grackle(c2) | -building(taylor) | -building(taylor) | -building(taylor).  [resolve(27,f,28,d)].
+34 $F.  [copy(33),merge(b),merge(c),merge(d),merge(g),merge(h),merge(i),unit_del(a,29),unit_del(b,32),unit_del(c,30)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=0. Generated=4. Kept=3. proofs=1.
+Usable=0. Sos=0. Demods=0. Limbo=3, Disabled=26. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=0. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=0. Nonunit_bsub_feature_tests=0.
+Megabytes=0.06.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 6415 exit (max_proofs) Wed Jun 26 22:33:07 2019

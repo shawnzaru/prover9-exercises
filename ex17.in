@@ -1,0 +1,22 @@
+formulas(sos).
+
+  % 1. everyone who aces any final exam studies or is brilliant or is lucky.
+  (all x (acefinal(x) -> (study(x) | brilliant(x) | lucky(x)))).
+
+  % 2. everyone who makes an A aces some final exam.
+  (all x (makeA(x) -> acefinal(x))).
+
+  % 3. no cs major is lucky.
+  -(exists x (csmajor(x) & lucky(x))).
+
+  % 4. anyone who drinks beer does not study.
+  (all x (drinkbeer(x) -> -study(x))).
+
+end_of_list.
+
+formulas(goals).
+
+  % 5. if every cs major makes an A, then every cs major who drinks beer is brilliant.
+  (all x (csmajor(x) -> makeA(x))) -> (all x (csmajor(x) -> (drinkbeer(x) -> brilliant(x)))).
+
+end_of_list.

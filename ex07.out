@@ -1,0 +1,182 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 6411 was started by qwang on grid01,
+Wed Jun 26 22:33:07 2019
+The command was "prover9 -f ex07.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file ex07.in
+
+
+formulas(sos).
+(all x (harley(x) -> rough(x))).
+(all x (biker(x) -> harley(x) | bmw(x))).
+(all x (bmw(x) -> yuppie(x))).
+(all x (yuppie(x) -> lawyer(x))).
+(all x (nice(x) -> (all y (rough(y) -> -date(x,y))))).
+nice(mary) & biker(john).
+end_of_list.
+
+formulas(goals).
+-lawyer(john) -> -date(mary,john).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (harley(x) -> rough(x))) # label(non_clause).  [assumption].
+2 (all x (biker(x) -> harley(x) | bmw(x))) # label(non_clause).  [assumption].
+3 (all x (bmw(x) -> yuppie(x))) # label(non_clause).  [assumption].
+4 (all x (yuppie(x) -> lawyer(x))) # label(non_clause).  [assumption].
+5 (all x (nice(x) -> (all y (rough(y) -> -date(x,y))))) # label(non_clause).  [assumption].
+6 nice(mary) & biker(john) # label(non_clause).  [assumption].
+7 -lawyer(john) -> -date(mary,john) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-harley(x) | rough(x).  [clausify(1)].
+-biker(x) | harley(x) | bmw(x).  [clausify(2)].
+-bmw(x) | yuppie(x).  [clausify(3)].
+-yuppie(x) | lawyer(x).  [clausify(4)].
+-nice(x) | -rough(y) | -date(x,y).  [clausify(5)].
+nice(mary).  [clausify(6)].
+biker(john).  [clausify(6)].
+-lawyer(john).  [deny(7)].
+date(mary,john).  [deny(7)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating harley/1
+8 -biker(x) | harley(x) | bmw(x).  [clausify(2)].
+9 -harley(x) | rough(x).  [clausify(1)].
+Derived: -biker(x) | bmw(x) | rough(x).  [resolve(8,b,9,a)].
+
+Eliminating bmw/1
+10 -biker(x) | bmw(x) | rough(x).  [resolve(8,b,9,a)].
+11 -bmw(x) | yuppie(x).  [clausify(3)].
+Derived: -biker(x) | rough(x) | yuppie(x).  [resolve(10,b,11,a)].
+
+Eliminating yuppie/1
+12 -biker(x) | rough(x) | yuppie(x).  [resolve(10,b,11,a)].
+13 -yuppie(x) | lawyer(x).  [clausify(4)].
+Derived: -biker(x) | rough(x) | lawyer(x).  [resolve(12,c,13,a)].
+
+Eliminating nice/1
+14 nice(mary).  [clausify(6)].
+15 -nice(x) | -rough(y) | -date(x,y).  [clausify(5)].
+Derived: -rough(x) | -date(mary,x).  [resolve(14,a,15,a)].
+
+Eliminating biker/1
+16 -biker(x) | rough(x) | lawyer(x).  [resolve(12,c,13,a)].
+17 biker(john).  [clausify(6)].
+Derived: rough(john) | lawyer(john).  [resolve(16,a,17,a)].
+
+Eliminating lawyer/1
+18 rough(john) | lawyer(john).  [resolve(16,a,17,a)].
+19 -lawyer(john).  [deny(7)].
+Derived: rough(john).  [resolve(18,b,19,a)].
+
+Eliminating date/2
+20 -rough(x) | -date(mary,x).  [resolve(14,a,15,a)].
+21 date(mary,john).  [deny(7)].
+Derived: -rough(john).  [resolve(20,b,21,a)].
+
+Eliminating rough/1
+22 -rough(john).  [resolve(20,b,21,a)].
+23 rough(john).  [resolve(18,b,19,a)].
+Derived: $F.  [resolve(22,a,23,a)].
+
+============================== end predicate elimination =============
+
+Auto_denials:  (no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ ]).
+Function symbol precedence:  function_order([ ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(neg_binary_resolution).  % (HNE depth_diff=0)
+  % clear(ordered_res).  % (HNE depth_diff=0)
+  % set(ur_resolution).  % (HNE depth_diff=0)
+    % set(ur_resolution) -> set(pos_ur_resolution).
+    % set(ur_resolution) -> set(neg_ur_resolution).
+
+Auto_process settings:  (no changes).
+
+
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 24.
+% Level of proof is 7.
+% Maximum clause weight is 0.000.
+% Given clauses 0.
+
+1 (all x (harley(x) -> rough(x))) # label(non_clause).  [assumption].
+2 (all x (biker(x) -> harley(x) | bmw(x))) # label(non_clause).  [assumption].
+3 (all x (bmw(x) -> yuppie(x))) # label(non_clause).  [assumption].
+4 (all x (yuppie(x) -> lawyer(x))) # label(non_clause).  [assumption].
+5 (all x (nice(x) -> (all y (rough(y) -> -date(x,y))))) # label(non_clause).  [assumption].
+6 nice(mary) & biker(john) # label(non_clause).  [assumption].
+7 -lawyer(john) -> -date(mary,john) # label(non_clause) # label(goal).  [goal].
+8 -biker(x) | harley(x) | bmw(x).  [clausify(2)].
+9 -harley(x) | rough(x).  [clausify(1)].
+10 -biker(x) | bmw(x) | rough(x).  [resolve(8,b,9,a)].
+11 -bmw(x) | yuppie(x).  [clausify(3)].
+12 -biker(x) | rough(x) | yuppie(x).  [resolve(10,b,11,a)].
+13 -yuppie(x) | lawyer(x).  [clausify(4)].
+14 nice(mary).  [clausify(6)].
+15 -nice(x) | -rough(y) | -date(x,y).  [clausify(5)].
+16 -biker(x) | rough(x) | lawyer(x).  [resolve(12,c,13,a)].
+17 biker(john).  [clausify(6)].
+18 rough(john) | lawyer(john).  [resolve(16,a,17,a)].
+19 -lawyer(john).  [deny(7)].
+20 -rough(x) | -date(mary,x).  [resolve(14,a,15,a)].
+21 date(mary,john).  [deny(7)].
+22 -rough(john).  [resolve(20,b,21,a)].
+23 rough(john).  [resolve(18,b,19,a)].
+24 $F.  [resolve(22,a,23,a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=0. Generated=1. Kept=0. proofs=1.
+Usable=0. Sos=0. Demods=0. Limbo=0, Disabled=17. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=0. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=0. Nonunit_bsub_feature_tests=0.
+Megabytes=0.04.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 6411 exit (max_proofs) Wed Jun 26 22:33:07 2019

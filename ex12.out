@@ -1,0 +1,200 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 6416 was started by qwang on grid01,
+Wed Jun 26 22:33:07 2019
+The command was "prover9 -f ex12.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file ex12.in
+
+
+formulas(sos).
+(all x (child(x) -> (exists y (witch(y) & see(x,y))))).
+-(exists x (witch(x) & hasblackcat(x) & haspointhat(x))).
+(all x (witch(x) -> good(x) | bad(x))).
+(all x (child(x) & (exists y (witch(y) & good(y))) -> getcandy(x))).
+(all x (witch(x) & bad(x) -> hasblackcat(x))).
+end_of_list.
+
+formulas(goals).
+(all x (witch(x) & (exists y (child(y) & see(y,x))) -> haspointhat(x))) -> (all z (child(z) -> getcandy(z))).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (child(x) -> (exists y (witch(y) & see(x,y))))) # label(non_clause).  [assumption].
+2 -(exists x (witch(x) & hasblackcat(x) & haspointhat(x))) # label(non_clause).  [assumption].
+3 (all x (witch(x) -> good(x) | bad(x))) # label(non_clause).  [assumption].
+4 (all x (child(x) & (exists y (witch(y) & good(y))) -> getcandy(x))) # label(non_clause).  [assumption].
+5 (all x (witch(x) & bad(x) -> hasblackcat(x))) # label(non_clause).  [assumption].
+6 (all x (witch(x) & (exists y (child(y) & see(y,x))) -> haspointhat(x))) -> (all z (child(z) -> getcandy(z))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-child(x) | witch(f1(x)).  [clausify(1)].
+-child(x) | see(x,f1(x)).  [clausify(1)].
+-witch(x) | -hasblackcat(x) | -haspointhat(x).  [clausify(2)].
+-witch(x) | good(x) | bad(x).  [clausify(3)].
+-child(x) | -witch(y) | -good(y) | getcandy(x).  [clausify(4)].
+-witch(x) | -bad(x) | hasblackcat(x).  [clausify(5)].
+-witch(x) | -child(y) | -see(y,x) | haspointhat(x).  [deny(6)].
+child(c1).  [deny(6)].
+-getcandy(c1).  [deny(6)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating child/1
+7 child(c1).  [deny(6)].
+8 -child(x) | witch(f1(x)).  [clausify(1)].
+9 -child(x) | see(x,f1(x)).  [clausify(1)].
+10 -child(x) | -witch(y) | -good(y) | getcandy(x).  [clausify(4)].
+11 -witch(x) | -child(y) | -see(y,x) | haspointhat(x).  [deny(6)].
+Derived: witch(f1(c1)).  [resolve(7,a,8,a)].
+Derived: see(c1,f1(c1)).  [resolve(7,a,9,a)].
+Derived: -witch(x) | -good(x) | getcandy(c1).  [resolve(7,a,10,a)].
+Derived: -witch(x) | -see(c1,x) | haspointhat(x).  [resolve(7,a,11,b)].
+
+Eliminating witch/1
+12 witch(f1(c1)).  [resolve(7,a,8,a)].
+13 -witch(x) | -hasblackcat(x) | -haspointhat(x).  [clausify(2)].
+14 -witch(x) | good(x) | bad(x).  [clausify(3)].
+15 -witch(x) | -bad(x) | hasblackcat(x).  [clausify(5)].
+Derived: -hasblackcat(f1(c1)) | -haspointhat(f1(c1)).  [resolve(12,a,13,a)].
+Derived: good(f1(c1)) | bad(f1(c1)).  [resolve(12,a,14,a)].
+Derived: -bad(f1(c1)) | hasblackcat(f1(c1)).  [resolve(12,a,15,a)].
+16 -witch(x) | -good(x) | getcandy(c1).  [resolve(7,a,10,a)].
+Derived: -good(f1(c1)) | getcandy(c1).  [resolve(16,a,12,a)].
+17 -witch(x) | -see(c1,x) | haspointhat(x).  [resolve(7,a,11,b)].
+Derived: -see(c1,f1(c1)) | haspointhat(f1(c1)).  [resolve(17,a,12,a)].
+
+Eliminating getcandy/1
+18 -good(f1(c1)) | getcandy(c1).  [resolve(16,a,12,a)].
+19 -getcandy(c1).  [deny(6)].
+Derived: -good(f1(c1)).  [resolve(18,b,19,a)].
+
+Eliminating see/2
+20 -see(c1,f1(c1)) | haspointhat(f1(c1)).  [resolve(17,a,12,a)].
+21 see(c1,f1(c1)).  [resolve(7,a,9,a)].
+Derived: haspointhat(f1(c1)).  [resolve(20,a,21,a)].
+
+Eliminating hasblackcat/1
+22 -bad(f1(c1)) | hasblackcat(f1(c1)).  [resolve(12,a,15,a)].
+23 -hasblackcat(f1(c1)) | -haspointhat(f1(c1)).  [resolve(12,a,13,a)].
+Derived: -bad(f1(c1)) | -haspointhat(f1(c1)).  [resolve(22,b,23,a)].
+
+Eliminating good/1
+24 -good(f1(c1)).  [resolve(18,b,19,a)].
+25 good(f1(c1)) | bad(f1(c1)).  [resolve(12,a,14,a)].
+Derived: bad(f1(c1)).  [resolve(24,a,25,a)].
+
+Eliminating haspointhat/1
+26 -bad(f1(c1)) | -haspointhat(f1(c1)).  [resolve(22,b,23,a)].
+27 haspointhat(f1(c1)).  [resolve(20,a,21,a)].
+Derived: -bad(f1(c1)).  [resolve(26,b,27,a)].
+
+Eliminating bad/1
+28 -bad(f1(c1)).  [resolve(26,b,27,a)].
+29 bad(f1(c1)).  [resolve(24,a,25,a)].
+Derived: $F.  [resolve(28,a,29,a)].
+
+============================== end predicate elimination =============
+
+Auto_denials:  (no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ ]).
+Function symbol precedence:  function_order([ ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(neg_binary_resolution).  % (HNE depth_diff=0)
+  % clear(ordered_res).  % (HNE depth_diff=0)
+  % set(ur_resolution).  % (HNE depth_diff=0)
+    % set(ur_resolution) -> set(pos_ur_resolution).
+    % set(ur_resolution) -> set(neg_ur_resolution).
+
+Auto_process settings:  (no changes).
+
+
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 30.
+% Level of proof is 6.
+% Maximum clause weight is 0.000.
+% Given clauses 0.
+
+1 (all x (child(x) -> (exists y (witch(y) & see(x,y))))) # label(non_clause).  [assumption].
+2 -(exists x (witch(x) & hasblackcat(x) & haspointhat(x))) # label(non_clause).  [assumption].
+3 (all x (witch(x) -> good(x) | bad(x))) # label(non_clause).  [assumption].
+4 (all x (child(x) & (exists y (witch(y) & good(y))) -> getcandy(x))) # label(non_clause).  [assumption].
+5 (all x (witch(x) & bad(x) -> hasblackcat(x))) # label(non_clause).  [assumption].
+6 (all x (witch(x) & (exists y (child(y) & see(y,x))) -> haspointhat(x))) -> (all z (child(z) -> getcandy(z))) # label(non_clause) # label(goal).  [goal].
+7 child(c1).  [deny(6)].
+8 -child(x) | witch(f1(x)).  [clausify(1)].
+9 -child(x) | see(x,f1(x)).  [clausify(1)].
+10 -child(x) | -witch(y) | -good(y) | getcandy(x).  [clausify(4)].
+11 -witch(x) | -child(y) | -see(y,x) | haspointhat(x).  [deny(6)].
+12 witch(f1(c1)).  [resolve(7,a,8,a)].
+13 -witch(x) | -hasblackcat(x) | -haspointhat(x).  [clausify(2)].
+14 -witch(x) | good(x) | bad(x).  [clausify(3)].
+15 -witch(x) | -bad(x) | hasblackcat(x).  [clausify(5)].
+16 -witch(x) | -good(x) | getcandy(c1).  [resolve(7,a,10,a)].
+17 -witch(x) | -see(c1,x) | haspointhat(x).  [resolve(7,a,11,b)].
+18 -good(f1(c1)) | getcandy(c1).  [resolve(16,a,12,a)].
+19 -getcandy(c1).  [deny(6)].
+20 -see(c1,f1(c1)) | haspointhat(f1(c1)).  [resolve(17,a,12,a)].
+21 see(c1,f1(c1)).  [resolve(7,a,9,a)].
+22 -bad(f1(c1)) | hasblackcat(f1(c1)).  [resolve(12,a,15,a)].
+23 -hasblackcat(f1(c1)) | -haspointhat(f1(c1)).  [resolve(12,a,13,a)].
+24 -good(f1(c1)).  [resolve(18,b,19,a)].
+25 good(f1(c1)) | bad(f1(c1)).  [resolve(12,a,14,a)].
+26 -bad(f1(c1)) | -haspointhat(f1(c1)).  [resolve(22,b,23,a)].
+27 haspointhat(f1(c1)).  [resolve(20,a,21,a)].
+28 -bad(f1(c1)).  [resolve(26,b,27,a)].
+29 bad(f1(c1)).  [resolve(24,a,25,a)].
+30 $F.  [resolve(28,a,29,a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=0. Generated=1. Kept=0. proofs=1.
+Usable=0. Sos=0. Demods=0. Limbo=0, Disabled=24. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=0. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=0. Nonunit_bsub_feature_tests=0.
+Megabytes=0.04.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 6416 exit (max_proofs) Wed Jun 26 22:33:07 2019

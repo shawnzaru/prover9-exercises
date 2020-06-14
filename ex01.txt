@@ -1,0 +1,5 @@
+a. [x / g(y)][y / b][z / b]
+
+b. non-unifiable
+
+c. [x / f(y)][y / f(z)]

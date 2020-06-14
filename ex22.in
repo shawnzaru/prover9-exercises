@@ -1,0 +1,25 @@
+formulas(sos).
+
+  % 1. everyone who feels warm either is drunk, or every costume they have is warm.
+  (all x (feelwarm(x) -> (drunk(x) | (all y ((costume(y) & have(x,y)) -> warm(y)))))).
+
+  % 2. every costume that is warm is furry.
+  (all x ((costume(x) & warm(x)) -> furry(x))).
+
+  % 3. every ai student is a cs student.
+  (all x (ai(x) -> cs(x))).
+
+  % 4. every ai student has some robot costume.
+  (all x (ai(x) -> (exists y (costume(y) & robot(y) & have(x,y))))).
+
+  % 5. no robot costume is furry.
+  -(exists x (costume(x) & robot(x) & furry(x))).
+
+end_of_list.
+
+formulas(goals).
+
+  % 6. if every cs student feels warm, then every ai student is drunk.
+  (all x (cs(x) -> feelwarm(x))) -> (all y (ai(y) -> drunk(y))).
+
+end_of_list.

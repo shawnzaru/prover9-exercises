@@ -1,0 +1,19 @@
+formulas(sos).
+
+  % 1. everyone is like him/herself.
+  (all x (islike(x,x))).
+
+  % 2. if someone is a member of a club, then they want to be a member and the club will accept them.
+  (all x (all y (ismember(x,y) -> (want(x,y) & accept(y,x))))).
+
+  % 3. groucho does not want to be a member of any club that will accept anyone like him.
+  (all x ((exists y (accept(x,y) & islike(y, groucho))) -> -want(groucho, x))).
+
+end_of_list.
+
+formulas(goals).
+
+  % 4. groucho is not a member of any club.
+  (all x (-ismember(groucho, x))).
+
+end_of_list.

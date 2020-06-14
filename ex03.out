@@ -1,0 +1,202 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 6406 was started by qwang on grid01,
+Wed Jun 26 22:33:07 2019
+The command was "prover9 -f ex03.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file ex03.in
+
+
+formulas(sos).
+(all x (buycarrot(x) -> (exists y (own(x,y) & (rabbit(y) | store(y)))))).
+(all x (dog(x) -> (exists y (rabbit(y) & chase(x,y))))).
+buycarrot(mary).
+(all x ((exists y (rabbit(y) & own(x,y))) -> (all z ((exists u (rabbit(u) & chase(z,u))) -> hate(x,z))))).
+(exists x (dog(x) & own(john,x))).
+(all x all y ((exists z (own(y,z) & hate(x,z))) -> -date(x,y))).
+end_of_list.
+
+formulas(goals).
+-(exists x (own(mary,x) & store(x))) -> -date(mary,john).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (buycarrot(x) -> (exists y (own(x,y) & (rabbit(y) | store(y)))))) # label(non_clause).  [assumption].
+2 (all x (dog(x) -> (exists y (rabbit(y) & chase(x,y))))) # label(non_clause).  [assumption].
+3 (all x ((exists y (rabbit(y) & own(x,y))) -> (all z ((exists u (rabbit(u) & chase(z,u))) -> hate(x,z))))) # label(non_clause).  [assumption].
+4 (exists x (dog(x) & own(john,x))) # label(non_clause).  [assumption].
+5 (all x all y ((exists z (own(y,z) & hate(x,z))) -> -date(x,y))) # label(non_clause).  [assumption].
+6 -(exists x (own(mary,x) & store(x))) -> -date(mary,john) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-buycarrot(x) | own(x,f1(x)).  [clausify(1)].
+-buycarrot(x) | rabbit(f1(x)) | store(f1(x)).  [clausify(1)].
+-dog(x) | rabbit(f2(x)).  [clausify(2)].
+-dog(x) | chase(x,f2(x)).  [clausify(2)].
+buycarrot(mary).  [assumption].
+-rabbit(x) | -own(y,x) | -rabbit(z) | -chase(u,z) | hate(y,u).  [clausify(3)].
+dog(c1).  [clausify(4)].
+own(john,c1).  [clausify(4)].
+-own(x,y) | -hate(z,y) | -date(z,x).  [clausify(5)].
+-own(mary,x) | -store(x).  [deny(6)].
+date(mary,john).  [deny(6)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating buycarrot/1
+7 buycarrot(mary).  [assumption].
+8 -buycarrot(x) | own(x,f1(x)).  [clausify(1)].
+9 -buycarrot(x) | rabbit(f1(x)) | store(f1(x)).  [clausify(1)].
+Derived: own(mary,f1(mary)).  [resolve(7,a,8,a)].
+Derived: rabbit(f1(mary)) | store(f1(mary)).  [resolve(7,a,9,a)].
+
+Eliminating dog/1
+10 dog(c1).  [clausify(4)].
+11 -dog(x) | rabbit(f2(x)).  [clausify(2)].
+12 -dog(x) | chase(x,f2(x)).  [clausify(2)].
+Derived: rabbit(f2(c1)).  [resolve(10,a,11,a)].
+Derived: chase(c1,f2(c1)).  [resolve(10,a,12,a)].
+
+Eliminating own/2
+13 own(john,c1).  [clausify(4)].
+14 -rabbit(x) | -own(y,x) | -rabbit(z) | -chase(u,z) | hate(y,u).  [clausify(3)].
+Derived: -rabbit(c1) | -rabbit(x) | -chase(y,x) | hate(john,y).  [resolve(13,a,14,b)].
+15 -own(x,y) | -hate(z,y) | -date(z,x).  [clausify(5)].
+Derived: -hate(x,c1) | -date(x,john).  [resolve(15,a,13,a)].
+16 -own(mary,x) | -store(x).  [deny(6)].
+17 own(mary,f1(mary)).  [resolve(7,a,8,a)].
+Derived: -rabbit(f1(mary)) | -rabbit(x) | -chase(y,x) | hate(mary,y).  [resolve(17,a,14,b)].
+Derived: -hate(x,f1(mary)) | -date(x,mary).  [resolve(17,a,15,a)].
+Derived: -store(f1(mary)).  [resolve(17,a,16,a)].
+
+Eliminating date/2
+18 -hate(x,c1) | -date(x,john).  [resolve(15,a,13,a)].
+19 date(mary,john).  [deny(6)].
+Derived: -hate(mary,c1).  [resolve(18,b,19,a)].
+20 -hate(x,f1(mary)) | -date(x,mary).  [resolve(17,a,15,a)].
+
+Eliminating store/1
+21 -store(f1(mary)).  [resolve(17,a,16,a)].
+22 rabbit(f1(mary)) | store(f1(mary)).  [resolve(7,a,9,a)].
+Derived: rabbit(f1(mary)).  [resolve(21,a,22,b)].
+
+Eliminating chase/2
+23 -rabbit(c1) | -rabbit(x) | -chase(y,x) | hate(john,y).  [resolve(13,a,14,b)].
+24 chase(c1,f2(c1)).  [resolve(10,a,12,a)].
+Derived: -rabbit(c1) | -rabbit(f2(c1)) | hate(john,c1).  [resolve(23,c,24,a)].
+25 -rabbit(f1(mary)) | -rabbit(x) | -chase(y,x) | hate(mary,y).  [resolve(17,a,14,b)].
+Derived: -rabbit(f1(mary)) | -rabbit(f2(c1)) | hate(mary,c1).  [resolve(25,c,24,a)].
+
+Eliminating hate/2
+26 -rabbit(c1) | -rabbit(f2(c1)) | hate(john,c1).  [resolve(23,c,24,a)].
+27 -hate(mary,c1).  [resolve(18,b,19,a)].
+28 -rabbit(f1(mary)) | -rabbit(f2(c1)) | hate(mary,c1).  [resolve(25,c,24,a)].
+Derived: -rabbit(f1(mary)) | -rabbit(f2(c1)).  [resolve(28,c,27,a)].
+
+============================== end predicate elimination =============
+
+Auto_denials:  (no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ rabbit ]).
+Function symbol precedence:  function_order([ mary, c1, f1, f2 ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(neg_binary_resolution).  % (HNE depth_diff=0)
+  % clear(ordered_res).  % (HNE depth_diff=0)
+  % set(ur_resolution).  % (HNE depth_diff=0)
+    % set(ur_resolution) -> set(pos_ur_resolution).
+    % set(ur_resolution) -> set(neg_ur_resolution).
+
+Auto_process settings:
+  % set(unit_deletion).  % (Horn set with negative nonunits)
+
+kept:      29 rabbit(f2(c1)).  [resolve(10,a,11,a)].
+kept:      30 rabbit(f1(mary)).  [resolve(21,a,22,b)].
+           31 -rabbit(f1(mary)) | -rabbit(f2(c1)).  [resolve(28,c,27,a)].
+
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 29.
+% Level of proof is 6.
+% Maximum clause weight is 3.000.
+% Given clauses 0.
+
+1 (all x (buycarrot(x) -> (exists y (own(x,y) & (rabbit(y) | store(y)))))) # label(non_clause).  [assumption].
+2 (all x (dog(x) -> (exists y (rabbit(y) & chase(x,y))))) # label(non_clause).  [assumption].
+3 (all x ((exists y (rabbit(y) & own(x,y))) -> (all z ((exists u (rabbit(u) & chase(z,u))) -> hate(x,z))))) # label(non_clause).  [assumption].
+4 (exists x (dog(x) & own(john,x))) # label(non_clause).  [assumption].
+5 (all x all y ((exists z (own(y,z) & hate(x,z))) -> -date(x,y))) # label(non_clause).  [assumption].
+6 -(exists x (own(mary,x) & store(x))) -> -date(mary,john) # label(non_clause) # label(goal).  [goal].
+7 buycarrot(mary).  [assumption].
+8 -buycarrot(x) | own(x,f1(x)).  [clausify(1)].
+9 -buycarrot(x) | rabbit(f1(x)) | store(f1(x)).  [clausify(1)].
+10 dog(c1).  [clausify(4)].
+11 -dog(x) | rabbit(f2(x)).  [clausify(2)].
+12 -dog(x) | chase(x,f2(x)).  [clausify(2)].
+13 own(john,c1).  [clausify(4)].
+14 -rabbit(x) | -own(y,x) | -rabbit(z) | -chase(u,z) | hate(y,u).  [clausify(3)].
+15 -own(x,y) | -hate(z,y) | -date(z,x).  [clausify(5)].
+16 -own(mary,x) | -store(x).  [deny(6)].
+17 own(mary,f1(mary)).  [resolve(7,a,8,a)].
+18 -hate(x,c1) | -date(x,john).  [resolve(15,a,13,a)].
+19 date(mary,john).  [deny(6)].
+21 -store(f1(mary)).  [resolve(17,a,16,a)].
+22 rabbit(f1(mary)) | store(f1(mary)).  [resolve(7,a,9,a)].
+24 chase(c1,f2(c1)).  [resolve(10,a,12,a)].
+25 -rabbit(f1(mary)) | -rabbit(x) | -chase(y,x) | hate(mary,y).  [resolve(17,a,14,b)].
+27 -hate(mary,c1).  [resolve(18,b,19,a)].
+28 -rabbit(f1(mary)) | -rabbit(f2(c1)) | hate(mary,c1).  [resolve(25,c,24,a)].
+29 rabbit(f2(c1)).  [resolve(10,a,11,a)].
+30 rabbit(f1(mary)).  [resolve(21,a,22,b)].
+31 -rabbit(f1(mary)) | -rabbit(f2(c1)).  [resolve(28,c,27,a)].
+32 $F.  [copy(31),unit_del(a,30),unit_del(b,29)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=0. Generated=3. Kept=2. proofs=1.
+Usable=0. Sos=0. Demods=0. Limbo=2, Disabled=25. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=0. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=0. Nonunit_bsub_feature_tests=0.
+Megabytes=0.05.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 6406 exit (max_proofs) Wed Jun 26 22:33:07 2019

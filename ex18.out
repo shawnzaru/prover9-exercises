@@ -1,0 +1,199 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 6422 was started by qwang on grid01,
+Wed Jun 26 22:33:07 2019
+The command was "prover9 -f ex18.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file ex18.in
+
+
+formulas(sos).
+(all x (lovelottery(x) -> gambler(x))).
+(all x (favorprop(x) -> lovelottery(x))).
+(all x (favorprop(x) & opposeprop(x))).
+(all x (baptist(x) & vote(x) & opposeprop(x) -> -propwin)).
+(all x (baptist(x) & faithful(x) -> -gambler(x))).
+end_of_list.
+
+formulas(goals).
+(all x (baptist(x) & vote(x))) & propwin -> (exists x (baptist(x) & -faithful(x))).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (lovelottery(x) -> gambler(x))) # label(non_clause).  [assumption].
+2 (all x (favorprop(x) -> lovelottery(x))) # label(non_clause).  [assumption].
+3 (all x (favorprop(x) & opposeprop(x))) # label(non_clause).  [assumption].
+4 (all x (baptist(x) & vote(x) & opposeprop(x) -> -propwin)) # label(non_clause).  [assumption].
+5 (all x (baptist(x) & faithful(x) -> -gambler(x))) # label(non_clause).  [assumption].
+6 (all x (baptist(x) & vote(x))) & propwin -> (exists x (baptist(x) & -faithful(x))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-lovelottery(x) | gambler(x).  [clausify(1)].
+-favorprop(x) | lovelottery(x).  [clausify(2)].
+favorprop(x).  [clausify(3)].
+opposeprop(x).  [clausify(3)].
+-baptist(x) | -vote(x) | -opposeprop(x) | -propwin.  [clausify(4)].
+-baptist(x) | -faithful(x) | -gambler(x).  [clausify(5)].
+baptist(x).  [deny(6)].
+vote(x).  [deny(6)].
+propwin.  [deny(6)].
+-baptist(x) | faithful(x).  [deny(6)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating lovelottery/1
+7 -favorprop(x) | lovelottery(x).  [clausify(2)].
+8 -lovelottery(x) | gambler(x).  [clausify(1)].
+Derived: -favorprop(x) | gambler(x).  [resolve(7,b,8,a)].
+
+Eliminating favorprop/1
+9 -favorprop(x) | gambler(x).  [resolve(7,b,8,a)].
+10 favorprop(x).  [clausify(3)].
+Derived: gambler(x).  [resolve(9,a,10,a)].
+
+Eliminating opposeprop/1
+11 -baptist(x) | -vote(x) | -opposeprop(x) | -propwin.  [clausify(4)].
+12 opposeprop(x).  [clausify(3)].
+Derived: -baptist(x) | -vote(x) | -propwin.  [resolve(11,c,12,a)].
+
+Eliminating baptist/1
+13 baptist(x).  [deny(6)].
+14 -baptist(x) | -faithful(x) | -gambler(x).  [clausify(5)].
+Derived: -faithful(x) | -gambler(x).  [resolve(13,a,14,a)].
+15 -baptist(x) | faithful(x).  [deny(6)].
+Derived: faithful(x).  [resolve(15,a,13,a)].
+16 -baptist(x) | -vote(x) | -propwin.  [resolve(11,c,12,a)].
+Derived: -vote(x) | -propwin.  [resolve(16,a,13,a)].
+
+Eliminating vote/1
+17 -vote(x) | -propwin.  [resolve(16,a,13,a)].
+18 vote(x).  [deny(6)].
+Derived: -propwin.  [resolve(17,a,18,a)].
+
+Eliminating gambler/1
+19 -faithful(x) | -gambler(x).  [resolve(13,a,14,a)].
+20 gambler(x).  [resolve(9,a,10,a)].
+Derived: -faithful(x).  [resolve(19,b,20,a)].
+
+Eliminating faithful/1
+21 -faithful(x).  [resolve(19,b,20,a)].
+22 faithful(x).  [resolve(15,a,13,a)].
+Derived: $F.  [resolve(21,a,22,a)].
+
+============================== end predicate elimination =============
+
+Auto_denials:
+  % assign(max_proofs, 2).  % (Horn set with more than one neg. clause)
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ propwin ]).
+Function symbol precedence:  function_order([ ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(neg_binary_resolution).  % (HNE depth_diff=0)
+  % clear(ordered_res).  % (HNE depth_diff=0)
+  % set(ur_resolution).  % (HNE depth_diff=0)
+    % set(ur_resolution) -> set(pos_ur_resolution).
+    % set(ur_resolution) -> set(neg_ur_resolution).
+
+Auto_process settings:  (no changes).
+
+kept:      23 propwin.  [deny(6)].
+kept:      24 -propwin.  [resolve(17,a,18,a)].
+
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 12.
+% Level of proof is 5.
+% Maximum clause weight is 1.000.
+% Given clauses 0.
+
+3 (all x (favorprop(x) & opposeprop(x))) # label(non_clause).  [assumption].
+4 (all x (baptist(x) & vote(x) & opposeprop(x) -> -propwin)) # label(non_clause).  [assumption].
+6 (all x (baptist(x) & vote(x))) & propwin -> (exists x (baptist(x) & -faithful(x))) # label(non_clause) # label(goal).  [goal].
+11 -baptist(x) | -vote(x) | -opposeprop(x) | -propwin.  [clausify(4)].
+12 opposeprop(x).  [clausify(3)].
+13 baptist(x).  [deny(6)].
+16 -baptist(x) | -vote(x) | -propwin.  [resolve(11,c,12,a)].
+17 -vote(x) | -propwin.  [resolve(16,a,13,a)].
+18 vote(x).  [deny(6)].
+23 propwin.  [deny(6)].
+24 -propwin.  [resolve(17,a,18,a)].
+25 $F.  [resolve(24,a,23,a)].
+
+============================== end of proof ==========================
+
+============================== PROOF =================================
+
+% Proof 2 at 0.00 (+ 0.00) seconds.
+% Length of proof is 17.
+% Level of proof is 5.
+% Maximum clause weight is 0.000.
+% Given clauses 0.
+
+1 (all x (lovelottery(x) -> gambler(x))) # label(non_clause).  [assumption].
+2 (all x (favorprop(x) -> lovelottery(x))) # label(non_clause).  [assumption].
+3 (all x (favorprop(x) & opposeprop(x))) # label(non_clause).  [assumption].
+5 (all x (baptist(x) & faithful(x) -> -gambler(x))) # label(non_clause).  [assumption].
+6 (all x (baptist(x) & vote(x))) & propwin -> (exists x (baptist(x) & -faithful(x))) # label(non_clause) # label(goal).  [goal].
+7 -favorprop(x) | lovelottery(x).  [clausify(2)].
+8 -lovelottery(x) | gambler(x).  [clausify(1)].
+9 -favorprop(x) | gambler(x).  [resolve(7,b,8,a)].
+10 favorprop(x).  [clausify(3)].
+13 baptist(x).  [deny(6)].
+14 -baptist(x) | -faithful(x) | -gambler(x).  [clausify(5)].
+15 -baptist(x) | faithful(x).  [deny(6)].
+19 -faithful(x) | -gambler(x).  [resolve(13,a,14,a)].
+20 gambler(x).  [resolve(9,a,10,a)].
+21 -faithful(x).  [resolve(19,b,20,a)].
+22 faithful(x).  [resolve(15,a,13,a)].
+26 $F.  [resolve(21,a,22,a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=0. Generated=3. Kept=2. proofs=2.
+Usable=0. Sos=0. Demods=0. Limbo=2, Disabled=19. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=0. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=0. Nonunit_bsub_feature_tests=0.
+Megabytes=0.04.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 2 proofs.
+
+Process 6422 exit (max_proofs) Wed Jun 26 22:33:07 2019

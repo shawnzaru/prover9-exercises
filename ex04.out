@@ -1,0 +1,166 @@
+============================== Prover9 ===============================
+Prover9 (64) version 2009-11A, November 2009.
+Process 6407 was started by qwang on grid01,
+Wed Jun 26 22:33:07 2019
+The command was "prover9 -f ex04.in".
+============================== end of head ===========================
+
+============================== INPUT =================================
+
+% Reading from file ex04.in
+
+
+formulas(sos).
+(all x (austinite(x) & -conservative(x) -> lovearmadillo(x))).
+(all x (wearshirt(x) -> aggie(x))).
+(all x (aggie(x) -> lovedog(x))).
+-(exists x (lovedog(x) & lovearmadillo(x))).
+austinite(clem) & wearshirt(clem).
+end_of_list.
+
+formulas(goals).
+(exists x (conservative(x) & austinite(x))).
+end_of_list.
+
+============================== end of input ==========================
+
+============================== PROCESS NON-CLAUSAL FORMULAS ==========
+
+% Formulas that are not ordinary clauses:
+1 (all x (austinite(x) & -conservative(x) -> lovearmadillo(x))) # label(non_clause).  [assumption].
+2 (all x (wearshirt(x) -> aggie(x))) # label(non_clause).  [assumption].
+3 (all x (aggie(x) -> lovedog(x))) # label(non_clause).  [assumption].
+4 -(exists x (lovedog(x) & lovearmadillo(x))) # label(non_clause).  [assumption].
+5 austinite(clem) & wearshirt(clem) # label(non_clause).  [assumption].
+6 (exists x (conservative(x) & austinite(x))) # label(non_clause) # label(goal).  [goal].
+
+============================== end of process non-clausal formulas ===
+
+============================== PROCESS INITIAL CLAUSES ===============
+
+% Clauses before input processing:
+
+formulas(usable).
+end_of_list.
+
+formulas(sos).
+-austinite(x) | conservative(x) | lovearmadillo(x).  [clausify(1)].
+-wearshirt(x) | aggie(x).  [clausify(2)].
+-aggie(x) | lovedog(x).  [clausify(3)].
+-lovedog(x) | -lovearmadillo(x).  [clausify(4)].
+austinite(clem).  [clausify(5)].
+wearshirt(clem).  [clausify(5)].
+-conservative(x) | -austinite(x).  [deny(6)].
+end_of_list.
+
+formulas(demodulators).
+end_of_list.
+
+============================== PREDICATE ELIMINATION =================
+
+Eliminating austinite/1
+7 austinite(clem).  [clausify(5)].
+8 -austinite(x) | conservative(x) | lovearmadillo(x).  [clausify(1)].
+Derived: conservative(clem) | lovearmadillo(clem).  [resolve(7,a,8,a)].
+9 -conservative(x) | -austinite(x).  [deny(6)].
+Derived: -conservative(clem).  [resolve(9,b,7,a)].
+
+Eliminating wearshirt/1
+10 wearshirt(clem).  [clausify(5)].
+11 -wearshirt(x) | aggie(x).  [clausify(2)].
+Derived: aggie(clem).  [resolve(10,a,11,a)].
+
+Eliminating aggie/1
+12 aggie(clem).  [resolve(10,a,11,a)].
+13 -aggie(x) | lovedog(x).  [clausify(3)].
+Derived: lovedog(clem).  [resolve(12,a,13,a)].
+
+Eliminating lovedog/1
+14 lovedog(clem).  [resolve(12,a,13,a)].
+15 -lovedog(x) | -lovearmadillo(x).  [clausify(4)].
+Derived: -lovearmadillo(clem).  [resolve(14,a,15,a)].
+
+Eliminating conservative/1
+16 -conservative(clem).  [resolve(9,b,7,a)].
+17 conservative(clem) | lovearmadillo(clem).  [resolve(7,a,8,a)].
+Derived: lovearmadillo(clem).  [resolve(16,a,17,a)].
+
+Eliminating lovearmadillo/1
+18 lovearmadillo(clem).  [resolve(16,a,17,a)].
+19 -lovearmadillo(clem).  [resolve(14,a,15,a)].
+Derived: $F.  [resolve(18,a,19,a)].
+
+============================== end predicate elimination =============
+
+Auto_denials:  (no changes).
+
+Term ordering decisions:
+Predicate symbol precedence:  predicate_order([ ]).
+Function symbol precedence:  function_order([ ]).
+After inverse_order:  (no changes).
+Unfolding symbols: (none).
+
+Auto_inference settings:
+  % set(neg_binary_resolution).  % (HNE depth_diff=0)
+  % clear(ordered_res).  % (HNE depth_diff=0)
+  % set(ur_resolution).  % (HNE depth_diff=0)
+    % set(ur_resolution) -> set(pos_ur_resolution).
+    % set(ur_resolution) -> set(neg_ur_resolution).
+
+Auto_process settings:  (no changes).
+
+
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 20.
+% Level of proof is 5.
+% Maximum clause weight is 0.000.
+% Given clauses 0.
+
+1 (all x (austinite(x) & -conservative(x) -> lovearmadillo(x))) # label(non_clause).  [assumption].
+2 (all x (wearshirt(x) -> aggie(x))) # label(non_clause).  [assumption].
+3 (all x (aggie(x) -> lovedog(x))) # label(non_clause).  [assumption].
+4 -(exists x (lovedog(x) & lovearmadillo(x))) # label(non_clause).  [assumption].
+5 austinite(clem) & wearshirt(clem) # label(non_clause).  [assumption].
+6 (exists x (conservative(x) & austinite(x))) # label(non_clause) # label(goal).  [goal].
+7 austinite(clem).  [clausify(5)].
+8 -austinite(x) | conservative(x) | lovearmadillo(x).  [clausify(1)].
+9 -conservative(x) | -austinite(x).  [deny(6)].
+10 wearshirt(clem).  [clausify(5)].
+11 -wearshirt(x) | aggie(x).  [clausify(2)].
+12 aggie(clem).  [resolve(10,a,11,a)].
+13 -aggie(x) | lovedog(x).  [clausify(3)].
+14 lovedog(clem).  [resolve(12,a,13,a)].
+15 -lovedog(x) | -lovearmadillo(x).  [clausify(4)].
+16 -conservative(clem).  [resolve(9,b,7,a)].
+17 conservative(clem) | lovearmadillo(clem).  [resolve(7,a,8,a)].
+18 lovearmadillo(clem).  [resolve(16,a,17,a)].
+19 -lovearmadillo(clem).  [resolve(14,a,15,a)].
+20 $F.  [resolve(18,a,19,a)].
+
+============================== end of proof ==========================
+
+============================== STATISTICS ============================
+
+Given=0. Generated=1. Kept=0. proofs=1.
+Usable=0. Sos=0. Demods=0. Limbo=0, Disabled=14. Hints=0.
+Kept_by_rule=0, Deleted_by_rule=0.
+Forward_subsumed=0. Back_subsumed=0.
+Sos_limit_deleted=0. Sos_displaced=0. Sos_removed=0.
+New_demodulators=0 (0 lex), Back_demodulated=0. Back_unit_deleted=0.
+Demod_attempts=0. Demod_rewrites=0.
+Res_instance_prunes=0. Para_instance_prunes=0. Basic_paramod_prunes=0.
+Nonunit_fsub_feature_tests=0. Nonunit_bsub_feature_tests=0.
+Megabytes=0.03.
+User_CPU=0.00, System_CPU=0.00, Wall_clock=0.
+
+============================== end of statistics =====================
+
+============================== end of search =========================
+
+THEOREM PROVED
+
+Exiting with 1 proof.
+
+Process 6407 exit (max_proofs) Wed Jun 26 22:33:07 2019

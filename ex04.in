@@ -1,0 +1,25 @@
+formulas(sos).
+
+  % 1. every austinite who is not conservative loves some armadillo.
+  (all x ((austinite(x) & -conservative(x)) -> lovearmadillo(x))).
+
+  % 2. anyone who wears maroon-and-white shirts is an aggie.
+  (all x (wearshirt(x) -> aggie(x))).
+
+  % 3. every aggie loves every dog.
+  (all x (aggie(x) -> lovedog(x))).
+
+  % 4. nobody who loves every dog loves any armadillo.
+  -(exists x (lovedog(x) & lovearmadillo(x))).
+
+  % 5. clem is an austinite, and clem wears maroon-and-white shirts.
+  austinite(clem) & wearshirt(clem).
+
+end_of_list.
+
+formulas(goals).
+
+  % 6. there is a conservative austinite.
+  (exists x (conservative(x) & austinite(x))).
+
+end_of_list.
